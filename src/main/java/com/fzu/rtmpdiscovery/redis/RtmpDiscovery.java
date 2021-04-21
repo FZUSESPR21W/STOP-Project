@@ -1,7 +1,7 @@
-package com.fzu.rtmpfinder.redis;
+package com.fzu.rtmpdiscovery.redis;
 
-import com.fzu.rtmpfinder.pojo.HlsLive;
-import com.fzu.rtmpfinder.service.RtmpService;
+import com.fzu.rtmpdiscovery.pojo.HlsLive;
+import com.fzu.rtmpdiscovery.service.RtmpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.fzu.rtmpfinder.pojo;
+package com.fzu.rtmpdiscovery.pojo;
 
 public class HlsLive implements Comparable {
     String appName;

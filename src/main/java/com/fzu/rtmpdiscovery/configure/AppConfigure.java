@@ -1,11 +1,9 @@
-package com.fzu.rtmpfinder.configure;
+package com.fzu.rtmpdiscovery.configure;
 
-import com.fzu.rtmpfinder.redis.RtmpDiscovery;
+import com.fzu.rtmpdiscovery.redis.RtmpDiscovery;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
@@ -18,7 +16,8 @@ import java.util.concurrent.TimeUnit;
 public class AppConfigure {
     @Bean
     public HttpClient getHttpClient(){
-        HttpClient client = HttpClientBuilder.create().build();
+        HttpClient client = HttpClientBuilder
+                .create().build();
         return client;
     }
     @Bean

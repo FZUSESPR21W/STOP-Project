@@ -1,7 +1,7 @@
-package com.fzu.rtmpfinder.controller;
+package com.fzu.rtmpdiscovery.controller;
 
-import com.fzu.rtmpfinder.pojo.HlsLive;
-import com.fzu.rtmpfinder.service.RtmpService;
+import com.fzu.rtmpdiscovery.service.RtmpService;
+import com.fzu.rtmpdiscovery.pojo.HlsLive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

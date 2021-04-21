@@ -1,6 +1,6 @@
-package com.fzu.rtmpfinder.service;
+package com.fzu.rtmpdiscovery.service;
 
-import com.fzu.rtmpfinder.pojo.HlsLive;
+import com.fzu.rtmpdiscovery.pojo.HlsLive;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
