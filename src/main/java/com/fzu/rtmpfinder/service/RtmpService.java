@@ -81,4 +81,12 @@ public class RtmpService {
         }
         return resList;
     }
+    public Map getHlsLiveMap(){
+        List<HlsLive> hlsList = getHlsList();
+        Map<String, Object> res = new HashMap<>();
+        for (HlsLive hlsLive : hlsList) {
+            res.put(hlsLive.getLiveName(),hlsLive);
+        }
+        return res;
+    }
 }

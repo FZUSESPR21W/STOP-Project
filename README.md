@@ -1,5 +1,5 @@
-# RtmpFinder
-一个Nginx rtmp直播流服务发现者
+# RtmpDiscovery
+一个Nginx rtmp直播流服务发现
 
 ## Nginx服务器配置
 

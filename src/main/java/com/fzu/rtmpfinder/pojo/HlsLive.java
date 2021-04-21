@@ -1,12 +1,13 @@
 package com.fzu.rtmpfinder.pojo;
 
-public class HlsLive {
+public class HlsLive implements Comparable {
     String appName;
     String liveName;
     String url;
     String height;
     String width;
 
+    public HlsLive(){}
     public HlsLive(String appName, String liveName, String height, String width, String url) {
         this.appName = appName;
         this.liveName = liveName;
@@ -53,5 +54,18 @@ public class HlsLive {
 
     public void setWidth(String width) {
         this.width = width;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        HlsLive hlsLive = (HlsLive) o;
+        if(this.appName.compareTo(hlsLive.appName)==0&&
+            this.liveName.compareTo(hlsLive.liveName)==0&&
+            this.url.compareTo(hlsLive.url)==0&&
+            this.height.compareTo(hlsLive.height)==0&&
+            this.width.compareTo(hlsLive.width)==0){
+            return 0;
+        }
+        return 1;
     }
 }
