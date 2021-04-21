@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class RtmpService {
@@ -60,15 +57,21 @@ public class RtmpService {
             List<Object> appList=apps.toList();
             for (Object appItem : appList) {
                 String appName = (String) ((Map) appItem).get("name");
-                JSONObject live = (JSONObject) ((Map) appItem).get("live");
-                JSONArray streams = live.getJSONArray("stream");
-                List<Object>streamList=streams.toList();
+                HashMap live = (HashMap) ((Map) appItem).get("live");
+                Object streams = live.get("stream");
+                if(streams==null)continue;
+                List<Object>streamList;
+                if(streams.getClass()==HashMap.class){
+                    streamList= Collections.singletonList(streams);
+                }else{
+                    streamList= (List<Object>) streams;
+                }
                 for (Object streamItem : streamList) {
                     String liveName = (String) ((Map) streamItem).get("name");
-                    JSONObject meta = (JSONObject) ((Map) streamItem).get("meta");
-                    JSONObject video = meta.getJSONObject("video");
-                    String height = video.getString("height");
-                    String width = video.getString("width");
+                    HashMap meta = (HashMap) ((Map) streamItem).get("meta");
+                    HashMap video = (HashMap) meta.get("video");
+                    String height = ((Integer) video.get("height")).toString();
+                    String width = ((Integer) video.get("width")).toString();
                     resList.add(new HlsLive(appName,liveName,height,width,liveUrl+appName+"/"+liveName+".m3u8"));
                 }
             }
@@ -77,6 +80,5 @@ public class RtmpService {
             e.printStackTrace();
         }
         return resList;
-
     }
 }

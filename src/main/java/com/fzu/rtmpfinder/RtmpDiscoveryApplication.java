@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class RtmpFinderApplication {
+public class RtmpDiscoveryApplication {
     @Bean
     public HttpClient getHttpClient(){
         HttpClient client = HttpClientBuilder.create().build();
@@ -15,7 +15,7 @@ public class RtmpFinderApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(RtmpFinderApplication.class, args);
+        SpringApplication.run(RtmpDiscoveryApplication.class, args);
     }
 
 }
