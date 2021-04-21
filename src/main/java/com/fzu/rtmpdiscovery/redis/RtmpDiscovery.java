@@ -50,6 +50,7 @@ public class  RtmpDiscovery implements Runnable {
                 threadPoolExecutor.execute(instance);
                 started=true;
             }
+            log.info("启动rtmp推流发现");
         }
     }
 
@@ -85,19 +86,19 @@ public class  RtmpDiscovery implements Runnable {
         redisTemplate.opsForValue().set(redisKey,value);
         String format = dataFormat.format(System.currentTimeMillis());
         redisTemplate.convertAndSend(channel,"Device status changed at "+format);
-        log.info("Device status changed at "+format);
+        log.info("发现rtmp推流状态改变，正在推流："+value.keySet());
     }
     public void run() {
         for(;;){
-            Map newDevice = rtmpService.getHlsLiveMap();
-            Map oldDevice = getDevice();
-            if(!compareMap(oldDevice,newDevice)){
-                publishNewDevice(newDevice);
-            }
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            Map newDevice = rtmpService.getHlsLiveMap();
+            Map oldDevice = getDevice();
+            if(!compareMap(oldDevice,newDevice)){
+                publishNewDevice(newDevice);
             }
         }
     }
