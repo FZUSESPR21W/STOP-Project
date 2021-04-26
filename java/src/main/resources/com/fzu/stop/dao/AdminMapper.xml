@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fzu.stop.dao.AdminDao">
+    <select id="getAdminByUsername" resultType="com.fzu.stop.pojo.AdminDO">
+        select * from admin where username = #{username}
+    </select>
+    <select id="getAdminById" resultType="com.fzu.stop.pojo.AdminDO">
+        select * from admin where id = #{id}
+    </select>
+    <select id="listRolesByAdminId" resultType="com.fzu.stop.pojo.RoleDO">
+        select * from role,admin_role where admin_id=#{adminId} and role.id = role_id
+    </select>
+    <select id="listAuthoritiesByRoleId" resultType="com.fzu.stop.pojo.AuthorityDo">
+        select * from authority,authortiy_role where role_id=#{roleId} and authority_id=authority.id
+    </select>
+</mapper>
