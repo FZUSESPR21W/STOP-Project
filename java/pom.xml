@@ -18,18 +18,18 @@
     </properties>
     <profiles>
         <profile>
-            <id>生产环境</id>
+            <id>开发环境</id>
             <properties>
-                <evn>local-prod</evn>
+                <evn>local-dev</evn>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
         <profile>
-            <id>开发环境</id>
+            <id>生产环境</id>
             <properties>
-                <evn>local-dev</evn>
+                <evn>local-prod</evn>
             </properties>
         </profile>
     </profiles>
