@@ -17,10 +17,12 @@ public interface FeedbackDao {
      * @return
      */
     List<FeedbackDO> getFeedbackList(int start,int lim);
+
     /**
      * 根据id获取反馈详细信息
      * @param id
      * @return
      */
     FeedbackDO getFeedback(int id);
+
 }

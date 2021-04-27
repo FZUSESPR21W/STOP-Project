@@ -22,8 +22,10 @@ public class FeedbackServiceImpl implements FeedbackService{
         return feedbackDao.getFeedbackList(start,limit);
     }
 
+
     @Override
     public Object getFeedback(int id){
         return feedbackDao.getFeedback(id);
     }
+
 }
