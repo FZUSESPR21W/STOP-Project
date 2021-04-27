@@ -1,6 +1,9 @@
 <template>
   <div class="top-bar-contianer">
-    <span>后台管理系统</span>
+    <div class="left">
+      <img src="@/assets/logo.png" class="logo"/>
+      <span>后台管理系统</span>
+    </div>
     <span>©CopyRight 2021 发际线和我作队</span>
   </div>
 </template>
@@ -26,5 +29,20 @@ export default {
     font-weight: 700;
     margin: 10px;
   }
+
+  .left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+
+    .logo {
+      width: 60px;
+      height: 55px;
+    }
+
+  }
+
+
 }
 </style>

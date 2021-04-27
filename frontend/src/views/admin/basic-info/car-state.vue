@@ -1,5 +1,5 @@
 <template>
-
+  <div>我是车辆信息惹</div>
 </template>
 
 <script>

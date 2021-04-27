@@ -1,14 +1,14 @@
 <template>
   <div class="side-bar-contianer">
-    <el-menu background-color="#813C85" text-color="#ffffff" active-text-color="#ffd04b">
-      <el-submenu index="1">
+    <el-menu background-color="#813C85" text-color="#ffffff" active-text-color="#ffd04b" router>
+      <el-submenu index="/admin/baseState">
         <template slot="title">
           <i class="el-icon-set-up icon" />
           <span>基础信息</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1">基础情况</el-menu-item>
-          <el-menu-item index="1-2">车辆情况</el-menu-item>
+          <el-menu-item index="/admin/baseState">基础情况</el-menu-item>
+          <el-menu-item index="/admin/carState">车辆情况</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="2">
@@ -17,8 +17,8 @@
           <span>用户系统</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1">发布公告</el-menu-item>
-          <el-menu-item index="1-2">用户反馈</el-menu-item>
+          <el-menu-item index="/admin/newNotice">发布公告</el-menu-item>
+          <el-menu-item index="/admin/userFeedback">用户反馈</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

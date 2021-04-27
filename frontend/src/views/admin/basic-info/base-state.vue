@@ -1,5 +1,5 @@
 <template>
-
+  <div>我是基础情况惹</div>
 </template>
 
 <script>
