@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fzu.stop.dao.FeedbackDao">
+    <select id="getFeedbackList" resultType="com.fzu.stop.pojo.FeedbackDO">
+        select id, title, content, user_nickname name, status_id status, submit_time submitTime
+        from feedback
+        limit #{start},#{lim};
+    </select>
+</mapper>
