@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * @author ldy
+ * @author 梁达毅
  */
 @Mapper
 public interface AdminDao {

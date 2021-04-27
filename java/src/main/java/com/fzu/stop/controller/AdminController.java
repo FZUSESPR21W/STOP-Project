@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 /**
- * @author ldy
+ * @author 梁达毅
  */
 @Controller
 @RequestMapping("/admin")
@@ -27,7 +27,7 @@ public class AdminController {
             StpUtil.setLoginId(admin.getId());
             return ResponseUtil.getSuccessResponse("登陆成功",new HashMap<>());
         } else {
-          return ResponseUtil.getFailResponse("登陆失败",new HashMap<>());
+            return ResponseUtil.getFailResponse("登陆失败",new HashMap<>());
         }
     }
     @GetMapping("/visit")

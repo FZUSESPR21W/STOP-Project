@@ -1,7 +1,7 @@
 package com.fzu.stop.pojo;
 
 /**
- * @author ldy
+ * @author 梁达毅
  */
 public class AuthorityDo {
     Integer id;

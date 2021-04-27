@@ -2,12 +2,18 @@ package com.fzu.stop.pojo;
 import java.util.Map;
 
 /**
- * @author ldy
+ * @author 梁达毅
  */
 public class ResponseDTO {
     Integer errorCode;
     String message;
     Map<String,Object> data;
+
+    public ResponseDTO(Integer errorCode, String message, Map<String, Object> data) {
+        this.errorCode = errorCode;
+        this.message = message;
+        this.data = data;
+    }
 
     public Integer getErrorCode() {
         return errorCode;

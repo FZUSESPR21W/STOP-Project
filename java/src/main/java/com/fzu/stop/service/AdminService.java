@@ -3,7 +3,7 @@ package com.fzu.stop.service;
 import com.fzu.stop.pojo.AdminDO;
 
 /**
- * @author ldy
+ * @author 梁达毅
  */
 public interface AdminService {
     /**

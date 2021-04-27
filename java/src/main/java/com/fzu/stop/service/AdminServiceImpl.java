@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * @author 11139
+ * @author 梁达毅
  */
 @Service
 public class AdminServiceImpl implements AdminService {

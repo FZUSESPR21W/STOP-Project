@@ -12,6 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author 梁达毅
+ */
 public class StpInterfaceImpl implements StpInterface {
     @Autowired
     AdminDao adminDao;
