@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fzu.stop.dao.NoticeDao">
+    <insert id="insertNotice" parameterType="com.fzu.stop.pojo.NoticeDO">
+        insert into notice(title, content, top, update_time, status)
+        values(#{title},#{content]},#{top},CURRENT_TIMESTAMP,#{status})
+    </insert>
+    <select id="selectNoticeById" resultType="com.fzu.stop.pojo.NoticeDO">
+        select * from notice where id = #{id}
+    </select>
+    <select id="selectAllNotices" resultType="com.fzu.stop.pojo.NoticeDO">
+        select * from notice
+    </select>
+</mapper>
