@@ -3,6 +3,7 @@ package com.fzu.stop.controller;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.fzu.stop.Util.WechatUtil;
+import com.fzu.stop.pojo.FeedbackDO;
 import com.fzu.stop.pojo.ResponseDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,4 +55,5 @@ public class UserController {
         }
         return null;
     }
+
 }

@@ -3,7 +3,7 @@ package com.fzu.stop.pojo;
 /**
  * @author 梁达毅
  */
-public class AuthorityDo {
+public class AuthorityDO {
     Integer id;
     String authorityName;
 

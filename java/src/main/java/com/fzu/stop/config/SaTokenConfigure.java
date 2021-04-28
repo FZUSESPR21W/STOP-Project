@@ -27,8 +27,8 @@ public class SaTokenConfigure implements WebMvcConfigurer {
             SaRouterUtil.match("/notice/**", () -> StpUtil.checkRoleOr("notice-admin", "super-admin"));
             SaRouterUtil.match("/data/**", () -> StpUtil.checkRoleOr("data-admin", "super-admin"));
 
-            // 权限认证 -- 不同模块, 校验不同权限
-            SaRouterUtil.match("/feedback/**", () -> StpUtil.checkPermission("user"));
+            /*// 权限认证 -- 不同模块, 校验不同权限
+            SaRouterUtil.match("/feedback/**", () -> StpUtil.checkPermission("user"));*/
         })).addPathPatterns("/**");
     }
 }

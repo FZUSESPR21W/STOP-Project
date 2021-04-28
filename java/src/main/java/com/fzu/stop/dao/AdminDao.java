@@ -1,7 +1,7 @@
 package com.fzu.stop.dao;
 
 import com.fzu.stop.pojo.AdminDO;
-import com.fzu.stop.pojo.AuthorityDo;
+import com.fzu.stop.pojo.AuthorityDO;
 import com.fzu.stop.pojo.RoleDO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -38,7 +38,7 @@ public interface AdminDao {
      * @param roleId
      * @return
      */
-    List<AuthorityDo> listAuthoritiesByRoleId(Integer roleId);
+    List<AuthorityDO> listAuthoritiesByRoleId(Integer roleId);
 
 
 
