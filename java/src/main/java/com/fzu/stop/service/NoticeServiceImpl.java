@@ -5,6 +5,8 @@ import com.fzu.stop.pojo.NoticeDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author 武雍易
  */
@@ -22,5 +24,14 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public NoticeDO getNoticeDetail(Integer id) {
         return noticeDao.selectNoticeById(id);
+    }
+
+    @Override
+    public List<NoticeDO> getNoticeList(Integer page, Integer limit, String keyword, Integer orderBy, Boolean top) {
+        Integer start = null;
+        if (page != null && limit != null) {
+            start = (page - 1) * limit;
+        }
+        return noticeDao.selectAllNotices(start,limit,keyword,orderBy,top);
     }
 }

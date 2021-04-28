@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,7 +27,7 @@ public class NoticeController {
     @RequestMapping("/publish")
     public ResponseDTO publishNotice(String title, String content, Boolean top, Integer status){
         if (title == null || content == null || top == null || status == null) {
-            return ResponseUtil.getSuccessResponse("发布失败",new HashMap<>());
+            return ResponseUtil.getFailResponse("发布失败",new HashMap<>());
         }
         NoticeDO notice = new NoticeDO();
         notice.setTitle(title);
@@ -54,5 +55,15 @@ public class NoticeController {
         } else {
             return ResponseUtil.getFailResponse("查看失败",new HashMap<>());
         }
+    }
+
+    @ResponseBody
+    @RequestMapping("/get_notice_list")
+    public ResponseDTO getNoticeList(Integer page, Integer limit, String keyword, Integer orderBy, Boolean top){
+        List<NoticeDO> noticeList = null;
+        noticeList = noticeService.getNoticeList(page,limit,keyword,orderBy,top);
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("noticeList",noticeList);
+        return ResponseUtil.getSuccessResponse("",map);
     }
 }

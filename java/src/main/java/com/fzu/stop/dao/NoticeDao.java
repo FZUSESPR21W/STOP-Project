@@ -27,10 +27,15 @@ public interface NoticeDao {
     NoticeDO selectNoticeById(Integer id);
 
     /**
-     * 获取公告列表
-     * @return 公告集合
+     * 获取公告列表，可以进行分页查找，也可以模糊搜索关键词
+     * @param start 开始
+     * @param limit 长度
+     * @param keyword 关键词
+     * @param orderBy 0代表按发布时间，1代表按更新时间
+     * @param top 判断是否置顶
+     * @return 公告列表
      */
-    List<NoticeDO> selectAllNotices();
+    List<NoticeDO> selectAllNotices(Integer start, Integer limit, String keyword, Integer orderBy, Boolean top);
 
     /**
      * 更新公告
