@@ -20,8 +20,10 @@ public class RtmpDiscoveryApplication {
     public static void main(String[] args) {
         SpringApplication.run(RtmpDiscoveryApplication.class, args);
     }
-    @Autowired
-    RedisTemplate redisTemplate;
+
+    /**
+     * 开启服务
+     */
     @PostConstruct
     public void init(){
         discoveryService.startDiscover();

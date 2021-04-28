@@ -21,16 +21,25 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Service
 public class RtmpDiscoveryService implements Runnable {
+
+    private Logger log=LoggerFactory.getLogger(RtmpDiscoveryService.class);
+
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
     private ThreadPoolExecutor threadPoolExecutor;
     @Autowired
     private RtmpService rtmpService;
-    private Boolean started;
     @Autowired
     Set<String> ipSet;
+    @Autowired
+    private DateFormat dataFormat;
 
+    /**
+     * redisKey：设置所有hls流信息的key
+     * channel：发布信息的channel名
+     * ipKey：获取上线服务器ip的key前缀
+     */
     @Value("${rtmp.redis.key}")
     private String redisKey;
     @Value("${rtmp.redis.channel}")
@@ -38,9 +47,8 @@ public class RtmpDiscoveryService implements Runnable {
     @Value("${rtmp.redis.ipKey}")
     private String ipKey;
 
-    @Autowired
-    private DateFormat dataFormat;
-    private Logger log=LoggerFactory.getLogger(RtmpDiscoveryService.class);
+    private Boolean started;
+
     public RtmpDiscoveryService(){
     	started=false;
     }

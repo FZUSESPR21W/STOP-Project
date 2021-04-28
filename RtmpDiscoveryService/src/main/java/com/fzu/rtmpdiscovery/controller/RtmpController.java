@@ -24,11 +24,18 @@ public class RtmpController {
     RtmpService service;
     Logger log = LoggerFactory.getLogger(RtmpController.class);
 
+    /**
+     * @return nginx推流服务器的原始数据
+     */
     @GetMapping("/rtmp_info")
     @ResponseBody
     public Map<String,Object> getRtmpInfo(){
         return service.getRtmpInfo();
     }
+
+    /**
+     * @return 所有服务器的推流列表
+     */
     @GetMapping("/hls_list")
     @ResponseBody
     public Map<String,Object> getHlsList(){
@@ -37,6 +44,11 @@ public class RtmpController {
         map.put("data",hlsList);
         return map;
     }
+
+    /**
+     * @param req
+     * @return 访问客户端的ip
+     */
     @GetMapping("/get_client_ip")
     @ResponseBody
     public String getClientIp(HttpServletRequest req){

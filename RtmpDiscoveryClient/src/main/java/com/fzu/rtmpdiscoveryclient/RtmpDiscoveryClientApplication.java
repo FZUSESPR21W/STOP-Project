@@ -16,15 +16,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 在redis中设置key来注册服务器上线
+ * @author yrc
+ */
 @SpringBootApplication
 @EnableAsync
 public class RtmpDiscoveryClientApplication {
 
 	Logger log = LoggerFactory.getLogger(RtmpDiscoveryClientApplication.class);
-	@Bean(name = "localIp")
-	public StringBuffer getLocalIp(){
-		return new StringBuffer();
-	}
 	@Autowired
 	IpService ipService;
 
@@ -32,6 +32,10 @@ public class RtmpDiscoveryClientApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RtmpDiscoveryClientApplication.class, args);
 	}
+
+	/**
+	 * 启动服务
+	 */
 	@PostConstruct
 	public void init(){
 		ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1

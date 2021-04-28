@@ -43,6 +43,11 @@ public class AppConfigure {
                 ,new DefaultThreadFactory("discovery"));
         return threadPoolExecutor;
     }
+
+    /**
+     * 日期格式化工具
+     * @return simpleDateFormat
+     */
     @Bean
     public DateFormat getSimpleDateFormat(){
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

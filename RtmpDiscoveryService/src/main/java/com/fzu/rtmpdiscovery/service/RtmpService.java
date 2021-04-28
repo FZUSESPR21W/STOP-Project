@@ -32,14 +32,27 @@ public class RtmpService {
 
     Logger log = LoggerFactory.getLogger(RtmpService.class);
 
+    /**
+     * 将ip包装成统一的获取客户端hls流状态的url
+     * @param ip 客户端服务器ip
+     * @return 获取客户端hls流状态的url
+     */
     private String getStatusUrl(String ip){
         return "http://"+ip+"/stat";
     }
+
+    /**
+     * 将ip包装成统一的hls流url
+     * @param ip 客户端服务器ip
+     * @param appName nginx rtmp应用名
+     * @param liveName 直播间名
+     * @return hls流url
+     */
     private String getLiveUrl(String ip,String appName,String liveName){
         return "http://"+ip+"/"+appName+"/"+liveName+".m3u8";
     }
     /**
-     * 将xml转换成JSONObject
+     * 将单个服务器的所有流信息的xml转换成JSONObject
      * @return 返回一个从服务器获取的xml对应的JSONObject
      */
     private JSONObject getRtmpJsonObject(String ip){
@@ -53,13 +66,13 @@ public class RtmpService {
             return jsonObject;
         } catch (IOException e) {
             log.error("连接rtmp服务："+ statusUrl +" 失败");
-//            e.printStackTrace();
         }
         return null;
     }
 
     /**
-     * @return 原始JSONObject转换成map
+     * 获取所有服务器的hls流信息，不经过包装
+     * @return 原始JSONObject转换成的map
      */
     public Map<String,Object> getRtmpInfo(){
         HashMap<String, Object> res = new HashMap<>();
@@ -70,6 +83,10 @@ public class RtmpService {
 
     }
 
+    /**
+     * 获取所有服务器的hls流信息，经过包装
+     * @return HlsLive
+     */
     public List<HlsLive> getAllHlsList(){
         ArrayList<HlsLive> res = new ArrayList<>();
         for (String ip : ipSet) {
@@ -124,7 +141,6 @@ public class RtmpService {
             }
         }catch (NullPointerException e){
             log.error("xml无法解析为json");
-//            e.printStackTrace();
         }
         return resList;
     }

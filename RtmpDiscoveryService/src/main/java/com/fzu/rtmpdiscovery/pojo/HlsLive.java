@@ -3,6 +3,7 @@ package com.fzu.rtmpdiscovery.pojo;
 import java.util.Objects;
 
 /**
+ * Hls流实体类
  * @author yrc
  */
 public class HlsLive{

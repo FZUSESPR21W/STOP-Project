@@ -1,7 +1,28 @@
 # RtmpDiscovery
-一个Nginx rtmp直播流服务发现
 
-## Nginx服务器配置
+一个可动态拓展的nginx rtmp流发现服务
+
+## 具体功能
+
+## 组件图
+
+![image-20210428163321969](https://gitee.com/lin_haoran/Picgo/raw/master/img/image-20210428163321969.png)
+
+## 配置图
+
+![image-20210428163213463](https://gitee.com/lin_haoran/Picgo/raw/master/img/image-20210428163213463.png)
+
+## 实现思路
+
+### 概述
+
+### RtmpDiscoveryClient
+
+### RtmpDiscoveryService
+
+## 部署方式
+
+### Nginx服务器配置
 
 ```
 http{
@@ -51,4 +72,8 @@ rtmp{
 	}
 }
 ```
+
+### RtmpDiscoveryClient配置
+
+### RtmpDiscoveryService配置
 
