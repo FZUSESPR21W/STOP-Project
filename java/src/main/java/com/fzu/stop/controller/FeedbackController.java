@@ -30,4 +30,14 @@ public class FeedbackController {
 
         return ResponseUtil.getSuccessResponse("获取成功", data);
     }
+
+    @PostMapping("/detail")
+    @ResponseBody
+    public ResponseDTO getFeedback(@RequestParam int id){
+        Object feedback = feedbackService.getFeedback(id);
+        Map<String,Object> data = new HashMap<>(1);
+        data.put("feedback",feedback);
+
+        return ResponseUtil.getSuccessResponse("获取成功",data);
+    }
 }
