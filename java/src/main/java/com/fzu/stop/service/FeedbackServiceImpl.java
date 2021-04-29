@@ -17,7 +17,7 @@ public class FeedbackServiceImpl implements FeedbackService{
     FeedbackDao feedbackDao;
 
     @Override
-    public Object getFeedbackList(int page,int limit){
+    public List<FeedbackDO> getFeedbackList(int page, int limit){
         int start=(page-1)*limit;
         return feedbackDao.getFeedbackList(start,limit);
     }

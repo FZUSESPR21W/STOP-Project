@@ -34,4 +34,5 @@ public interface NoticeService {
      * @return 公告列表
      */
     List<NoticeDO> getNoticeList(Integer page, Integer limit, String keyword, Integer orderBy, Boolean top);
+
 }

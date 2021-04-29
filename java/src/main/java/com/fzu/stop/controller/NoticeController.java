@@ -26,14 +26,10 @@ public class NoticeController {
     @ResponseBody
     @RequestMapping("/publish")
     public ResponseDTO publishNotice(String title, String content, Boolean top, Integer status){
-        if (title == null || content == null || top == null || status == null) {
+        if (title == null || "".equals(title) || content == null || "".equals(content) || top == null || status == null) {
             return ResponseUtil.getFailResponse("发布失败",new HashMap<>());
         }
-        NoticeDO notice = new NoticeDO();
-        notice.setTitle(title);
-        notice.setContent(content);
-        notice.setTop(top?1:0);
-        notice.setStatus(status);
+        NoticeDO notice = new NoticeDO(title,content,top?1:0,status);
         noticeService.publishNotice(notice);
         return ResponseUtil.getSuccessResponse("发布成功",new HashMap<>());
     }
@@ -43,15 +39,9 @@ public class NoticeController {
     public ResponseDTO getNoticeDetail(Integer id){
         NoticeDO notice = noticeService.getNoticeDetail(id);
         if (notice != null) {
-            Map<String, Object> map = new HashMap<>(7);
-            map.put("id",notice.getId());
-            map.put("title",notice.getTitle());
-            map.put("content",notice.getContent());
-            map.put("top",notice.getTop());
-            map.put("status",notice.getStatus());
-            map.put("publish_time",notice.getPublishTime());
-            map.put("update_time",notice.getUpdateTime());
-            return ResponseUtil.getSuccessResponse("查看成功",map);
+            Map<String, Object> data = new HashMap<>(1);
+            data.put("notice",notice);
+            return ResponseUtil.getSuccessResponse("查看成功",data);
         } else {
             return ResponseUtil.getFailResponse("查看失败",new HashMap<>());
         }
@@ -62,8 +52,8 @@ public class NoticeController {
     public ResponseDTO getNoticeList(Integer page, Integer limit, String keyword, Integer orderBy, Boolean top){
         List<NoticeDO> noticeList = null;
         noticeList = noticeService.getNoticeList(page,limit,keyword,orderBy,top);
-        Map<String, Object> map = new HashMap<>(1);
-        map.put("noticeList",noticeList);
-        return ResponseUtil.getSuccessResponse("",map);
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("noticeList",noticeList);
+        return ResponseUtil.getSuccessResponse("",data);
     }
 }
