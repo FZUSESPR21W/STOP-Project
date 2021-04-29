@@ -13,6 +13,7 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: () => import('@/views/admin/index'),
+    redirect: '/admin/baseState',
     children: [
       {
         path: 'baseState',
