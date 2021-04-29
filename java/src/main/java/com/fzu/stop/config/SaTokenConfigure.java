@@ -13,7 +13,7 @@ import java.util.Arrays;
 /**
  * @author 梁达毅
  */
-@Configuration
+
 public class SaTokenConfigure implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

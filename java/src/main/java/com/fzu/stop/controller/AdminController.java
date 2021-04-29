@@ -5,6 +5,7 @@ import com.fzu.stop.Util.ResponseUtil;
 import com.fzu.stop.pojo.AdminDO;
 import com.fzu.stop.pojo.ResponseDTO;
 import com.fzu.stop.service.AdminService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class AdminController {
     AdminService adminService;
     @PostMapping("/login")
     @ResponseBody
-    public ResponseDTO login(String username,String password){
+    public ResponseDTO login(@NotNull String username, @NotNull String password){
         AdminDO admin = adminService.login(username, password);
         if(admin!=null){
             StpUtil.setLoginId(admin.getId());

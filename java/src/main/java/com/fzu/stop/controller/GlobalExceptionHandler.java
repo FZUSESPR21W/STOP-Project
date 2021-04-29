@@ -44,11 +44,11 @@ public class GlobalExceptionHandler {
             throws Exception {
         // 不同异常返回不同状态码
         String message = "";
-        if (e instanceof NotLoginException) {
+        //if (e instanceof NotLoginException) {
             // 如果是未登录异常
-            NotLoginException ee = (NotLoginException) e;
-            message="登录失败"+ee.getMessage();
-        } else if(e instanceof NotRoleException) {
+//            NotLoginException ee = (NotLoginException) e;
+//            message="登录失败"+ee.getMessage();
+        if(e instanceof NotRoleException) {
             // 如果是角色异常
             NotRoleException ee = (NotRoleException) e;
             message="无此角色：" + ee.getRole();
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
             message="账号被封禁：" + ee.getDisableTime() + "秒后解封";
         } else {
             // 普通异常, 输出：500 + 异常信息
-            message=e.getMessage();
+            throw e;
         }
 
         response.setStatus(403);
