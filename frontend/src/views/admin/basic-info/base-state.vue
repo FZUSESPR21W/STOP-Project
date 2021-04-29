@@ -19,6 +19,10 @@
     <!-- 数据可视化(echarts图表）开始 -->
     <div class="graph-container">
       <span class="title">数据可视化</span>
+      <!-- 福州大学教学楼停车情况 -->
+      <div id="park" class="graph" />
+      <!-- STOP小程序端日访问量 -->
+      <div id="visit" class="graph" />
     </div>
     <!-- 数据可视化(echarts图表）结束 -->
   </div>
@@ -30,7 +34,7 @@ export default {
   name: "base-state",
   data() {
     return {
-      //用户登录记录对象
+      // 用户登录记录对象
       userLogin: {
         //用户登录数据
         userLoginData: [],
@@ -39,15 +43,31 @@ export default {
         //每页限制条数
         limit: 5
       },
-      //数据可视化(echarts图表）对象
+      // 数据可视化(echarts图表）对象
       graph: {
-
+        // 福州大学教学楼停车情况数据
+        parkData: {},
+        // STOP小程序端日访问量数据
+        visitData: {}
       }
     }
   },
   beforeMount() {
-    //填充假数据
-    for(let i = 0 ; i < 5 ; i ++){
+    // 数据初始化
+    this.getUserLoginData()
+    this.getStopStatus()
+    this.getVisitNumber()
+  },
+  mounted() {
+    // 绘制图表
+    this.paintStopStatus()
+    this.paintVisitNumber()
+  },
+  methods: {
+    //获取用户登录数据
+    getUserLoginData() {
+      //填充假数据
+      for(let i = 0 ; i < 5 ; i ++){
         this.userLogin.userLoginData.push(
             {
               name: '王小虎',
@@ -55,6 +75,19 @@ export default {
               space: '上海市普陀区金沙江路 1518 弄'
             }
         )
+      }
+    },
+    // 获取福州大学教学楼停车情况
+    getStopStatus(){},
+    // 获取STOP小程序端日访问量
+    getVisitNumber(){},
+    // 绘制福州大学教学楼停车情况
+    paintStopStatus(){
+      let domContainer = document.getElementById('park')
+    },
+    // 绘制图表STOP小程序端日访问量
+    paintVisitNumber(){
+      let domContainer = document.getElementById('visit')
     }
   }
 }
@@ -83,6 +116,10 @@ export default {
     text-decoration: underline;
   }
 
+}
+
+.graph {
+  width: 50%;
 }
 
 
