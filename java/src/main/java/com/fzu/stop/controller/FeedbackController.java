@@ -24,28 +24,34 @@ public class FeedbackController {
     @PostMapping("/get_feedback_list")
     @ResponseBody
     public ResponseDTO getFeedbackList(int page, int limit) {
-        Object feedbackList = feedbackService.getFeedbackList(page, limit);
-        Map<String, Object> data = new HashMap(limit);
+        List<FeedbackDO> feedbackList = feedbackService.getFeedbackList(page, limit);
+        Map<String, Object> data = new HashMap<>(limit);
         data.put("feedbackList", feedbackList);
-
-        return ResponseUtil.getSuccessResponse("获取成功", data);
+        if (feedbackList.size() > 0) {
+            return ResponseUtil.getSuccessResponse("获取成功", data);
+        }
+        return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
     }
 
     @PostMapping("/detail")
     @ResponseBody
     public ResponseDTO getFeedback(int id) {
-        Object feedback = feedbackService.getFeedback(id);
-        Map<String, Object> data = new HashMap<>(1);
-        data.put("feedback", feedback);
-
-        return ResponseUtil.getSuccessResponse("获取成功", data);
+        if (id > 0) {
+            Object feedback = feedbackService.getFeedback(id);
+            Map<String, Object> data = new HashMap<>(1);
+            data.put("feedback", feedback);
+            if (feedback != null) {
+                return ResponseUtil.getSuccessResponse("获取成功", data);
+            }
+        }
+        return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
     }
 
     @PostMapping("/update")
     @ResponseBody
     public ResponseDTO updateFeedback(int id, int status) {
-        int flag = feedbackService.updateFeedback(id, status);
-        if (flag != 0) {
+        if (status == 2 || status == 3) {
+            feedbackService.updateFeedback(id, status);
             return ResponseUtil.getSuccessResponse("修改成功", new HashMap<>(16));
         } else {
             return ResponseUtil.getFailResponse("修改失败", new HashMap<>(16));
