@@ -149,11 +149,11 @@ public class RtmpService {
      * 将HlsLive列表转换成map
      * @return HlsLive的map，key为hlsLive中的liveName，value为HlsLive类
      */
-    public Map getHlsLiveMap(){
+    public Map<String,Object> getHlsLiveMap(){
         List<HlsLive> hlsList = getAllHlsList();
         Map<String, Object> res = new HashMap<>();
         for (HlsLive hlsLive : hlsList) {
-            res.put(hlsLive.getIp()+":"+hlsLive.getLiveName(),hlsLive);
+            res.put(hlsLive.getIp()+":"+hlsLive.getLiveName(),hlsLive.toMap());
         }
         return res;
     }

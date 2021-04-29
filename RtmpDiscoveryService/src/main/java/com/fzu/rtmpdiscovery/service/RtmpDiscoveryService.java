@@ -25,7 +25,7 @@ public class RtmpDiscoveryService implements Runnable {
     private Logger log=LoggerFactory.getLogger(RtmpDiscoveryService.class);
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String,Object> redisTemplate;
     @Autowired
     private ThreadPoolExecutor threadPoolExecutor;
     @Autowired
@@ -71,10 +71,10 @@ public class RtmpDiscoveryService implements Runnable {
      * 从redis获取推流列表，如果没有就新建一个map并返回
      * @return 将redis中存储的流列表转换成map
      */
-    public Map getDevice(){
-        Map map=null;
+    public Map<String,Object> getDevice(){
+        Map<String,Object> map=null;
         if (redisTemplate.hasKey(redisKey)) {
-            map = (Map) redisTemplate.opsForValue().get(redisKey);
+            map = (Map<String,Object>) redisTemplate.opsForValue().get(redisKey);
         }else {
             map=new HashMap<>();
         }
@@ -85,7 +85,7 @@ public class RtmpDiscoveryService implements Runnable {
      * 将新的rtmp流集合保存到redis并发布
      * @param value 新的rtmp流集合
      */
-    public void publishNewDevice(Map value){
+    public void publishNewDevice(Map<String,Object> value){
         redisTemplate.opsForValue().set(redisKey,value);
         String format = dataFormat.format(System.currentTimeMillis());
         redisTemplate.convertAndSend(channel,"Device status changed at "+format);

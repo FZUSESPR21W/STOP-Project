@@ -1,5 +1,7 @@
 package com.fzu.rtmpdiscovery.pojo;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -23,6 +25,15 @@ public class HlsLive{
         this.height = height;
         this.width = width;
         this.ip = ip;
+    }
+    public HlsLive(Map<String,Object>map){
+        this.appName = (String) map.get("appName");
+        this.liveName = (String) map.get("liveName");
+        this.url = (String) map.get("url");
+        this.height = (String) map.get("height");
+        this.width = (String) map.get("width");
+        this.ip = (String) map.get("ip");
+
     }
 
     public String getAppName() {
@@ -75,8 +86,12 @@ public class HlsLive{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         HlsLive hlsLive = (HlsLive) o;
         return appName.equals(hlsLive.appName) && liveName.equals(hlsLive.liveName) && url.equals(hlsLive.url) && height.equals(hlsLive.height) && width.equals(hlsLive.width) && ip.equals(hlsLive.ip);
     }
@@ -84,5 +99,15 @@ public class HlsLive{
     @Override
     public int hashCode() {
         return Objects.hash(appName, liveName, url, height, width, ip);
+    }
+    public Map<String,Object> toMap(){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("appName",this.appName);
+        map.put("liveName",this.liveName);
+        map.put("url",this.url);
+        map.put("height",this.height);
+        map.put("width",this.width);
+        map.put("ip",this.ip);
+        return map;
     }
 }
