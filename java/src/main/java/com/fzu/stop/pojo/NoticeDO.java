@@ -15,6 +15,24 @@ public class NoticeDO {
     Timestamp updateTime;
     Integer status;
 
+    public NoticeDO() {
+    }
+
+    public NoticeDO(String title, String content, Integer top, Integer status) {
+        this.title = title;
+        this.content = content;
+        this.top = top;
+        this.status = status;
+    }
+
+    public NoticeDO(Integer id, String title, String content, Integer top, Integer status) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.top = top;
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }
