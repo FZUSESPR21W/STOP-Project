@@ -21,4 +21,12 @@ public interface FeedbackService {
      */
     Object getFeedback(int id);
 
+    /**
+     * 更新反馈状态
+     * @param id
+     * @param status
+     * @return 反馈详细
+     */
+    int updateFeedback(int id,int status);
+
 }

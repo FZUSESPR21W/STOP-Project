@@ -25,4 +25,12 @@ public interface FeedbackDao {
      */
     FeedbackDO getFeedback(int id);
 
+    /**
+     * 更新反馈状态
+     * @param id
+     * @param status
+     * @return
+     */
+    int updateFeedback(int id,int status);
+
 }

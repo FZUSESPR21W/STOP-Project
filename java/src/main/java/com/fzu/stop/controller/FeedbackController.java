@@ -23,22 +23,33 @@ public class FeedbackController {
 
     @PostMapping("/get_feedback_list")
     @ResponseBody
-    public ResponseDTO getFeedbackList(@RequestParam int page,@RequestParam int limit) {
+    public ResponseDTO getFeedbackList(int page, int limit) {
         Object feedbackList = feedbackService.getFeedbackList(page, limit);
-        Map<String,Object> data = new HashMap(limit);
-        data.put("feedbackList",feedbackList);
+        Map<String, Object> data = new HashMap(limit);
+        data.put("feedbackList", feedbackList);
 
         return ResponseUtil.getSuccessResponse("获取成功", data);
     }
 
     @PostMapping("/detail")
     @ResponseBody
-    public ResponseDTO getFeedback(@RequestParam int id){
+    public ResponseDTO getFeedback(int id) {
         Object feedback = feedbackService.getFeedback(id);
-        Map<String,Object> data = new HashMap<>(1);
-        data.put("feedback",feedback);
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("feedback", feedback);
 
-        return ResponseUtil.getSuccessResponse("获取成功",data);
+        return ResponseUtil.getSuccessResponse("获取成功", data);
+    }
+
+    @PostMapping("/update")
+    @ResponseBody
+    public ResponseDTO updateFeedback(int id, int status) {
+        int flag = feedbackService.updateFeedback(id, status);
+        if (flag != 0) {
+            return ResponseUtil.getSuccessResponse("修改成功", new HashMap<>(16));
+        } else {
+            return ResponseUtil.getFailResponse("修改失败", new HashMap<>(16));
+        }
     }
 
 }
