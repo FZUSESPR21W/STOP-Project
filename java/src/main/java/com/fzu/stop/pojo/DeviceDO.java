@@ -1,5 +1,6 @@
 package com.fzu.stop.pojo;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -12,6 +13,7 @@ public class DeviceDO {
 	BigDecimal longitude;
 	BigDecimal latitude;
 	Integer maxCarsNumber;
+	String url;
 
 	public Integer getId() {
 		return id;
@@ -53,6 +55,14 @@ public class DeviceDO {
 		this.maxCarsNumber = maxCarsNumber;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	@Override
 	public String toString() {
 		return "DeviceDO{" +
@@ -61,6 +71,7 @@ public class DeviceDO {
 				", longitude=" + longitude +
 				", latitude=" + latitude +
 				", maxCarsNumber=" + maxCarsNumber +
+				", url='" + url + '\'' +
 				'}';
 	}
 }

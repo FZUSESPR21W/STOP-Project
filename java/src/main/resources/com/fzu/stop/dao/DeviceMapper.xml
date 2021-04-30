@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fzu.stop.dao.DeviceDao">
+    <select id="listDevices" resultType="com.fzu.stop.pojo.DeviceDO">
+        select * from device
+    </select>
+    <select id="getDeviceById" resultType="com.fzu.stop.pojo.DeviceDO">
+        select * from device where id=#{id}
+    </select>
+    <select id="getDeviceByName" resultType="com.fzu.stop.pojo.DeviceDO">
+        select * from device where name=#{name}
+    </select>
+    <delete id="deleteDeviceById">
+        delete from device where id=#{id}
+    </delete>
+    <delete id="deleteDeviceByName">
+        delete from device where name=#{name};
+    </delete>
+    <insert id="insertDevice" keyProperty="id" useGeneratedKeys="true" parameterType="com.fzu.stop.pojo.DeviceDO">
+        insert into device values (null,#{name},#{longitude},#{latitude},#{maxCarsNumber},#{url});
+    </insert>
+    <update id="updateDeviceByName" >
+        update device
+        set name=#{name}
+        <if test="longitude!=null">
+            ,longitude=#{longitude}
+        </if>
+        <if test="latitude!=null">
+            ,latitude=#{latitude}
+        </if>
+        <if test="maxCarsNumber!=null">
+            ,max_cars_number=#{maxCarsNumber}
+        </if>
+        <if test="url!=null">
+            ,url=#{url}
+        </if>
+        where name=#{name}
+    </update>
+    <update id="updateDeviceById" >
+        update device
+        set id=#{id};
+        <if test="name!=null">
+            name=#{name}
+        </if>
+        <if test="longitude!=null">
+            ,longitude=#{longitude}
+        </if>
+        <if test="latitude!=null">
+            ,latitude=#{latitude}
+        </if>
+        <if test="maxCarsNumber!=null">
+            ,max_cars_number=#{maxCarsNumber}
+        </if>
+        <if test="url!=null">
+            ,url=#{url}
+        </if>
+        where id=#{id}
+    </update>
+</mapper>

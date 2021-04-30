@@ -1,6 +1,8 @@
 package com.fzu.stop.service;
 
+import com.fzu.stop.dao.DeviceDao;
 import com.fzu.stop.pojo.DeviceDTO;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class DeviceServiceImpl extends MessageListenerAdapter implements DeviceS
 	Logger log = LoggerFactory.getLogger(DeviceServiceImpl.class);
 	@Autowired
 	RedisTemplate redisTemplate;
+	@Autowired
+	DeviceDao deviceDao;
 	@Value("${rtmp.redis.key}")
 	String key;
 
@@ -35,7 +39,7 @@ public class DeviceServiceImpl extends MessageListenerAdapter implements DeviceS
 		return deviceList;
 	}
 	@Override
-	public void onMessage(Message message, byte[] pattern) {
+	public void onMessage(@NotNull Message message, byte[] pattern) {
 		log.debug("redis订阅信息："+message);
 	}
 
