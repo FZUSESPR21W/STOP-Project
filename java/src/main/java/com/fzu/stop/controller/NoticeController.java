@@ -56,4 +56,15 @@ public class NoticeController {
         data.put("noticeList",noticeList);
         return ResponseUtil.getSuccessResponse("",data);
     }
+
+    @ResponseBody
+    @RequestMapping("/update")
+    public ResponseDTO updateNotice(Integer id, String title, String content, Boolean top, Integer status){
+        if (id == null || title == null || "".equals(title) || content == null || "".equals(content) || top == null || status == null) {
+            return ResponseUtil.getFailResponse("更新失败",new HashMap<>());
+        }
+        NoticeDO notice = new NoticeDO(id,title,content,top?1:0,status);
+        noticeService.updateNotice(notice);
+        return ResponseUtil.getSuccessResponse("更新成功",new HashMap<>());
+    }
 }

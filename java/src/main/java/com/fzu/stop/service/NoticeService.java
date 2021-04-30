@@ -35,4 +35,9 @@ public interface NoticeService {
      */
     List<NoticeDO> getNoticeList(Integer page, Integer limit, String keyword, Integer orderBy, Boolean top);
 
+    /**
+     * 更新公告
+     * @param notice 公告
+     */
+    void updateNotice(NoticeDO notice);
 }

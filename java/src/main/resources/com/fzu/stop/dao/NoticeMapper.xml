@@ -28,4 +28,9 @@
             limit #{start}, #{limit}
         </if>
     </select>
+    <update id="updateNoticeById" parameterType="com.fzu.stop.pojo.NoticeDO">
+        update notice
+        set title = #{title},content = #{content},top = #{top},status = #{status}
+        where id = #{id}
+    </update>
 </mapper>

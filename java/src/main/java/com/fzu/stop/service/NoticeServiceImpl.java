@@ -34,4 +34,9 @@ public class NoticeServiceImpl implements NoticeService {
         }
         return noticeDao.selectAllNotices(start,limit,keyword,orderBy,top);
     }
+
+    @Override
+    public void updateNotice(NoticeDO notice) {
+        noticeDao.updateNotice(notice);
+    }
 }
