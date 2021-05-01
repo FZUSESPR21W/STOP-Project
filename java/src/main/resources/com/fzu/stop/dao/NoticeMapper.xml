@@ -9,28 +9,43 @@
         select * from notice where id = #{id}
     </select>
     <select id="selectAllNotices" resultType="com.fzu.stop.pojo.NoticeDO">
-        select * from notice where 1 = 1
-        <if test="keyword != null and keyword != ''">
-            and title like '%${keyword}%' or content like '%${keyword}%'
-        </if>
-        <if test="top!=null">
-            and top = #{top}
-        </if>
-        <choose>
-            <when test="orderBy==1">
-                order by update_time
-            </when>
-            <otherwise>
-                order by publish_time
-            </otherwise>
-        </choose>
-        <if test="start!=null">
-            limit #{start}, #{limit}
-        </if>
+        select * from notice
+        <where>
+            <if test="keyword != null and keyword != ''">
+                title like '%${keyword}%' or content like '%${keyword}%'
+            </if>
+            <if test="top != null">
+                and top = #{top}
+            </if>
+            <choose>
+                <when test="orderBy == 1">
+                    order by update_time
+                </when>
+                <otherwise>
+                    order by publish_time
+                </otherwise>
+            </choose>
+            <if test="start != null">
+                limit #{start}, #{limit}
+            </if>
+        </where>
     </select>
     <update id="updateNoticeById" parameterType="com.fzu.stop.pojo.NoticeDO">
         update notice
-        set title = #{title},content = #{content},top = #{top},status = #{status}
+        <set>
+            <if test="title != null">
+                title = #{title}
+            </if>
+            <if test="content != null">
+                ,content = #{content}
+            </if>
+            <if test="top != null">
+                ,top = #{top}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </set>
         where id = #{id}
     </update>
 </mapper>

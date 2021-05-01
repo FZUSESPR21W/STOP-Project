@@ -28,10 +28,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public List<NoticeDO> getNoticeList(Integer page, Integer limit, String keyword, Integer orderBy, Boolean top) {
-        Integer start = null;
-        if (page != null && limit != null) {
-            start = (page - 1) * limit;
-        }
+        Integer start = (page - 1) * limit;
         return noticeDao.selectAllNotices(start,limit,keyword,orderBy,top);
     }
 
