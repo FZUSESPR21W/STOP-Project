@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 @EnableCaching
-
 public class StopApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(StopApplication.class, args);

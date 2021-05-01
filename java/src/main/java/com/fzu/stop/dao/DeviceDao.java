@@ -29,45 +29,38 @@ public interface DeviceDao {
 	 * @param name 设备名
 	 * @return DeviceDO
 	 */
-	DeviceDO getDeviceByName(String name);
+	List<DeviceDO> getDeviceByName(String name);
+
+	/**
+	 * 根据设备名获取设备
+	 * @param deviceName 物理设备名
+	 * @return DeviceDO
+	 */
+	DeviceDO getDeviceByDeviceName(String deviceName);
 
 	/**
 	 * 根据设备id删除设备
 	 * @param id 设备id
+	 * @return 受影响的行数
 	 */
-	void deleteDeviceById(Integer id);
-
-	/**
-	 * 根据设备名删除设备
-	 * @param name 设备名
-	 */
-	void deleteDeviceByName(String name);
+	Integer deleteDeviceById(Integer id);
 
 	/**
 	 * 插入设备
 	 * @param device 设备
 	 * @return 插入的设备
+	 * @return 受影响的行数
 	 */
-	DeviceDO insertDevice(DeviceDO device);
+	Integer insertDevice(DeviceDO device);
 
 	/**
-	 * 通过设备名更新设备信息
-	 * @param name 设备名
-	 * @param longitude 设备经度
-	 * @param latitude 设备纬度
-	 * @param maxCarsNumber 最大停车数
-	 * @param url 设备url
-	 */
-	@Deprecated
-	void updateDeviceByName(String name,BigDecimal longitude,BigDecimal latitude,Integer maxCarsNumber,String url);
-	/**
 	 * 通过设备id更新设备信息
-	 * @param id 设备id
+	 * @param id 要更新的设备的id
 	 * @param name 设备名
 	 * @param longitude 设备经度
 	 * @param latitude 设备纬度
 	 * @param maxCarsNumber 最大停车数
-	 * @param url 设备url
+	 * @param deviceName 物理设备名
 	 */
-	void updateDeviceById(Integer id,String name,BigDecimal longitude,BigDecimal latitude,Integer maxCarsNumber,String url);
+	Integer updateDeviceById(Integer id,String name,BigDecimal longitude,BigDecimal latitude,Integer maxCarsNumber,String deviceName);
 }

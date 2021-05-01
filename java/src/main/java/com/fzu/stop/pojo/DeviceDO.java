@@ -13,7 +13,14 @@ public class DeviceDO {
 	BigDecimal longitude;
 	BigDecimal latitude;
 	Integer maxCarsNumber;
-	String url;
+	String deviceName;
+
+	public DeviceDO(){
+	}
+	public DeviceDO(String name, String deviceName) {
+		this.name = name;
+		this.deviceName = deviceName;
+	}
 
 	public Integer getId() {
 		return id;
@@ -55,12 +62,12 @@ public class DeviceDO {
 		this.maxCarsNumber = maxCarsNumber;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getDeviceName() {
+		return deviceName;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
 	}
 
 	@Override
@@ -71,7 +78,7 @@ public class DeviceDO {
 				", longitude=" + longitude +
 				", latitude=" + latitude +
 				", maxCarsNumber=" + maxCarsNumber +
-				", url='" + url + '\'' +
+				", deviceName='" + deviceName + '\'' +
 				'}';
 	}
 }

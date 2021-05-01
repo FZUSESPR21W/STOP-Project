@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 
 /**
@@ -105,6 +106,15 @@ public class GlobalExceptionHandler {
 		}
         response.setStatus(401);
 		// 返回给前端
+		return message;
+	}
+	@ExceptionHandler(ConstraintViolationException.class)
+	@ResponseBody
+	public String handlerConstraintViolationException(ConstraintViolationException e, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+    	response.setStatus(400);
+		String message = e.getMessage();
+		message = message.substring(message.lastIndexOf(':')+1, message.length());
 		return message;
 	}
 

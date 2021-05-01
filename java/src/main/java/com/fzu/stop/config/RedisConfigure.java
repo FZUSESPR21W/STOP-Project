@@ -11,6 +11,9 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
+/**
+ * @author 林浩然
+ */
 @Configuration
 public class RedisConfigure {
     /**
