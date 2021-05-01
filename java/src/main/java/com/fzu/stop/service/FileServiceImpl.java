@@ -36,12 +36,11 @@ public class FileServiceImpl implements FileService{
                 LOGGER.info("文件内容不合法：{}", originalFilename);
                 return null;
             }
-            String fileName = file.getOriginalFilename();
             //获取后缀名
-            assert fileName != null;
-            String suffixName = fileName.substring(fileName.lastIndexOf("."));
+            assert originalFilename != null;
+            String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
             //生成新文件名
-            fileName = UUID.randomUUID() + suffixName;
+            String fileName = UUID.randomUUID() + suffixName;
             File dest = new File(filePath + fileName);
             if (!dest.getParentFile().exists()) {
                 dest.getParentFile().mkdirs();
@@ -49,7 +48,6 @@ public class FileServiceImpl implements FileService{
 
             // 保存到服务器
             file.transferTo(dest);
-
 
             // 生成url地址，返回
             return dest.getPath();
