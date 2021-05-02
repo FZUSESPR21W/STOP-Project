@@ -8,6 +8,8 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,7 +31,7 @@ public class NoticeController {
     NoticeService noticeService;
 
     @ResponseBody
-    @RequestMapping("/publish")
+    @PostMapping("/publish")
     public ResponseDTO publishNotice(@NotNull(message = "title不能为空") String title, @NotNull(message = "content不能为空") String content
             , @NotNull(message = "top不能为空") Boolean top, @Range(min = 0,max = 1,message = "非法的状态") Integer status){
         NoticeDO notice = new NoticeDO(title,content,top?1:0,status);
@@ -38,7 +40,7 @@ public class NoticeController {
     }
 
     @ResponseBody
-    @RequestMapping("/detail")
+    @GetMapping("/detail")
     public ResponseDTO getNoticeDetail(@Min(value = 1,message = "错误的id") Integer id){
         NoticeDO notice = noticeService.getNoticeDetail(id);
         if (notice != null) {
@@ -51,7 +53,7 @@ public class NoticeController {
     }
 
     @ResponseBody
-    @RequestMapping("/get_notice_list")
+    @GetMapping("/get_notice_list")
     public ResponseDTO getNoticeList(@Min(value = 1,message = "错误的page") Integer page, @Min(value = 1,message = "错误的limit") Integer limit
             , String keyword, Integer orderBy, Boolean top){
         List<NoticeDO> noticeList = noticeService.getNoticeList(page,limit,keyword,orderBy,top);
@@ -61,7 +63,7 @@ public class NoticeController {
     }
 
     @ResponseBody
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public ResponseDTO updateNotice(@Min(value = 1,message = "错误的id") Integer id, String title, String content
             , @NotNull(message = "top不能为空") Boolean top, @Range(min = 0,max = 1,message = "非法的状态") Integer status){
         NoticeDO notice = new NoticeDO(id,title,content,top?1:0,status);
