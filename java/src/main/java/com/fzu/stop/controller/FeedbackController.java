@@ -26,7 +26,7 @@ public class FeedbackController {
     @Autowired
     FeedbackService feedbackService;
 
-    @PostMapping("/get_feedback_list")
+    @GetMapping("/get_feedback_list")
     @ResponseBody
     public ResponseDTO getFeedbackList(@Min(value = 1,message = "错误的id") Integer page,@Min(value = 1,message = "错误的id") Integer limit) {
         List<FeedbackDO> feedbackList = feedbackService.getFeedbackList(page, limit);
@@ -38,7 +38,7 @@ public class FeedbackController {
         return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
     }
 
-    @PostMapping("/detail")
+    @GetMapping("/detail")
     @ResponseBody
     public ResponseDTO getFeedback(@Min(value = 1,message = "错误的id") Integer id) {
         Object feedback = feedbackService.getFeedback(id);
@@ -50,7 +50,7 @@ public class FeedbackController {
         return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
     }
 
-    @PostMapping("/update")
+    @GetMapping("/update")
     @ResponseBody
     public ResponseDTO updateFeedback(@Min(value = 1,message = "错误的id") Integer id,@Range(min = 2,max = 3,message = "非法的状态") Integer status) {
             feedbackService.updateFeedback(id, status);
