@@ -115,8 +115,8 @@ public class DeviceServiceImpl extends MessageListenerAdapter implements DeviceS
 	}
 
 	@Override
-	public Integer updateDeviceById(Integer id, String name, BigDecimal longitude, BigDecimal latitude, Integer maxCarsNumber, String deviceName) {
-		Integer row = deviceDao.updateDeviceById(id, name, longitude, latitude, maxCarsNumber, deviceName);
+	public Integer updateDeviceById(DeviceDO device) {
+		Integer row = deviceDao.updateDeviceById(device);
 		return row;
 	}
 

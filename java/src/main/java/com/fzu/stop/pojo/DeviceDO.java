@@ -8,6 +8,7 @@ import java.math.BigDecimal;
  * @author 林浩然
  */
 public class DeviceDO {
+	@NotNull(message = "id不能为空")
 	Integer id;
 	String name;
 	BigDecimal longitude;

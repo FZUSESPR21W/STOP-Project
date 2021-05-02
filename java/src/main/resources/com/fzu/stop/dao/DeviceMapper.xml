@@ -19,7 +19,7 @@
     <insert id="insertDevice" keyProperty="id" useGeneratedKeys="true" parameterType="com.fzu.stop.pojo.DeviceDO" >
         insert into device values (null,#{name},#{longitude},#{latitude},#{maxCarsNumber},#{deviceName});
     </insert>
-    <update id="updateDeviceById" >
+    <update id="updateDeviceById" parameterType="com.fzu.stop.pojo.DeviceDO">
         update device
         <set>
             <if test="name!=null">

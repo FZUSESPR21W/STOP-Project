@@ -3,7 +3,6 @@ package com.fzu.stop.dao;
 import com.fzu.stop.pojo.DeviceDO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -55,12 +54,7 @@ public interface DeviceDao {
 
 	/**
 	 * 通过设备id更新设备信息
-	 * @param id 要更新的设备的id
-	 * @param name 设备名
-	 * @param longitude 设备经度
-	 * @param latitude 设备纬度
-	 * @param maxCarsNumber 最大停车数
-	 * @param deviceName 物理设备名
+	 * @param device 要更新的设备信息
 	 */
-	Integer updateDeviceById(Integer id,String name,BigDecimal longitude,BigDecimal latitude,Integer maxCarsNumber,String deviceName);
+	Integer updateDeviceById(DeviceDO device);
 }

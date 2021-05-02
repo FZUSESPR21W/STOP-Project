@@ -1,6 +1,7 @@
 package com.fzu.stop.controller;
 
 import com.fzu.stop.Util.ResponseUtil;
+import com.fzu.stop.pojo.DeviceDO;
 import com.fzu.stop.pojo.DeviceDTO;
 import com.fzu.stop.pojo.DeviceInfoDTO;
 import com.fzu.stop.pojo.ResponseDTO;
@@ -9,13 +10,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,7 +45,7 @@ public class DeviceController {
 		return ResponseUtil.getSuccessResponse("",resp);
 	}
 	@Operation(description = "通过设备id删除设备")
-	@PostMapping(value = "/delete_device_by_id")
+	@GetMapping(value = "/delete_device_by_id")
 	@ResponseBody
 	public ResponseDTO deleteDeviceById(@NotNull(message = "id不能为空") Integer id){
 		Integer row = deviceService.deleteDeviceById(id);
@@ -57,10 +54,8 @@ public class DeviceController {
 	@Operation(description = "通过设备id更新设备信息")
 	@PostMapping(value = "/update_device_by_id")
 	@ResponseBody
-	public ResponseDTO updateDeviceById(@NotNull(message = "id不能为空") Integer id, String name,
-										BigDecimal longitude, BigDecimal latitude,
-										Integer maxCarsNumber, String deviceName) {
-		Integer row = deviceService.updateDeviceById(id, name, longitude, latitude, maxCarsNumber, deviceName);
+	public ResponseDTO updateDeviceById(@RequestBody DeviceDO device) {
+		Integer row = deviceService.updateDeviceById(device);
 		return ResponseUtil.getSuccessResponse("执行成功，影响行数："+row,new HashMap<>());
 	}
 
