@@ -21,9 +21,9 @@
                 <when test="orderBy == 1">
                     order by update_time
                 </when>
-                <otherwise>
+                <when test="orderBy == 0">
                     order by publish_time
-                </otherwise>
+                </when>
             </choose>
             <if test="start != null">
                 limit #{start}, #{limit}

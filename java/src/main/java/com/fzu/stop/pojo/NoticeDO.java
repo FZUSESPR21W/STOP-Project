@@ -10,7 +10,7 @@ public class NoticeDO {
     Integer id;
     String title;
     String content;
-    Integer top;
+    Boolean top;
     Timestamp publishTime;
     Timestamp updateTime;
     Integer status;
@@ -18,14 +18,14 @@ public class NoticeDO {
     public NoticeDO() {
     }
 
-    public NoticeDO(String title, String content, Integer top, Integer status) {
+    public NoticeDO(String title, String content, Boolean top, Integer status) {
         this.title = title;
         this.content = content;
         this.top = top;
         this.status = status;
     }
 
-    public NoticeDO(Integer id, String title, String content, Integer top, Integer status) {
+    public NoticeDO(Integer id, String title, String content, Boolean top, Integer status) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -57,11 +57,11 @@ public class NoticeDO {
         this.content = content;
     }
 
-    public Integer getTop() {
+    public Boolean getTop() {
         return top;
     }
 
-    public void setTop(Integer top) {
+    public void setTop(Boolean top) {
         this.top = top;
     }
 
