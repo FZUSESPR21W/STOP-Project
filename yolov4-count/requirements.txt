@@ -1,0 +1,12 @@
+certifi==2020.12.5
+chardet==4.0.0
+idna==2.10
+iso8601==0.1.14
+m3u8==0.8.0
+numpy==1.20.2
+opencv-python==4.5.1.48
+PyMySQL==1.0.2
+redis==3.5.3
+requests==2.25.1
+urllib3==1.26.4
+wincertstore==0.2
