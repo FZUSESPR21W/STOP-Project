@@ -4,7 +4,7 @@
 		},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/map/index",
+			"path": "pages/parking/index",
 			"style": {
 				"navigationBarTitleText": "STOP | 我要停车"
 			}
@@ -58,7 +58,7 @@
 	        },
 			{
 				"text" : "我要停车",
-				"pagePath" : "pages/map/index",
+				"pagePath" : "pages/parking/index",
 				"iconPath" : "static/nav-icon/停车未选中.png",
 				"selectedIconPath" : "static/nav-icon/停车选中.png"
 			},
