@@ -1,5 +1,9 @@
 package com.fzu.stop.pojo;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 
@@ -7,12 +11,15 @@ import java.sql.Timestamp;
  * @author 武雍易
  */
 public class NoticeDO {
+    @NotNull(message = "id不能为空")
+    @Min(value = 1,message = "错误的id")
     Integer id;
     String title;
     String content;
     Boolean top;
     Timestamp publishTime;
     Timestamp updateTime;
+    @Range(min = 0,max = 1,message = "非法的状态")
     Integer status;
 
     public NoticeDO() {

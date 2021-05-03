@@ -67,9 +67,7 @@ public class NoticeController {
 
     @ResponseBody
     @PostMapping("/update")
-    public ResponseDTO updateNotice(@NotNull(message = "id不能为空") @Min(value = 1,message = "错误的id") Integer id, String title, String content
-            , Boolean top, @Range(min = 0,max = 1,message = "非法的状态") Integer status){
-        NoticeDO notice = new NoticeDO(id,title,content,top,status);
+    public ResponseDTO updateNotice(@Validated NoticeDO notice){
         noticeService.updateNotice(notice);
         return ResponseUtil.getSuccessResponse("更新成功",new HashMap<>());
     }
