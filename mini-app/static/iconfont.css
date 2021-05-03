@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "custom-icon"; /* Project id 2523203 */
+  src: url('data:font/woff2;charset=utf-8;base64,d09GMgABAAAAAATYAA0AAAAACcAAAASDAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0ZGVE0cGh4GVgCCUhEICoZghWMLDgABNgIkAxQEIAWFLAdHG00IUVRN6mQ/EmNjaU9JvZBU57rxBEGwMf6Lh6/9+J27u+9912iGhGaiCY+fTBKbzlBpJI2ERmOInslvcN7hkBmK45NTGHh5IC9NWh+s5goyKPnqiNx4SzafJuMn8f/fb1YuYolME6/08rjY+x/3ZpJeQzbPywtZQhKTpCWJh7KzXGdQu7YmAa9+OvFKCPj21tgK3983f9eeOtCJYSQhq4SChCjiqYr0OF3CE/Lz8c+GaCWpMm3bA9cGrNQ//d6e8QZ3RhHQEOTJ8E/mYI83uN8p1qFVq8RPP/OL7U0T9o/n8Rj5IhitqAl1CQkJ9e8JxCqaRqKs+TpFRUxpHlGAInHrrKjel4WCcqkh0iyj02gNxIENW1xbNx6kUjHfAjBkyf3rNwP4Il5dRrakE9+0bh+FAgc8QGMHCrJrWes9FGKNAPbOB+pYmA2wQHD05etyCL1mqgj4igpHrq5KJTtIv98nQP2tRKmVC7uOXSdvAuBXMgM6D86vulK/SLw4Q+jneUzrzu2RXMdCyhMJbi3wCYXWjca9fK8sIPNggV0Hlmzdu3/x6GvotWsUQndlBmRCyJWA8Xj5fNIvvG5UsdNU0gjCM52rKES8j3KhZVizolBesJZeNULqqz1oJZ/CvdQk63f5KBTCg9BsuyykT4fjbVdTRHPeSSDRuzki9tJjCVqUJf/mQNnlRNydW4i48hkzlnEJvKP/Wsgl/yu80umskhoqjkrOOe/F2g4lrOnJA0Ppw1aR22bMYvfscIkHPVswwDwOIEY1KDyWKOlPaI5raIhrTrjHEo9EJBm4J16j3+EMjthb5oArCt2mivYaqDIqqhKqOQXVgIAgcArPuD3bMWrZQ8UwQXfbn6CkGhSbt7KjWpeQ35tcowmr5SPhg5zRZ28sf1wADhu6/Mk0xtPv7TFXyqBdywIGd4ff4AZiOK2MamcWlDmnqFq5q5GZn5KXrIRVGLOBDsfmOLOKNQNNS/YLhof2VapCp4QwKlC3q6WMFxXfUF2Qmpt011E8jwx6pw4ZjBYmtPo3S0cW9vRl31wlTejVIwUJbT46LK+QlX3JjB8SE+YOe21H6FP59E+iIYq6w6hwqIflaAmk/74gIBAcfre2/Twz9X9rR7GiHTDZ4PlxxtEq6YGrEEMBNR4VgHwpArQ/Ihvd4AvUbjFBQrt2NAD6/RCAIUsChA6nqCBp8ZAKsg6vBSg6fBCg0jGGodYRydBuMa4d3GEgPsiitGGB2BCGbTIk3a4ZsmFrUCRvoJJ8hVry19DuWDB27jATz7Xb7EAAl2uJxS75bW9CVgu6wMWj/RkLHnX4L34OaKO5na7iLOnjU/Y1PpEPVpRDCOY2AQ7KL/Um3m/i9dVjiIMHsdEitt6KdVyez8N6BzQGbOeXcUYvxVnueTCl+y5U7JpDyca2AVtyk1lfxW6XcxKLIZeUhzy994ax8v4QemWP7zPjCbb7z89Zboxf3VRWMdu1kbOpy3P6lQsvf3dnPHPx7Ipz0c5BvVxIkSJHqe/3Ox2Twup5AJb/9nquHmT5xPIJAA==') format('woff2');
+}
+
+.custom-icon {
+  font-family: "custom-icon" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.custom-icon-guanyu:before {
+  content: "\e603";
+}
+
+.custom-icon-gerenxinxi:before {
+  content: "\e847";
+}
+
+.custom-icon-tongji:before {
+  content: "\e600";
+}
+

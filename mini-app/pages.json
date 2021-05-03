@@ -1,4 +1,7 @@
 {
+	"easycom": {
+			"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+		},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/map/index",
@@ -16,6 +19,24 @@
 			"path": "pages/home/index",
 			"style": {
 				"navigationBarTitleText": "STOP | 个人中心"
+			}
+		},
+		{
+			"path":"pages/home/my-info",
+			"style":{
+				"navigationBarTitleText":"个人信息"
+			}
+		},
+		{
+			"path":"pages/home/car-count",
+			"style":{
+				"navigationBarTitleText":"车流量统计"
+			}
+		},
+		{
+			"path":"pages/home/about-us",
+			"style":{
+				"navigationBarTitleText":"关于STOP"
 			}
 		}
 	],
