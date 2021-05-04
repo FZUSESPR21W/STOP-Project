@@ -16,4 +16,11 @@ public interface StatisticsDao {
      * @return
      */
     List<ParkingSituationDO> getParkingSituation();
+    /**
+     * 获取start到end期间每日停车数据
+     * @param start
+     * @param end
+     * @return
+     */
+    List<ParkingSituationDO> getDailyParkingSituation(String start,String end);
 }

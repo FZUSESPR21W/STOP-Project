@@ -10,4 +10,14 @@
           and device.id = crowd_situation.device_id;
     </select>
 
+    <select id="getDailyParkingSituation" resultType="com.fzu.stop.pojo.ParkingSituationDO">
+        select DATE_FORMAT(time, "%Y-%m-%d") time, sum(cars_number) value, device.name
+        from crowd_situation,
+             device
+        where time between #{start} and #{end}
+          and device.id = crowd_situation.device_id
+        group by day(time), device_id
+        order by time;
+    </select>
+
 </mapper>

@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  */
 public class ParkingSituationDO {
     String name;
-    Timestamp time;
+    String time;
     String value;
 
     public String getName() {
@@ -18,11 +18,11 @@ public class ParkingSituationDO {
         this.name = name;
     }
 
-    public Timestamp getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
