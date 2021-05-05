@@ -73,6 +73,23 @@ public class WechatUtil {
         return jsonObject;
     }
 
+    public static JSONObject getDailyVisitTrend(String begin_date,String end_date) throws IOException {
+        String accessToken =  WechatUtil.getAccessToken().getString("access_token");
+        String requestUrl="https://api.weixin.qq.com/datacube/getweanalysisappiddailyvisittrend";
+        OkHttpClient okHttpClient=new OkHttpClient();
+        HttpUrl.Builder httpBuilder=HttpUrl.parse(requestUrl).newBuilder();
+        httpBuilder.addQueryParameter("access_token",accessToken);
+        RequestBody body=new FormBody.Builder()
+                .add("begin_date",begin_date)
+                .add("end_date",end_date).build();
+        Request request=new Request.Builder()
+                .url(httpBuilder.build())
+                .post(body)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        Response response=call.execute();
+        return (JSONObject) JSON.parse(response.body().string());
+    }
 
 
 

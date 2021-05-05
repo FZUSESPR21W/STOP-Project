@@ -6,6 +6,7 @@ import com.fzu.stop.Util.WechatUtil;
 import com.fzu.stop.pojo.ParkingSituationDO;
 import com.fzu.stop.pojo.ResponseDTO;
 import com.fzu.stop.service.StatisticsService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ import java.util.*;
 
 
 /**
- * @author 宋家锐、梁达毅
+ * @author 宋家锐、梁达毅、武雍易
  */
 @Controller
 @RequestMapping("/api")
@@ -74,4 +75,24 @@ public class StatisticsController {
 
     }
 
+    @Operation(description = "获取最近delta+1天的每天小程序访问次数")
+    @GetMapping("/get_visit_number")
+    @ResponseBody
+    public ResponseDTO getVisitNumber(Integer delta) throws IOException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Calendar calendar = Calendar.getInstance();
+        //允许设置的最大值为昨日
+        calendar.add(Calendar.DAY_OF_YEAR,-1);
+        List<JSONObject> jsonObjectList = new ArrayList<>();
+        for (int i = 0; i < delta + 1 ;i++) {
+            calendar.add(Calendar.DAY_OF_YEAR, -i);
+            Date date = calendar.getTime();
+            String beginDate = simpleDateFormat.format(date);
+            jsonObjectList.add(WechatUtil.getDailyVisitTrend(beginDate, beginDate));
+        }
+        Map<String,Object> data =new HashMap<>(1);
+        data.put("visitNumber",jsonObjectList);
+        return ResponseUtil.getSuccessResponse("获取成功",data);
+
+    }
 }
