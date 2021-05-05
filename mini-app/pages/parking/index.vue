@@ -6,14 +6,21 @@
 		<view class="location-box" :class="{hideListStart:status0,showListStart:status1}"
 		 :style="{height:locationBoxHeight,Top:locationBoxTop}"
 			>
-			<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList"><view class="exhale-bar" v-show="showExhaleBar"></view></view>
-			<view class="input-box-border">
+			<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList">
+				<view class="exhale-bar" v-show="showExhaleBar"></view>
+			</view>
+			<view class="input-box-border" :style="{border:inputBorderColor}">
 				<input
 					type="text"
-					class="input-box"
+					class="input-box uni-input"
 					placeholder="查询想要停车的地点"
 					maxlength="40"
+					cursor-spacing="4px"
+					confirm-type="search"
+					@click="inputFocus"
+					@blur="inputBlur"
 				/>
+				<u-icon style="position: absolute;top: 6rpx;" slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="32px" name="search"></u-icon>
 			</view>
 			<view class="place-list" v-show="showPlaceList">这里推荐停车地点</view>
 		</view>
@@ -26,19 +33,32 @@ export default{
 	name:'Parking',
 	data(){
 		return{
-			status0:false,
+			status0:true,
 			status1:false,
 			status2:false,
 			showExhaleBar:false,
 			showPlaceList:true,
 			locationBoxHeight:'44vh',
 			locationBoxTop:'56vh',
+			inputBorderColor:'1px solid #bfbfbf',
 		}
 	},
 	components:{
 		ParkingMap,
 	},
 	methods:{
+		//输入框失去焦点
+		inputBlur(res){
+			var _this=this;
+			_this.inputBorderColor='1px solid #bfbfbf';
+		},
+		
+		//输入框获得焦点
+		inputFocus(res){
+			var _this=this;
+			//获取焦点时修改边框颜色，因:style不支持绑定border-color,所以绑定了整个border
+			_this.inputBorderColor='1px solid #a35c8f';
+		},
 		
 		//显示推荐地点列表
 		showList(){
@@ -93,8 +113,9 @@ export default{
 		background-color: white;
 		width: 100%;
 		border-radius: 10px 10px 0 0;
-		position: fixed;
 		border-top: 1px solid rgba(191, 191, 191, 0.4);
+		position: fixed !important;
+
 	}
 	/* 开始隐藏动画 */
 	.hideListStart{
@@ -117,22 +138,21 @@ export default{
 	}
 	/* 输入框外框 */
 	.input-box-border{
-		height: fit-content;
-		border: 1px solid black;
-		background-color: #f5f5f5;
+		height: 40px;
 		margin: 0 auto;
 		margin-top: 10px;
 		width: 86%;
-		padding: 4px;
 		border-radius: 10px ;
+		position: relative;
 	}
 	/* 输入框 */
 	.input-box{
-		width: 100%;
-		height: 30px;
-		background-color: #f5f5f5;
-		border: 1px solid red;
-		display: block;
+		width: 84%;
+		height: 100%;
+		/* border: 1px solid pink; */
+		
+		margin:4rpx 2vh 0 10rpx;
+		display: inline-block;
 		font-size: 18px;
 	}
 	/* 推荐地点列表 */
@@ -141,4 +161,10 @@ export default{
 		background-color: white;
 		height: 100%;
 	}
+.fade-enter-active, .fade-leave-active {
+      transition: opacity .5s
+}
+.fade-enter, .fade-leave-active {
+      opacity: 0
+}
 </style>
