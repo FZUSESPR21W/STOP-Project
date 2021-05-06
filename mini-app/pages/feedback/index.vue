@@ -10,14 +10,42 @@
 			</view>
 		</view>
 		<view>
-			<u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
-				<u-form-item :label-position="labelPosition" :label-style="labelStyle" label="问题和意见" :required="true" prop="feedback">
-					<u-input type="textarea" @input="sumChar" :auto-height="false" :border="border" maxlength="200" 
-					placeholder="请填写5个字以上的问题描述,以使我们为您提供更好的帮助" v-model="model.feedback" />
+			<u-form :model="form" @submit="submit" @reset="" :rules="rules" ref="uForm" :errorType="errorType">
+				<u-form-item
+				 :label-position="labelPosition"
+				 :label-style="labelStyle" 
+				 label="问题和意见"
+				 :required="true"
+				 prop="feedback">
+					<u-input type="textarea"
+					 @input="sumChar"
+					 :auto-height="false"
+					 :border="border"
+					 maxlength="200" 
+					 placeholder="请填写5个字以上的问题描述,以使我们为您提供更好的帮助"
+					 v-model="form.feedback"/>
 				</u-form-item>
-				<u-form-item class="upload-btn" :label-position="labelPosition" :label-style="labelStyle" label="图片(选填,提供照片或截图)" prop="photo">
-					<u-upload @on-list-change="onListChange" ref="uUpload" :custom-btn="true" :auto-upload="false" :action="action" :max-size="5 * 1024 * 1024"
-					 max-count="5" width="160" height="160" upload-text="选取照片" del-color="#ffffff" del-bg-color="#A55F91" v-model="model.photo">
+				<u-form-item
+				 class="upload-btn"
+				 :label-position="labelPosition"
+				 :label-style="labelStyle"
+				 label="图片(选填,提供照片或截图)"
+				 prop="photo">
+					<u-upload
+					 @on-list-change="onListChange"
+					 ref="uUpload"
+					 :custom-btn="true"
+					 :auto-upload="false"
+					 :form-data="form"
+					 :action="action"
+					 :file-list="fileList"
+					 :max-size="5 * 1024 * 1024"
+					 max-count="5"
+					 width="160"
+					 height="160"
+					 upload-text="选取照片"
+					 del-color="#ffffff"
+					 del-bg-color="#A55F91">
 						<view slot="addBtn" class="slot-btn" hover-class="slot-btn__hover" hover-stay-time="150">
 							<u-icon name="plus" size="35" :color="$u.color['darkColor']"></u-icon>
 						</view>
@@ -30,6 +58,7 @@
 				<u-button @click="submit" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" size="medium">提交</u-button>
 			</view>
 		</view>
+		<u-toast ref="uToast" />
 	</view>
 </template>
 
@@ -38,10 +67,11 @@
 		data() {
 			return {
 				action: '',
-				model: {
-					feedback: '',
-					photo: ''
+				form:{
+					feedback: "",
 				},
+				fileList:[],
+				
 				notice: [
 					'西三日常拥堵',
 					'东三日常拥堵',
@@ -65,7 +95,9 @@
 						title: 'image4',
 					}
 				],
+				
 				rules: {
+					//问题反馈的props，此项为必填，最少5个字符，最多200个字符。
 					feedback: [
 						{
 							required: true,
@@ -108,17 +140,20 @@
 				errorType: ['border'],//违法输入以红色边框形式进行提示
 			};
 		},
+		
 		onLoad() {
 		
 		},
+		
 		onReady() {
 			this.$refs.uForm.setRules(this.rules);
 		},
+		
 		methods: {
 			
 			//已输入字数统计
 			sumChar(){
-				this.charNum = this.model.feedback.length;
+				this.charNum=this.form.feedback.length;
 			},
 			
 			//已选择图片数统计
@@ -127,7 +162,16 @@
 			},
 			
 			submit() {
+				let data = this.form.feedback;
+				console.log(JSON.stringify(data));
 				this.$refs.uUpload.upload();
+				this.$refs.uToast.show({
+						title: '提交成功',
+						type: 'success',
+				})
+				this.form=this.$options.data().form;
+				this.charNum=0;
+				this.$refs.uUpload.clear();
 			},
 
 		}
