@@ -1,7 +1,10 @@
 <template>
+  <!-- 车辆信息图表容器开始 -->
   <div class="car-state-container">
+    <!-- 车辆信息图表 -->
     <div id="car" class="graph"/>
   </div>
+  <!-- 车辆信息图表容器结束 -->
 </template>
 
 <script>
@@ -9,7 +12,9 @@ export default {
   name: "car-state",
   data() {
     return {
+      //图表数据
       graph: {
+        //车辆信息图表数据
         car: {
           xAxis: {
             type: 'category',
@@ -41,8 +46,8 @@ export default {
     }
   },
   beforeMount() {
-    // 获取停车情况
-    // this.getCarState()
+    //获取停车情况
+    this.getCarState()
   },
   mounted() {
     // 绘制车辆信息图表
