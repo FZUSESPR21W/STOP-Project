@@ -56,7 +56,7 @@ export default {
     paintCarState() {
       let domContainer = document.getElementById('car')
       let chart = this.$echarts.init(domContainer)
-      chart.setOption(chart)
+      chart.setOption(this.graph.car)
     }
   }
 }
