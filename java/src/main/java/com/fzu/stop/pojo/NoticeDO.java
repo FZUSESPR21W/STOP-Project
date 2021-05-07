@@ -1,5 +1,6 @@
 package com.fzu.stop.pojo;
 
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
@@ -11,15 +12,19 @@ import java.sql.Timestamp;
  * @author 武雍易
  */
 public class NoticeDO {
-    @NotNull(message = "id不能为空")
-    @Min(value = 1,message = "错误的id")
+    @NotNull(message = "id不能为空",groups = {Update.class})
+    @Min(value = 1,message = "错误的id",groups = {Update.class})
     Integer id;
+    @NotNull(message = "title不能为空",groups = {Insert.class})
     String title;
+    @NotNull(message = "content不能为空",groups = {Insert.class})
     String content;
+    @NotNull(message = "top不能为空",groups = {Insert.class})
     Boolean top;
     Timestamp publishTime;
     Timestamp updateTime;
-    @Range(min = 0,max = 1,message = "非法的状态")
+    @NotNull(message = "status不能为空",groups = {Insert.class})
+    @Range(min = 0,max = 1,message = "非法的状态",groups = {Update.class,Insert.class})
     Integer status;
 
     public NoticeDO() {
@@ -107,5 +112,12 @@ public class NoticeDO {
                 ", updateTime=" + updateTime +
                 ", status=" + status +
                 '}';
+    }
+
+    public interface Insert{
+
+    }
+    public interface Update{
+
     }
 }

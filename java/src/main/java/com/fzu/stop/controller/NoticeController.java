@@ -29,10 +29,7 @@ public class NoticeController {
 
     @ResponseBody
     @PostMapping("/publish")
-    public ResponseDTO publishNotice(@NotNull(message = "title不能为空") String title
-            , @NotNull(message = "content不能为空") String content, @NotNull(message = "top不能为空") Boolean top
-            , @NotNull(message = "status不能为空") @Range(min = 0,max = 1,message = "非法的状态") Integer status){
-        NoticeDO notice = new NoticeDO(title,content,top,status);
+    public ResponseDTO publishNotice(@Validated({NoticeDO.Insert.class}) NoticeDO notice){
         noticeService.publishNotice(notice);
         return ResponseUtil.getSuccessResponse("发布成功",new HashMap<>());
     }
@@ -67,7 +64,7 @@ public class NoticeController {
 
     @ResponseBody
     @PostMapping("/update")
-    public ResponseDTO updateNotice(@Validated NoticeDO notice){
+    public ResponseDTO updateNotice(@Validated({NoticeDO.Update.class}) NoticeDO notice){
         noticeService.updateNotice(notice);
         return ResponseUtil.getSuccessResponse("更新成功",new HashMap<>());
     }
