@@ -58,6 +58,8 @@ export default{
 			var _this=this;
 			//获取焦点时修改边框颜色，因:style不支持绑定border-color,所以绑定了整个border
 			_this.inputBorderColor='1px solid #a35c8f';
+			
+			_this.changeLocationBox(2);
 		},
 		
 		//显示推荐地点列表
@@ -91,23 +93,49 @@ export default{
 			}
 			else if(status === 2){
 				console.log('全屏尚未完成');
+				_this.locationBoxHeight='90vh';
+				_this.locationBoxTop='10vh';
 			}
 		}
 	}
 }
 </script>
 
-<style scoped>
-	/* 隐藏推荐地点框的动画 */
-	@keyframes hideList {
-	  from {height: 44vh;top:56vh}
-	  to {height: 14vh;top: 86vh;}
+<style scoped lang="less">
+	// $bottomBarTop:86vh;
+	// $bottomBarHeight:14vh;
+	// $halfBarTop:56vh;
+	// $halfBarHeight:44vh;
+	// $fullBarTop:10vh;
+	// $fullBarHeight:90vh;
+	
+	.frams(@name,@fromHeight,@fromTop,@toHeight,@toTop){
+		@keyframes @name{
+			from{height:@fromHeight;top:@fromTop}
+			to{height: @toHeight;top:@toTop}
+		}
 	}
-	/* 显示推荐地点框的动画 */
-	@keyframes showList {
-	  from {height: 14vh;top:86vh}
-	  to {height: 44vh;top: 56vh;}
-	}
+	// /* 隐藏推荐地点框的动画 */
+	// @keyframes hideList {
+	//   from {height: $halfBarHeight;top:$halfBarTop}
+	//   to {height: $bottomBarHeight;top: $bottomBarTop;}
+	// }
+	// /* 显示推荐地点框的动画 */
+	// @keyframes showList {
+	//   from {height: $bottomBarHeight;top:$bottomBarTop}
+	//   to {height: $halfBarHeight;top: $halfBarTop;}
+	// }
+	// /* 隐藏推荐地点框的动画 */
+	// @keyframes hideList {
+	//   from {height: 44vh;top:56vh}
+	//   to {height: 14vh;top: 86vh;}
+	// }
+	// /* 显示推荐地点框的动画 */
+	// @keyframes showList {
+	//   from {height: 14vh;top:86vh}
+	//   to {height: 44vh;top: 56vh;}
+	// }
+	
 	/* 地点框 */
 	.location-box{
 		background-color: white;
@@ -119,13 +147,17 @@ export default{
 	}
 	/* 开始隐藏动画 */
 	.hideListStart{
-		 animation-name: hideList;
-		 animation-duration: 0.4s;
+		 // animation-name: hideList;
+		 .frams(hide,44vh,56vh,14vh,86vh);
+		 // animation-duration: 0.4s;
+		 animation:hide 0.4s;
 	}
 	/* 开始展示动画 */
 	.showListStart{
-		animation-name: showList;
-		animation-duration: 0.4s;
+		// animation-name: showList;
+		// animation-duration: 0.4s;
+		.frams(show,14vh,86vh,44vh,56vh);
+		animation: show 0.4s;
 	}
 	/* 呼出条 */
 	.exhale-bar{
@@ -161,10 +193,4 @@ export default{
 		background-color: white;
 		height: 100%;
 	}
-.fade-enter-active, .fade-leave-active {
-      transition: opacity .5s
-}
-.fade-enter, .fade-leave-active {
-      opacity: 0
-}
 </style>
