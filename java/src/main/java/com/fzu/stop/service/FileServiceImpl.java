@@ -17,6 +17,8 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService{
     @Value("${upload.picture.path}")
     String filePath;
+    @Value("${upload.picture.url}")
+    String fileUrl;
 
     @Override
     public String uploadPicture(MultipartFile file){
@@ -50,7 +52,7 @@ public class FileServiceImpl implements FileService{
             file.transferTo(dest);
 
             // 生成url地址，返回
-            return dest.getPath();
+            return fileUrl+fileName;
         } catch (IOException e) {
             LOGGER.info("服务器内部错误：{}", originalFilename);
             e.printStackTrace();
