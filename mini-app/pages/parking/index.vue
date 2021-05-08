@@ -1,8 +1,8 @@
 <template>
 	<view >
-		<ParkingMap
-			@hideList="hideList"
-		/>
+		<view>
+			<ParkingMap @hideList="hideList"/>
+		</view>
 		<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox"
 			>
 			<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList">
@@ -22,7 +22,20 @@
 				/>
 				<u-icon style="position: absolute;top: 6rpx;" slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="32px" name="search"></u-icon>
 			</view>
-			<view class="place-list" v-show="showPlaceList">这里推荐停车地点</view>
+			<view class="place-list" v-show="showPlaceList">
+				<view>
+					<view class="place-list-title" style="">最近适合停车的地点</view>
+					<view class="place-list-title-bar"></view>
+					<view class="place-list-item">
+						<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="90rpx" name="position-icon"></u-icon>
+						<view class="place-list-item-title">福州大学-东3</view>
+						<view class="place-list-item-parking">车位空余</view>
+						<view class="place-list-item-distance">200m</view>
+					</view>
+				</view>
+
+				<!-- <u-loading mode="circle"></u-loading> -->
+			</view>
 		</uni-transition>
 	</view>
 </template>
@@ -84,10 +97,9 @@ export default{
 				top:'10vh'
 			})
 			_this.$refs.locationBox.run(()=>{
-				//_this.isFocus=true;
 				setTimeout(() => {
 					_this.isFocus = true;
-				}, 50)
+				}, 50);
 				_this.inputDisable=false;
 				//console.log('执行完毕')
 			});
@@ -143,6 +155,40 @@ export default{
 
 <style scoped lang="scss">
 
+	.place-list{
+		.place-list-title{
+			margin-left: 10px;
+			margin-bottom: 2px;
+			margin-top: 4px;
+		}
+		.place-list-title-bar{
+			background-color: rgba($color: #a35c8f, $alpha: 0.8);
+			height: 1.6px;
+			width: 160px;
+			margin-bottom: 8px;
+		}
+		.place-list-item{
+			background-color: pink;
+			margin-left:20px ;
+			margin-right: 20px;
+			position: relative;
+			padding: 2px;
+			border-bottom: 1px solid black;
+			
+			.place-list-item-title{
+				font-size: 40rpx;
+				display: inline-block;
+				position: absolute;
+			}
+			.place-list-item-parking{
+				display: inline-block;
+			}
+			.place-list-item-distance{
+				display: inline-block;
+			}
+		}
+		
+	}
 	
 	/* 地点框 */
 	/deep/.location-box{
