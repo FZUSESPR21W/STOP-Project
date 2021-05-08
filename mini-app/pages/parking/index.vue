@@ -6,17 +6,18 @@
 		<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox"
 			>
 			<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList">
-				<uni-transition mode-class="fade" custom-class="exhale-bar" :show="showExhaleBar" @change="changeTest" />
+				<uni-transition mode-class="fade" custom-class="exhale-bar" :show="showExhaleBar" />
 			</view>
-			<view class="input-box-border" :style="{border:inputBorderColor}">
+			<view class="input-box-border" :style="{border:inputBorderColor}" @click="clickInputBox">
 				<input
 					type="text"
 					class="input-box uni-input"
 					placeholder="查询想要停车的地点"
 					maxlength="40"
-					cursor-spacing="4px"
+					:focus="isFocus"
+					:disabled="inputDisable"
+					:adjust-position="false"
 					confirm-type="search"
-					@click="inputFocus"
 					@blur="inputBlur"
 				/>
 				<u-icon style="position: absolute;top: 6rpx;" slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="32px" name="search"></u-icon>
@@ -32,6 +33,8 @@ export default{
 	name:'Parking',
 	data(){
 		return{
+			isFocus:false,
+			inputDisable:true,
 			showExhaleBar:false,
 			showPlaceList:true,
 			showLocationBox:true,
@@ -46,8 +49,10 @@ export default{
 	
 	methods:{
 		
+		//底栏动画
 		runStatus0(){
 			var _this=this;
+			_this.inputDisable=true;
 			_this.$refs.locationBox.step({
 				height:'14vh',
 				top:'86vh'
@@ -57,17 +62,21 @@ export default{
 			});
 		},
 		
+		//半屏动画
 		runStatus1(){
 			var _this=this;
+			_this.inputDisable=true;
 			_this.$refs.locationBox.step({
 				height:'44vh',
 				top:'56vh'
 			})
 			_this.$refs.locationBox.run(()=>{
+				//_this.isFocus=false;
 				//console.log('执行完毕')
 			});
 		},
 		
+		//全屏动画
 		runStatus2(){
 			var _this=this;
 			_this.$refs.locationBox.step({
@@ -75,21 +84,23 @@ export default{
 				top:'10vh'
 			})
 			_this.$refs.locationBox.run(()=>{
+				//_this.isFocus=true;
+				setTimeout(() => {
+					_this.isFocus = true;
+				}, 50)
+				_this.inputDisable=false;
 				//console.log('执行完毕')
 			});
 		},
 		
-		changeTest(){
-			console.log('触发动画');
-		},
 		//输入框失去焦点
 		inputBlur(res){
 			var _this=this;
 			_this.inputBorderColor='1px solid #bfbfbf';
 		},
 		
-		//输入框获得焦点
-		inputFocus(res){
+		//点击输入框
+		clickInputBox(){
 			var _this=this;
 			//获取焦点时修改边框颜色，因:style不支持绑定border-color,所以绑定了整个border
 			_this.inputBorderColor='1px solid #a35c8f';
@@ -111,24 +122,19 @@ export default{
 		changeLocationBox(status){
 			var _this=this;
 			if(status === 0){
+				_this.isFocus=false;
 				_this.showExhaleBar=true;
 				_this.showPlaceList=false;
 				_this.runStatus0();
-				_this.locationBoxHeight='14vh';
-				_this.locationBoxTop='86vh';
 			}
 			else if(status === 1){
+				_this.isFocus=false;
 				_this.runStatus1();
 				_this.showExhaleBar=false;
 				_this.showPlaceList=true; 
-				_this.locationBoxHeight='44vh';
-				_this.locationBoxTop='56vh';
 			}
 			else if(status === 2){
-				console.log('全屏尚未完成');
 				_this.runStatus2();
-				_this.locationBoxHeight='90vh';
-				_this.locationBoxTop='10vh';
 			}
 		}
 	}
