@@ -1,6 +1,6 @@
 package com.fzu.stop.controller;
 
-import com.fzu.stop.Util.ResponseUtil;
+import com.fzu.stop.util.ResponseUtil;
 import com.fzu.stop.pojo.DeviceDO;
 import com.fzu.stop.pojo.DeviceDTO;
 import com.fzu.stop.pojo.DeviceInfoDTO;

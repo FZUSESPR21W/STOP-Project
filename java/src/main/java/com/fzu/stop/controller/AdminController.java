@@ -1,8 +1,7 @@
 package com.fzu.stop.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.alibaba.fastjson.JSONObject;
-import com.fzu.stop.Util.ResponseUtil;
+import com.fzu.stop.util.ResponseUtil;
 import com.fzu.stop.pojo.AdminDO;
 import com.fzu.stop.pojo.ResponseDTO;
 import com.fzu.stop.service.AdminService;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 
 /**

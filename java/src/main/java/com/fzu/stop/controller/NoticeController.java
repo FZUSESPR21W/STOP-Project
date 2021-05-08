@@ -1,6 +1,6 @@
 package com.fzu.stop.controller;
 
-import com.fzu.stop.Util.ResponseUtil;
+import com.fzu.stop.util.ResponseUtil;
 import com.fzu.stop.pojo.NoticeDO;
 import com.fzu.stop.pojo.ResponseDTO;
 import com.fzu.stop.service.NoticeService;

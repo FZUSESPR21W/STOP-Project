@@ -1,4 +1,4 @@
-package com.fzu.stop.Util;
+package com.fzu.stop.util;
 
 import com.fzu.stop.pojo.ResponseDTO;
 

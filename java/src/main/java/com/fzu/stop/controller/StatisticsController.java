@@ -1,8 +1,8 @@
 package com.fzu.stop.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fzu.stop.Util.ResponseUtil;
-import com.fzu.stop.Util.WechatUtil;
+import com.fzu.stop.util.ResponseUtil;
+import com.fzu.stop.util.WechatUtil;
 import com.fzu.stop.pojo.ParkingSituationDO;
 import com.fzu.stop.pojo.ResponseDTO;
 import com.fzu.stop.service.StatisticsService;
