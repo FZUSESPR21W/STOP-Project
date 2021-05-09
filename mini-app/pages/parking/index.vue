@@ -1,29 +1,42 @@
 <template>
 	<view >
-		<ParkingMap
-			@hideList="hideList"
-		/>
-		<view class="location-box" :class="{hideListStart:status0,showListStart:status1}"
-		 :style="{height:locationBoxHeight,Top:locationBoxTop}"
+		<view>
+			<ParkingMap @hideList="hideList"/>
+		</view>
+		<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox"
 			>
 			<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList">
-				<view class="exhale-bar" v-show="showExhaleBar"></view>
+				<uni-transition mode-class="fade" custom-class="exhale-bar" :show="showExhaleBar" />
 			</view>
-			<view class="input-box-border" :style="{border:inputBorderColor}">
+			<view class="input-box-border" :style="{border:inputBorderColor}" @click="clickInputBox">
 				<input
 					type="text"
 					class="input-box uni-input"
 					placeholder="查询想要停车的地点"
 					maxlength="40"
-					cursor-spacing="4px"
+					:focus="isFocus"
+					:disabled="inputDisable"
+					:adjust-position="false"
 					confirm-type="search"
-					@click="inputFocus"
 					@blur="inputBlur"
 				/>
 				<u-icon style="position: absolute;top: 6rpx;" slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="32px" name="search"></u-icon>
 			</view>
-			<view class="place-list" v-show="showPlaceList">这里推荐停车地点</view>
-		</view>
+			<view class="place-list" v-show="showPlaceList">
+				<view>
+					<view class="place-list-title" style="">最近适合停车的地点</view>
+					<view class="place-list-title-bar"></view>
+					<view class="place-list-item">
+						<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="90rpx" name="position-icon"></u-icon>
+						<view class="place-list-item-title">福州大学-东3</view>
+						<view class="place-list-item-parking">车位空余</view>
+						<view class="place-list-item-distance">200m</view>
+					</view>
+				</view>
+
+				<!-- <u-loading mode="circle"></u-loading> -->
+			</view>
+		</uni-transition>
 	</view>
 </template>
 
@@ -33,11 +46,11 @@ export default{
 	name:'Parking',
 	data(){
 		return{
-			status0:true,
-			status1:false,
-			status2:false,
+			isFocus:false,
+			inputDisable:true,
 			showExhaleBar:false,
 			showPlaceList:true,
+			showLocationBox:true,
 			locationBoxHeight:'44vh',
 			locationBoxTop:'56vh',
 			inputBorderColor:'1px solid #bfbfbf',
@@ -46,18 +59,64 @@ export default{
 	components:{
 		ParkingMap,
 	},
+	
 	methods:{
+		
+		//底栏动画
+		runStatus0(){
+			var _this=this;
+			_this.inputDisable=true;
+			_this.$refs.locationBox.step({
+				height:'14vh',
+				top:'86vh'
+			})
+			_this.$refs.locationBox.run(()=>{
+				//console.log('执行完毕')
+			});
+		},
+		
+		//半屏动画
+		runStatus1(){
+			var _this=this;
+			_this.inputDisable=true;
+			_this.$refs.locationBox.step({
+				height:'44vh',
+				top:'56vh'
+			})
+			_this.$refs.locationBox.run(()=>{
+				//_this.isFocus=false;
+				//console.log('执行完毕')
+			});
+		},
+		
+		//全屏动画
+		runStatus2(){
+			var _this=this;
+			_this.$refs.locationBox.step({
+				height:'90vh',
+				top:'10vh'
+			})
+			_this.$refs.locationBox.run(()=>{
+				setTimeout(() => {
+					_this.isFocus = true;
+				}, 50);
+				_this.inputDisable=false;
+				//console.log('执行完毕')
+			});
+		},
+		
 		//输入框失去焦点
 		inputBlur(res){
 			var _this=this;
 			_this.inputBorderColor='1px solid #bfbfbf';
 		},
 		
-		//输入框获得焦点
-		inputFocus(res){
+		//点击输入框
+		clickInputBox(){
 			var _this=this;
 			//获取焦点时修改边框颜色，因:style不支持绑定border-color,所以绑定了整个border
 			_this.inputBorderColor='1px solid #a35c8f';
+			_this.changeLocationBox(2);
 		},
 		
 		//显示推荐地点列表
@@ -67,68 +126,84 @@ export default{
 		
 		//收到map组件传回来的值，显示呼出条、隐藏地点列表
 		hideList(res){
-			this.changeLocationBox(0);
+			var _this=this;
+			_this.changeLocationBox(0);
 		},
 		
 		//更改地点框状态，0：底栏(默认)；1：半屏；2：全屏；
 		changeLocationBox(status){
 			var _this=this;
 			if(status === 0){
+				_this.isFocus=false;
 				_this.showExhaleBar=true;
 				_this.showPlaceList=false;
-				_this.status0=true;
-				_this.status1=false;
-				_this.locationBoxHeight='14vh';
-				_this.locationBoxTop='86vh';
+				_this.runStatus0();
 			}
 			else if(status === 1){
-				_this.status0=false;
-				_this.status1=true;
+				_this.isFocus=false;
+				_this.runStatus1();
 				_this.showExhaleBar=false;
 				_this.showPlaceList=true; 
-				_this.locationBoxHeight='44vh';
-				_this.locationBoxTop='56vh';
 			}
 			else if(status === 2){
-				console.log('全屏尚未完成');
+				_this.runStatus2();
 			}
 		}
 	}
 }
 </script>
 
-<style scoped>
-	/* 隐藏推荐地点框的动画 */
-	@keyframes hideList {
-	  from {height: 44vh;top:56vh}
-	  to {height: 14vh;top: 86vh;}
+<style scoped lang="scss">
+
+	.place-list{
+		.place-list-title{
+			margin-left: 10px;
+			margin-bottom: 2px;
+			margin-top: 4px;
+		}
+		.place-list-title-bar{
+			background-color: rgba($color: #a35c8f, $alpha: 0.8);
+			height: 1.6px;
+			width: 160px;
+			margin-bottom: 8px;
+		}
+		.place-list-item{
+			background-color: pink;
+			margin-left:20px ;
+			margin-right: 20px;
+			position: relative;
+			padding: 2px;
+			border-bottom: 1px solid black;
+			
+			.place-list-item-title{
+				font-size: 40rpx;
+				display: inline-block;
+				position: absolute;
+			}
+			.place-list-item-parking{
+				display: inline-block;
+			}
+			.place-list-item-distance{
+				display: inline-block;
+			}
+		}
+		
 	}
-	/* 显示推荐地点框的动画 */
-	@keyframes showList {
-	  from {height: 14vh;top:86vh}
-	  to {height: 44vh;top: 56vh;}
-	}
+	
 	/* 地点框 */
-	.location-box{
+	/deep/.location-box{
 		background-color: white;
 		width: 100%;
 		border-radius: 10px 10px 0 0;
 		border-top: 1px solid rgba(191, 191, 191, 0.4);
 		position: fixed !important;
+		height: 44vh;
+		top:56vh
 
 	}
-	/* 开始隐藏动画 */
-	.hideListStart{
-		 animation-name: hideList;
-		 animation-duration: 0.4s;
-	}
-	/* 开始展示动画 */
-	.showListStart{
-		animation-name: showList;
-		animation-duration: 0.4s;
-	}
+
 	/* 呼出条 */
-	.exhale-bar{
+	/deep/.exhale-bar{
 		width: 20%;
 		height: 1vh;
 		margin: 0 auto;
@@ -161,10 +236,4 @@ export default{
 		background-color: white;
 		height: 100%;
 	}
-.fade-enter-active, .fade-leave-active {
-      transition: opacity .5s
-}
-.fade-enter, .fade-leave-active {
-      opacity: 0
-}
 </style>
