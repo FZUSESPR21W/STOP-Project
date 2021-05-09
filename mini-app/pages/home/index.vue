@@ -13,6 +13,7 @@
 			</view>
 		</view>
 		
+		
 		<view class="u-m-t-20">
 			<u-cell-group>
 				<u-cell-item  title="个人信息" @click="goMyInfo" arrow-direction="right">

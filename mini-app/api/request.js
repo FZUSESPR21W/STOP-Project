@@ -1,0 +1,38 @@
+// 基于Promise封装的请求
+const BASE_URL = 'http://106.14.71.230:8080/api'
+
+export const request = (options) => {
+	try{
+		var token = uni.getStorageSync('User').accesstoken || null;
+		var header = {
+			'Authorization': token
+		}
+	}
+	catch(err) {
+		console.log(err)
+	}
+	finally{
+		// Promise封装
+		return new Promise((resolve, reject) => {
+			uni.request({
+				// url基地址
+				url: BASE_URL + options.url,
+				// 请求方法，默认get
+				method: options.method || 'GET',
+				// 请求体
+				data: options.data || {},
+				// 请求头
+				header: header,
+				// 请求成功回调
+				success: res => {
+					resolve(res)
+				},
+				// 请求失败回调
+				fail: err => {
+					reject(err)
+				}
+			})
+		})
+	}
+	
+}

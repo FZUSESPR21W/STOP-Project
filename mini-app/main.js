@@ -7,6 +7,10 @@ Vue.config.productionTip = false
 import uView from 'uview-ui'
 Vue.use(uView)
 
+// //引入分离的api接口
+import * as api from './api/api.js'
+Vue.prototype.$api = api
+
 App.mpType = 'app'
 
 const app = new Vue({
