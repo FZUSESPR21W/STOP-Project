@@ -10,42 +10,46 @@
 			</view>
 		</view>
 		<view>
-			<u-form :model="form" @submit="submit" @reset="" :rules="rules" ref="uForm" :errorType="errorType">
+			<u-form :model="form" @submit="submit" :rules="rules" ref="uForm" :errorType="errorType">
 				<u-form-item
-				 :label-position="labelPosition"
-				 :label-style="labelStyle" 
-				 label="问题和意见"
-				 :required="true"
-				 prop="feedback">
+					:label-position="labelPosition"
+					:label-style="labelStyle" 
+					label="问题和意见"
+					:required="true"
+					prop="feedback"
+				>
 					<u-input type="textarea"
-					 @input="sumChar"
-					 :auto-height="false"
-					 :border="border"
-					 maxlength="200" 
-					 placeholder="请填写5个字以上的问题描述,以使我们为您提供更好的帮助"
-					 v-model="form.feedback"/>
+						@input="sumChar"
+						:auto-height="false"
+						:border="border"
+						maxlength="200" 
+						placeholder="请填写5个字以上的问题描述,以使我们为您提供更好的帮助"
+						v-model="form.feedback"
+					/>
 				</u-form-item>
 				<u-form-item
-				 class="upload-btn"
-				 :label-position="labelPosition"
-				 :label-style="labelStyle"
-				 label="图片(选填,提供照片或截图)"
-				 prop="photo">
+					class="upload-btn"
+					:label-position="labelPosition"
+					:label-style="labelStyle"
+					label="图片(选填,提供照片或截图)"
+					prop="photo"
+				>
 					<u-upload
-					 @on-list-change="onListChange"
-					 ref="uUpload"
-					 :custom-btn="true"
-					 :auto-upload="false"
-					 :form-data="form"
-					 :action="action"
-					 :file-list="fileList"
-					 :max-size="5 * 1024 * 1024"
-					 max-count="5"
-					 width="160"
-					 height="160"
-					 upload-text="选取照片"
-					 del-color="#ffffff"
-					 del-bg-color="#A55F91">
+						@on-list-change="onListChange"
+						ref="uUpload"
+						:custom-btn="true"
+						:auto-upload="false"
+						:form-data="form"
+						:action="action"
+						:file-list="fileList"
+						:max-size="5 * 1024 * 1024"
+						max-count="5"
+						width="160"
+						height="160"
+						upload-text="选取照片"
+						del-color="#ffffff"
+						del-bg-color="#A55F91"
+					>
 						<view slot="addBtn" class="slot-btn" hover-class="slot-btn__hover" hover-stay-time="150">
 							<u-icon name="plus" size="35" :color="$u.color['darkColor']"></u-icon>
 						</view>
