@@ -1,8 +1,19 @@
 <template>
 	<view class="wrap">
-		<u-section @click="showFunc" title="功能介绍" :sub-title="subTitle" :show-line="showLine" :font-size="fontSize" :color="color"></u-section>
-		<u-section @click="showPriv" title="隐私政策" :sub-title="subTitle" :show-line="showLine" :font-size="fontSize" :color="color"></u-section>
-		<u-section @click="showProt" title="服务协议" :sub-title="subTitle" :show-line="showLine" :font-size="fontSize" :color="color"></u-section>
+		<view class="item-logo">
+			<u-image width="300rpx" height="300rpx" :src="src"></u-image>
+		</view>
+		<view class="item-text-t">STOP</view>
+		<view class="item-text-n">Smart Transportation Of Parking</view>
+		<view class="item-text-v">Version 0.0.1</view>
+		<u-cell-group>
+			<u-cell-item  title="功能介绍" @click="showFunc" arrow-direction="right"></u-cell-item>
+			<u-cell-item  title="隐私政策" @click="showPriv" arrow-direction="right"></u-cell-item>
+			<u-cell-item  title="服务协议" @click="showProt" arrow-direction="right"></u-cell-item>
+		</u-cell-group>
+		<view class="item-text-c">Copyright 2021 发际线与我作队</view>
+		<view class="item-text-a">All Rights Reserved</view>
+		
 		<view>
 			<u-popup border-radius="10" v-model="funcShow"
 				@close="close" @open="open" :mode="mode" 
@@ -48,8 +59,8 @@
 					</view>
 				</view>
 			</u-popup>
-			
 		</view>
+		
 	</view>
 </template>
 
@@ -80,7 +91,7 @@
 					height: "80rpx",
 					fontStyle: 'bold'
 				},
-				
+				src: '/static/stopLogo.png'
 			};
 		},
 		methods: {
@@ -120,6 +131,38 @@
 		position: absolute;
 		top:650rpx;
 		right:180rpx;
+		text-align: center;
+	}
+	.item-logo {
+		margin: 50rpx auto;
+		width: 45%;
+	}
+	.item-text-t {
+		font: bold 50rpx arial,sans-serif;
+		margin-top: 0rpx;
+		text-align: center;
+	}
+	.item-text-n {
+		font-size: 35rpx;
+		color: #a1a1a1;
+		margin: 15rpx;
+		text-align: center;
+	}
+	.item-text-v {
+		font-size: 32rpx;
+		color: #616161;
+		margin: 30rpx;
+		text-align: center;
+	}
+	.item-text-c {
+		font-size: 22rpx;
+		color: #a1a1a1;
+		margin-top: 180rpx;
+		text-align: center;
+	}
+	.item-text-a {
+		font-size: 22rpx;
+		color: #a1a1a1;
 		text-align: center;
 	}
 </style>
