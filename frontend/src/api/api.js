@@ -12,7 +12,7 @@ export class Admin {
      * @returns {*}
      */
     static login(username, password) {
-        return axios.post("/user/login", {
+        return axios.post("/admin/login", {
             username,
             password
         })

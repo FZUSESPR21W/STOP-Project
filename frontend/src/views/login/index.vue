@@ -21,17 +21,40 @@ export default {
   name: "index",
   data() {
     return {
-      //用户名
+      // 用户名
       username: '',
-      //密码
+      // 密码
       password: ''
     }
   },
   methods: {
-    //登录
+    // 登录
     login() {
-      //路由跳转
-      this.$router.push('/admin')
+      // 登陆请求
+      this.$api.Admin.login(this.username, this.password).then(res => {
+        if(res.data.message === '登陆成功') {
+          // 登陆成功提示信息
+          this.$message.success(res.data.message)
+          // 路由跳转
+          this.$router.push('/admin')
+        }
+        else {
+          // 密码错误抛出异常
+          throw(res.data.message)
+        }
+      }).catch(err => {
+        // 如果是除了200状态码意外的状态码
+        if(err.response instanceof Object) {
+          // 错误信息提示
+          this.$message.error(`登陆失败, code: ${err.response.status}`)
+        }
+        // 密码错误抛出异常
+        else {
+          // 错误信息提示
+          this.$message.error(err)
+        }
+      })
+
     }
   }
 }
