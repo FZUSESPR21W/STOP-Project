@@ -6,7 +6,7 @@
       <!-- 标题 -->
       <div class="title">{{ item.title }}</div>
       <!-- 发布人信息 -->
-      <div class="info">{{ `用户：${item.name} ${item.publish_time}` }}</div>
+      <div class="info">{{ `用户：${item.name} ${item.submitTime}` }}</div>
       <!-- 内容 -->
       <div class="content">{{ item.content }}</div>
     </div>
@@ -19,19 +19,19 @@ export default {
   name: "user-feedback",
   data() {
     return {
-      //用户反馈列表
-      feedbackList: []
+      // 用户反馈列表
+      feedbackList: [],
+      // 反馈列表-当前页
+      page: 1,
+      // 每页限制
+      limit: 10
     }
   },
   beforeMount() {
-    for(let i = 0 ; i < 10 ; i ++){
-      this.feedbackList.push({
-        title: '关于xxxxxxxxxxxxxxx的反馈',
-        name: 'xxx',
-        publish_time: '2020-00-00 00:00',
-        content: '正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文'
-      })
-    }
+    // 获取反馈信息列表
+    this.$api.Feedback.getFeedbackList(this.page, this.limit).then(res => {
+      this.feedbackList = res.data.data.feedbackList
+    })
   }
 }
 </script>

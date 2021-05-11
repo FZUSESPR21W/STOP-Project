@@ -10,7 +10,7 @@
       <!-- 公告内容 -->
       <el-input v-model="newNotice.content" placeholder="请输入公告内容" type="textarea" :rows="25"/>
       <!-- 发布按钮 -->
-      <el-button type="primary" class="submit">发布</el-button>
+      <el-button type="primary" class="submit" @click="">发布</el-button>
     </div>
     <!-- 公布列表 -->
     <div class="notice-list">
@@ -35,13 +35,21 @@ export default {
         content: ''
       },
       // 公告列表
-      noticeList: []
+      noticeList: [],
+      page: 1,
+      limit: 10
     }
   },
   beforeMount() {
-    for(let i = 0 ; i < 10 ; i ++){
-      this.noticeList.push({
-        title: '东三路口现正发生交通意外，请绕行'
+    // 请求获取公告列表
+    this.getNoticeList()
+  },
+  methods: {
+    // 获取公告列表
+    getNoticeList() {
+      // 请求获取公告列表
+      this.$api.Notice.getNoticeList(this.page, this.limit).then(res => {
+        this.noticeList = res.data.data.noticeList
       })
     }
   }

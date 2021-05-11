@@ -5,10 +5,15 @@
     <span class="login-title">欢迎登录STOP后台管理系统</span>
     <!-- 登录框开始 -->
     <div class="login-box">
+      <!-- 用户名标题 -->
       <div class="input-item-title">用户名</div>
+      <!-- 用户名输入框 -->
       <el-input class="input-item" placeholder="请输入用户名" v-model="username" />
+      <!-- 密码标题 -->
       <div class="input-item-title">密码</div>
+      <!-- 密码输入框 -->
       <el-input class="input-item"  placeholder="请输入密码" v-model="password" show-password />
+      <!-- 登陆按钮 -->
       <el-button class="login-btn" @click="login">登录</el-button>
     </div>
     <!-- 登录框结束 -->
