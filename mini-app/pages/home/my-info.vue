@@ -1,19 +1,19 @@
 <template>
 	<view class="u-m-t-20">
 		<u-cell-group>
-			<u-cell-item  title="头像" @click="goMyAvatar" arrow-direction="right">
+			<u-cell-item  title="头像" :arrow="false">
 				<view class="u-m-r-10">
-					<u-avatar :src="pic" size="140"></u-avatar>
+					<u-avatar :src="pic" size="140" ></u-avatar>
 				</view>
 			</u-cell-item>
-			<u-cell-item  title="昵称" @click="goMyNickname" arrow-direction="right">
+			<u-cell-item  title="昵称" :arrow="false">
 				<view class="u-flex-1">
 					<view class="u-font-18 u-p-b-20">嘉然</view>
 				</view>
 			</u-cell-item>
-			<u-cell-item  title="手机" @click="goMyTelNumber" arrow-direction="right">
+			<u-cell-item  title="地区" :arrow="false">
 				<view class="u-flex-1">
-					<view class="u-font-14 u-tips-color">tel:111</view>
+					<view class="u-font-14 u-tips-color">福建福州</view>
 				</view>
 			</u-cell-item>
 		</u-cell-group>
@@ -32,21 +32,7 @@
 			
 		},
 		methods: {
-			goMyAvatar(){
-				uni.navigateTo({
-					url:'../home/my-avatar'
-				})
-			},
-			goMyNickname(){
-				uni.navigateTo({
-					url:'../home/my-nickname'
-				})
-			},
-			goMyTelNumber(){
-				uni.navigateTo({
-					url:'../home/my-telnumber'
-				})
-			}
+			
 		}
 	}
 </script>
