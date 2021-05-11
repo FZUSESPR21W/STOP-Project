@@ -33,6 +33,18 @@ public class WechatUtil {
         Call call = okHttpClient.newCall(request);
         Response response=call.execute();
         JSONObject jsonObject= (JSONObject) JSON.parse(response.body().string());
+        if(!jsonObject.containsKey("openid")){
+            jsonObject.put("openid","");
+        }
+        if(!jsonObject.containsKey("session_key")){
+            jsonObject.put("session_key","");
+        }
+        if(!jsonObject.containsKey("errcode")){
+            jsonObject.put("errcode","");
+        }
+        if (!jsonObject.containsKey("errmsg")){
+            jsonObject.put("errmsg","");
+        }
         return  jsonObject;
     }
 
