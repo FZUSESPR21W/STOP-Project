@@ -20,4 +20,13 @@
         order by time;
     </select>
 
+    <select id="getBlockByDeviceId" resultType="com.fzu.stop.pojo.BlockDO">
+        select * from block where device_id =#{id};
+    </select>
+
+    <select id="getPointsByBlockId" resultType="com.fzu.stop.pojo.PointDO">
+        select * from point where block_id=#{id}
+    </select>
+
+
 </mapper>

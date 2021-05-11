@@ -1,7 +1,9 @@
 package com.fzu.stop.dao;
 
+import com.fzu.stop.pojo.BlockDO;
 import com.fzu.stop.pojo.FeedbackDO;
 import com.fzu.stop.pojo.ParkingSituationDO;
+import com.fzu.stop.pojo.PointDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,4 +25,18 @@ public interface StatisticsDao {
      * @return
      */
     List<ParkingSituationDO> getDailyParkingSituation(String start,String end);
+
+    /**
+     * 通过设备id获取区域块
+     * @param id
+     * @return
+     */
+    BlockDO getBlockByDeviceId(Integer id);
+
+    /**
+     * 通过区域块id获取点的集合
+     * @param id
+     * @return
+     */
+    List<PointDO> getPointsByBlockId(Integer id);
 }

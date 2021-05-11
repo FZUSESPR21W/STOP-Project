@@ -1,5 +1,6 @@
 package com.fzu.stop.service;
 
+import com.fzu.stop.pojo.BlockDO;
 import com.fzu.stop.pojo.ParkingSituationDO;
 
 import java.util.List;
@@ -18,5 +19,12 @@ public interface StatisticsService {
      * @return 每日停车情况
      */
     List<ParkingSituationDO> getDailyParkingSituation();
+
+    /**
+     * 根据设备id获取区域块
+     * @param id
+     * @return
+     */
+    BlockDO getBlockByDeviceId(Integer id);
 
 }
