@@ -38,6 +38,24 @@
 			"style":{
 				"navigationBarTitleText":"关于STOP"
 			}
+		},
+		{
+			"path":"pages/home/my-avatar",
+			"style":{
+				"navigationBarTitleText":"我的头像"
+			}
+		},
+		{
+			"path":"pages/home/my-nickname",
+			"style":{
+				"navigationBarTitleText":"我的昵称"
+			}
+		},
+		{
+			"path":"pages/home/my-telnumber",
+			"style":{
+				"navigationBarTitleText":"我的手机"
+			}
 		}
 	],
 	"globalStyle": {
