@@ -2,11 +2,11 @@
 	<view>
 		 <view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30">
 			<view class="u-m-r-10">
-				<u-avatar :src="pic" size="140"></u-avatar>
+				<u-avatar :src="pic" mode="circle" size="140"></u-avatar>
 			</view>
 			<view class="u-flex-1">
-				<view class="u-font-18 u-p-b-20">Hi, 嘉然</view>
-				<view class="u-font-14 u-tips-color">tel:111</view>
+				<view class="u-font-18 u-p-b-20">Hi, {{nickname}}</view>
+				<view class="u-font-14 u-tips-color">tel:{{telnumber}}</view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
 				<image style="margin-top: 60rpx; width: 150rpx;height: 150rpx;" src="../../static/stopLogo.png"></image>
@@ -36,6 +36,8 @@
 		data() {
 			return {
 				pic:'https://uviewui.com/common/logo.png',
+				nickname:"嘉然",
+				telnumber:"1",
 				show:true
 			}
 		},
