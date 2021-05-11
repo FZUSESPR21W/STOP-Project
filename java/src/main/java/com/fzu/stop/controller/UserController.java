@@ -25,8 +25,7 @@ public class UserController {
     private static final int OFTEN = 45011;
     @PostMapping("/login")
     @ResponseBody
-    public ResponseDTO login(@RequestBody JSONObject data) throws IOException {
-        JSONObject jsonObject= data.getJSONObject("data");
+    public ResponseDTO login(@RequestBody JSONObject jsonObject) throws IOException {
         //获得登录凭证code
         String code=jsonObject.getString("code");
         //登录凭证校验。通过 wx.login 接口获得临时登录凭证 code 后传到开发者服务器调用此接口完成登录流程
@@ -38,9 +37,10 @@ public class UserController {
             //将获得的openid 作为loginId
             StpUtil.setLoginId(code2Session.getString("openid"));
             // 获取当前会话的token值,将该token值作为skey传给小程序端作为会话的维护
-            String skey=StpUtil.getTokenValue();
+            String satoken=StpUtil.getTokenValue();
             Map map=new HashMap();
-            map.put("skey",skey);
+            map.put("tokenKey","satoken");
+            map.put("tokenValue",satoken);
             return new ResponseDTO(errorCode,"登录成功",map);
         }
         else if(errorCode==-1){
