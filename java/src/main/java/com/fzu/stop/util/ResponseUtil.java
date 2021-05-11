@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class ResponseUtil {
     public static ResponseDTO getSuccessResponse(String message, Map<String,Object> data){
-        ResponseDTO responseDTO = new ResponseDTO(-1,message,data);
+        ResponseDTO responseDTO = new ResponseDTO(0,message,data);
         return responseDTO;
     }
     public static ResponseDTO getFailResponse(String message, Map<String,Object> data){

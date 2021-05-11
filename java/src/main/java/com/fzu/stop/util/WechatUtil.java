@@ -40,10 +40,10 @@ public class WechatUtil {
             jsonObject.put("session_key","");
         }
         if(!jsonObject.containsKey("errcode")){
-            jsonObject.put("errcode","");
+            jsonObject.put("errcode", 0);
         }
         if (!jsonObject.containsKey("errmsg")){
-            jsonObject.put("errmsg","");
+            jsonObject.put("errmsg","登录成功");
         }
         return  jsonObject;
     }
