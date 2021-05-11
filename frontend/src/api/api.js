@@ -33,6 +33,51 @@ export class Notice {
     static getNoticeList(page, limit) {
         return axios.get(`/notice/get_notice_list?page=${page}&limit=${limit}`)
     }
+
+    /**
+     * 发布公告
+     * @param title
+     * @param content
+     * @param top
+     * @param status
+     * @returns {*}
+     */
+    static publishNotice(title, content, top, status) {
+        return axios.post('/notice/publish', {
+            title,
+            content,
+            top,
+            status
+        })
+    }
+
+    /**
+     * 获取公告细节
+     * @param id
+     * @returns {*}
+     */
+    static getNoticeDetail(id) {
+        return axios.get(`/notice/detail?id=${id}`)
+    }
+
+    /**
+     * 更新公告
+     * @param id
+     * @param title
+     * @param content
+     * @param top
+     * @param status
+     * @returns {*}
+     */
+    static updateNotice(id, title, content, top, status) {
+        return axios.post('/notice/update', {
+            id,
+            title,
+            content,
+            top,
+            status
+        })
+    }
 }
 
 /**

@@ -6,33 +6,60 @@
       <!-- 表单标题 -->
       <div class="title">发布新公告</div>
       <!-- 公告标题 -->
-      <el-input v-model="newNotice.title" placeholder="请输入标题"/>
+      <el-input v-model="newNoticeData.title" placeholder="请输入标题"/>
       <!-- 公告内容 -->
-      <el-input v-model="newNotice.content" placeholder="请输入公告内容" type="textarea" :rows="25"/>
+      <el-input v-model="newNoticeData.content" placeholder="请输入公告内容" type="textarea" :rows="25"/>
       <!-- 发布按钮 -->
-      <el-button type="primary" class="submit" @click="">发布</el-button>
+      <el-button type="primary" class="submit" @click="publishNotice()">发布</el-button>
     </div>
     <!-- 公布列表 -->
     <div class="notice-list">
       <!-- 公告列表标题 -->
       <div class="title">已发布公告</div>
       <!-- 公告 -->
-      <div v-for="(item,index) in noticeList" :key="index" class="list-item">{{ item.title }}</div>
+      <div v-for="(item,index) in noticeList" :key="index" class="list-item" @click="getNoticeDetail(item.id)">{{ item.title }}</div>
     </div>
+    <!-- 更新弹窗开始 -->
+    <el-dialog title="修改公告" :visible.sync="updateNoticeData.display" class="update-dialog">
+      <!-- 更新表单开始 -->
+      <div class="input-form">
+        <!-- 公告标题 -->
+        <el-input v-model="updateNoticeData.title" placeholder="请输入标题"/>
+        <!-- 公告内容 -->
+        <el-input v-model="updateNoticeData.content" placeholder="请输入公告内容" type="textarea" :rows="25"/>
+        <!-- 修改按钮 -->
+        <el-button type="primary" class="submit" @click="updateNotice">修改</el-button>
+      </div>
+      <!-- 更新表单结束 -->
+    </el-dialog>
+    <!-- 更新弹窗结束 -->
   </div>
 </template>
 
 <script>
+import axios from "@/api/axios";
+
 export default {
   name: "new-notice",
   data() {
     return {
       // 发布新公告的数据
-      newNotice: {
+      newNoticeData: {
         // 标题
         title: '',
         // 内容
         content: ''
+      },
+      // 更新公告的数据
+      updateNoticeData: {
+        // 标题
+        title: '',
+        // 内容
+        content: '',
+        // 公告id
+        id: 0,
+        // 弹窗显示标志
+        display: false
       },
       // 公告列表
       noticeList: [],
@@ -50,6 +77,54 @@ export default {
       // 请求获取公告列表
       this.$api.Notice.getNoticeList(this.page, this.limit).then(res => {
         this.noticeList = res.data.data.noticeList
+      })
+    },
+    // 获取详细公告
+    getNoticeDetail(id) {
+      // 请求获取详细公告
+      this.$api.Notice.getNoticeDetail(id).then(res => {
+        // 设置updateNoticeData
+        this.updateNoticeData.title = res.data.data.notice.title
+        this.updateNoticeData.content = res.data.data.notice.content
+        this.updateNoticeData.id = id
+        // 显示对话框
+        this.updateNoticeData.display = true
+      })
+    },
+    // 发布公告
+    publishNotice() {
+      // 请求发布公告
+      this.$api.Notice.publishNotice(this.newNoticeData.title, this.newNoticeData.content,
+          false, 1).then(res => {
+        // 成功提示信息
+        this.$message.success('发布成功')
+        // 刷新列表
+        this.getNoticeList()
+        // 清空数据
+        this.newNoticeData.title = ''
+        this.newNoticeData.content = ''
+      }).catch(err => {
+        // 失败提示信息
+        this.$message.error('发布失败')
+      })
+    },
+    // 更新公告
+    updateNotice() {
+      // 请求更新公告
+      this.$api.Notice.updateNotice(this.updateNoticeData.id, this.updateNoticeData.title,
+          this.updateNoticeData.content, false, 1).then(res => {
+        // 成功提示信息
+        this.$message.success('修改成功')
+        // 刷新列表
+        this.getNoticeList()
+        // 清空数据
+        this.updateNoticeData.title = ''
+        this.updateNoticeData.content = ''
+        // 关闭窗口
+        this.updateNoticeData.display = false
+      }).catch(err => {
+        // 失败提示信息
+        this.$message.error('修改失败')
       })
     }
   }
@@ -99,6 +174,13 @@ export default {
 
   .input-form, .notice-list {
     padding: 20px;
+  }
+}
+
+.update-dialog {
+
+  .input-form {
+    padding: 0;
   }
 }
 
