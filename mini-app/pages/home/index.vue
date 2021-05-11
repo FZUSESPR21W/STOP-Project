@@ -6,7 +6,7 @@
 			</view>
 			<view class="u-flex-1">
 				<view class="u-font-18 u-p-b-20">Hi, {{nickname}}</view>
-				<view class="u-font-14 u-tips-color">tel:{{telnumber}}</view>
+				<view class="u-font-14 u-tips-color">福建福州</view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
 				<image style="margin-top: 60rpx; width: 150rpx;height: 150rpx;" src="../../static/stopLogo.png"></image>
