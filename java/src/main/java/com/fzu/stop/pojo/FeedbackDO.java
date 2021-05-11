@@ -9,7 +9,7 @@ public class FeedbackDO {
     String openId;
     String title;
     String content;
-    String name;
+    String username;
     String status;
     String submitTime;
 
@@ -45,12 +45,12 @@ public class FeedbackDO {
         this.content = content;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getStatus() {
@@ -76,7 +76,7 @@ public class FeedbackDO {
                 "\topID = " + openId + "\n" +
                 "\ttitle = " + title + "\n" +
                 "\tcontent = " + content + "\n" +
-                "\tname = " + name + "\n" +
+                "\tname = " + username + "\n" +
                 "\tstatus = " + status + "\n" +
                 "\tsubmit_time = " + submitTime + "\n" +
                 "}\n";
