@@ -33,4 +33,11 @@ public interface FeedbackDao {
      */
     int updateFeedback(int id,int status);
 
+    /**
+     * 添加一条反馈
+     * @param feedbackDO
+     * @return
+     */
+    boolean addFeedback(FeedbackDO feedbackDO);
+
 }

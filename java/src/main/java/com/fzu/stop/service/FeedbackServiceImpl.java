@@ -33,4 +33,9 @@ public class FeedbackServiceImpl implements FeedbackService{
         return feedbackDao.updateFeedback(id,status);
     }
 
+    @Override
+    public boolean addFeedback(FeedbackDO feedbackDO){
+        return feedbackDao.addFeedback(feedbackDO);
+    }
+
 }

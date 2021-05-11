@@ -1,9 +1,14 @@
 package com.fzu.stop.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fzu.stop.pojo.FeedbackDO;
+import com.fzu.stop.service.FeedbackService;
+import com.fzu.stop.util.ResponseUtil;
 import com.fzu.stop.util.WechatUtil;
 import com.fzu.stop.pojo.ResponseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +22,15 @@ import java.util.Map;
 
 /**
  * @author 梁达毅
+ * @author 宋家锐
  */
 @Controller
 @RequestMapping("/user")
 public class UserController {
     private static final int INVALID = 40029;
     private static final int OFTEN = 45011;
+    @Autowired
+    FeedbackService feedbackService;
     @PostMapping("/login")
     @ResponseBody
     public ResponseDTO login(@RequestBody JSONObject jsonObject) throws IOException {
@@ -53,6 +61,18 @@ public class UserController {
             return new ResponseDTO(errorCode,"频率限制，每个用户每分钟100次",new HashMap<>());
         }
         return null;
+    }
+
+    @PostMapping("/complain")
+    @ResponseBody
+    public ResponseDTO complain(@RequestBody JSONObject req){
+        FeedbackDO feedbackDO = JSONObject.parseObject(JSON.toJSONString(req),FeedbackDO.class);
+        feedbackDO.setOpenId((String) StpUtil.getLoginId());
+        boolean flag = feedbackService.addFeedback(feedbackDO);
+        if(flag){
+            return ResponseUtil.getSuccessResponse("反馈成功", new HashMap<>(1));
+        }
+        return ResponseUtil.getFailResponse("反馈失败",new HashMap<>(1));
     }
 
 }

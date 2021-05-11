@@ -19,4 +19,9 @@
         where id = #{id};
     </update>
 
-</mapper>
+    <insert id="addFeedback" parameterType="com.fzu.stop.pojo.FeedbackDO">
+        insert into feedback(user_nickname, open_id, content)
+        values (#{name}, #{openId}, #{content});
+    </insert>
+
+</mapper>   

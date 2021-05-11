@@ -31,4 +31,11 @@ public interface FeedbackService {
      */
     int updateFeedback(int id,int status);
 
+    /**
+     * 新增一条反馈
+     * @param feedbackDO
+     * @return
+     */
+    boolean addFeedback(FeedbackDO feedbackDO);
+
 }

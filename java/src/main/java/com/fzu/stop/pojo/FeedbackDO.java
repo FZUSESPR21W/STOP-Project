@@ -6,6 +6,7 @@ package com.fzu.stop.pojo;
  */
 public class FeedbackDO {
     Integer id;
+    String openId;
     String title;
     String content;
     String name;
@@ -18,6 +19,14 @@ public class FeedbackDO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
     public String getTitle() {
@@ -64,6 +73,7 @@ public class FeedbackDO {
     public String toString() {
         return "FeedbackDO{" + "\n" +
                 "\tid = " + id + "\n" +
+                "\topID = " + openId + "\n" +
                 "\ttitle = " + title + "\n" +
                 "\tcontent = " + content + "\n" +
                 "\tname = " + name + "\n" +
