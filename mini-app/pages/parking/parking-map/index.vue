@@ -11,12 +11,12 @@
 		</view>
 		<!-- 地图组件容器结束 -->
 
-		<cover-view @click="moveToCenter()" class="viewlittle" style="position: absolute;top: 67%;left: 87%;">
-			<cover-view style="background: #f1f1f1;border-radius: 5px;width: 40px;height: 40px;">
-				<cover-image src="../../../static/map-icon/miaozhun.png"
+		<view @click="moveToCenter()" class="viewlittle" style="position: absolute;top: 67%;left: 87%;">
+			<view style="background: #f1f1f1;border-radius: 5px;width: 40px;height: 40px;">
+				<image src="../../../static/map-icon/miaozhun.png"
 					style="width: 30px;height: 30px;margin: 0 auto;padding-top: 5px;" />
-			</cover-view>
-		</cover-view>
+			</view>
+		</view>
 	</view>
 	<!-- map页面容器结束 -->
 </template>

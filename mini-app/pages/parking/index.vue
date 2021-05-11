@@ -2,11 +2,11 @@
 	<view >
 		<!-- map组件开始 -->
 		<view>
-			<!-- <ParkingMap @hideList="hideList"/> -->
+			<ParkingMap @hideList="hideList"/>
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
-		<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox">
+		<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox" catchtouchmove="noScrolling" >
 			<!-- 向上导航条容器开始 -->
 			<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList">
 				<uni-transition mode-class="fade" custom-class="exhale-bar" :show="showExhaleBar" />
@@ -33,14 +33,12 @@
 					<view class="place-list-title" style="">最近适合停车的地点</view>
 					<view class="place-list-title-bar"></view>
 					<view class="place-list-item" v-for="(placeItem,index) in placeList.slice(0,showNum)" :key="index">
-						<uni-transition :mode-class="fade">
 						<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="90rpx" name="position-icon"></u-icon>
 						<view class="place-list-item-title">{{placeItem.title}}</view>
 						<view class="place-list-item-parking">{{placeItem.parking}}</view>
 						<view class="place-list-item-distance">{{placeItem.distance}}m</view>
 						<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F"
 										size="60rpx" name="navigation" style="float: right;margin-right: 4px;"></u-icon>
-						</uni-transition>
 					</view>
 					
 					<view style="width: fit-content;margin: 0 auto;">
@@ -87,6 +85,12 @@ export default{
 	},
 	
 	methods:{
+		
+		//禁止滚动
+		//该方法解决IOS下点击地点框会层级穿透至map组件内的BUG，方法为空
+		noScrolling(){
+			
+		},
 		
 		//点击更多按钮
 		clickMore(){
@@ -247,6 +251,7 @@ export default{
 	
 	// 地点框
 	/deep/.location-box{
+		z-index: 9999;
 		background-color: white;
 		width: 100%;
 		border-radius: 10px 10px 0 0;
