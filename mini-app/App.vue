@@ -2,6 +2,16 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			uni.login({
+				provider:'weixin',
+				success: (res) => {
+					console.log(res)
+					this.$api.User.login(res.code).then(
+					(res)=>{
+							console.log(res)
+					})
+				}
+			})
 			uni.getSetting({
 				success(res) {
 					if (!res.authSetting['scope.userLocation'] || !res.authSetting[

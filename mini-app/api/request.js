@@ -1,5 +1,5 @@
 // 基于Promise封装的请求
-const BASE_URL = 'http://106.14.71.230:8080/api'
+const BASE_URL = 'http://192.168.43.41:8080'
 
 export const request = (options) => {
 	try{
