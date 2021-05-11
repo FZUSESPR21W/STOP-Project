@@ -3,13 +3,21 @@
 		onLaunch: function() {
 			console.log('App Launch')
 			uni.login({
-				provider:'weixin',
+				provider: 'weixin',
 				success: (res) => {
 					console.log(res)
 					this.$api.User.login(res.code).then(
-					(res)=>{
+						(res) => {
 							console.log(res)
-					})
+							uni.setStorage({
+								key: 'tokenKey',
+								data: res.data.data.tokenKey
+							})
+							uni.setStorage({
+								key: 'tokenValue',
+								data: res.data.data.tokenValue
+							})
+						})
 				}
 			})
 			uni.getSetting({
