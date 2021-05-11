@@ -24,3 +24,18 @@ export class User {
 		})
 	}
 }
+
+export class Notice {
+	static getNoticeList(code) {
+		return request({
+			url: '/notice/get_notice_list',
+			method: 'get',
+			data: {
+				page: 1,
+				limit: 3,
+				orderBy: 0,
+				top: true,
+			}
+		})
+	}
+}
