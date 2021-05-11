@@ -29,7 +29,7 @@ public class NoticeController {
 
     @ResponseBody
     @PostMapping("/publish")
-    public ResponseDTO publishNotice(@Validated({NoticeDO.Insert.class}) NoticeDO notice){
+    public ResponseDTO publishNotice(@RequestBody @Validated({NoticeDO.Insert.class}) NoticeDO notice){
         noticeService.publishNotice(notice);
         return ResponseUtil.getSuccessResponse("发布成功",new HashMap<>());
     }
@@ -64,7 +64,7 @@ public class NoticeController {
 
     @ResponseBody
     @PostMapping("/update")
-    public ResponseDTO updateNotice(@Validated({NoticeDO.Update.class}) NoticeDO notice){
+    public ResponseDTO updateNotice(@RequestBody @Validated({NoticeDO.Update.class}) NoticeDO notice){
         noticeService.updateNotice(notice);
         return ResponseUtil.getSuccessResponse("更新成功",new HashMap<>());
     }
