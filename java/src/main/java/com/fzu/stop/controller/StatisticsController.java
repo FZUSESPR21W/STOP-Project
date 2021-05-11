@@ -6,13 +6,16 @@ import com.fzu.stop.util.WechatUtil;
 import com.fzu.stop.pojo.ParkingSituationDO;
 import com.fzu.stop.pojo.ResponseDTO;
 import com.fzu.stop.service.StatisticsService;
+import com.fzu.stop.valid.annotation.IntegerGroup;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.validation.constraints.Min;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,6 +30,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/api")
+@Validated
 public class StatisticsController {
     @Autowired
     StatisticsService statisticsService;
@@ -54,9 +58,9 @@ public class StatisticsController {
         return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
     }
 
-    @PostMapping("/get_login_list")
+    @GetMapping("/get_login_list")
     @ResponseBody
-    public ResponseDTO getLoginList(Integer delta) throws IOException {
+    public ResponseDTO getLoginList(@IntegerGroup(integerGroup = {0,6,29},message = "非法范围") Integer delta) throws IOException {
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(new Date());
@@ -78,7 +82,7 @@ public class StatisticsController {
     @Operation(description = "获取最近delta+1天的每天小程序访问次数")
     @GetMapping("/get_visit_number")
     @ResponseBody
-    public ResponseDTO getVisitNumber(Integer delta) throws IOException {
+    public ResponseDTO getVisitNumber(@Min(value = 1,message = "要大于0") Integer delta) throws IOException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         Calendar calendar = Calendar.getInstance();
         //允许设置的最大值为昨日
