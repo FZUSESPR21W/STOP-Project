@@ -34,6 +34,6 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public void updateNotice(NoticeDO notice) {
-        noticeDao.updateNotice(notice);
+        noticeDao.updateNoticeById(notice);
     }
 }

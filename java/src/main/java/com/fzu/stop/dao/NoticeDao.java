@@ -41,6 +41,6 @@ public interface NoticeDao {
      * 更新公告
      * @param notice 公告
      */
-    void updateNotice(NoticeDO notice);
+    void updateNoticeById(NoticeDO notice);
 
 }
