@@ -23,10 +23,22 @@ export class User {
 			}
 		})
 	}
+	
+	static feedback(username,openid,content) {
+		return request({
+			url: '/user/complain',
+			method: 'post',
+			data: {
+				username,
+				openid,
+				content
+			}
+		})
+	}
 }
 
 export class Notice {
-	static getNoticeList(code) {
+	static getNoticeList() {
 		return request({
 			url: '/notice/get_notice_list',
 			method: 'get',
@@ -39,3 +51,4 @@ export class Notice {
 		})
 	}
 }
+

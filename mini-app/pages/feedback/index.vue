@@ -53,7 +53,6 @@
 						ref="uUpload"
 						:custom-btn="true"
 						:auto-upload="false"
-						:form-data="form"
 						:action="action"
 						:file-list="fileList"
 						:max-size="5 * 1024 * 1024"
@@ -95,7 +94,7 @@
 		data() {
 			return {
 				//服务器地址
-				action: '',
+				action: 'http://api.shawnxixi.icu:8080/api/upload_pic',
 				//表格上传所带参数
 				form:{
 					feedback: "",
@@ -174,7 +173,6 @@
 		},
 		
 		onLoad() {
-			
 			this.$api.Notice.getNoticeList().then(res => {
 				this.noticeList = res.data.data.noticeList;
 				this.notice[0] = this.noticeList[0].content;
@@ -198,19 +196,40 @@
 				this.photoNum=lists.length;
 			},
 			
+			
 			//提交按钮点击事件
 			submit() {
-				let data = this.form.feedback;
-				console.log(JSON.stringify(data));
-				this.$refs.uUpload.upload();
-				this.$refs.uToast.show({
-						title: '提交成功',
-						type: 'success',
-				})
-				//重置表单
-				this.form=this.$options.data().form;
-				this.charNum=0;
-				this.$refs.uUpload.clear();
+				this.$refs.uForm.validate(valid => {
+					if (valid) {
+						console.log('验证通过');
+						let content = this.form.feedback;
+						console.log(JSON.stringify(content));
+						const tokenKey = uni.getStorageSync('tokenKey');
+						const tokenValue = uni.getStorageSync('tokenValue');
+						this.$api.User.feedback(tokenKey,tokenValue,content).then(res => {
+							this.$refs.uToast.show({
+									title: '提交成功',
+									type: 'success',
+							})
+							//重置表单
+							this.form=this.$options.data().form;
+							this.charNum=0;
+							this.$refs.uUpload.clear();
+						}).catch(err => {
+							// 失败提示信息
+							this.$refs.uToast.show({
+									title: '提交失败',
+									type: 'fail',
+							})
+						})
+						this.$refs.uUpload.upload();
+					} else {
+						this.$refs.uToast.show({
+								title: '验证失败',
+								type: 'fail',
+						})
+					}
+				});
 			},
 
 		}
