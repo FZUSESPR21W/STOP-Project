@@ -6,7 +6,8 @@
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
-		<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox" catchtap="noScrolling" catchtouchmove='true'>
+		<view @touchmove.stop.prevent="noScrolling">
+		<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox" >
 			
 			<!-- 向上导航条容器开始 -->
 			<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList">
@@ -28,7 +29,8 @@
 				/>
 				<u-icon style="position: absolute;top: 6rpx;" slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="32px" name="search()"></u-icon>
 			</view>
-			<scroll-view scroll-y :style="{height:scrollHeight}">
+			<view style="height: fit-content;">
+			<scroll-view scroll-y :style="{height:scrollHeight}" @scrolltolower="addShowNum" enable-back-to-top="true">
 			<!-- 搜索框容器结束 -->
 			<view class="place-list" v-show="showPlaceList">
 				<view>
@@ -43,7 +45,7 @@
 										size="60rpx" name="navigation" style="float: right;margin-right: 4px;"></u-icon>
 					</view>
 					
-					<view style="width: fit-content;margin: 0 auto;">
+					<view style="width: fit-content;margin: 0 auto;" v-show="showMore">
 						<view @click="clickMore">
 							<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F"
 											size="40rpx" name="more"
@@ -51,10 +53,11 @@
 						</view>
 					</view>
 				</view>
-
 			</view>
 			</scroll-view>
+			</view>
 		</uni-transition>
+		</view>
 		<!-- 推荐地址框容器结束 -->
 	</view>
 </template>
@@ -65,7 +68,11 @@ export default{
 	name:'Parking',
 	data(){
 		return{
-			//scroll-view
+			//从点击输入框添加显示数目
+			addShowNumFromInput:false,
+			//是否显示更多按钮
+			showMore:true,
+			//scroll-view高度
 			scrollHeight:'',
 			//推荐的地点展示的条数
 			showNum:2,
@@ -98,16 +105,38 @@ export default{
 		//禁止滚动
 		//该方法解决IOS下点击地点框会层级穿透至map组件内的BUG
 		noScrolling(){
-			console.log('test');
 			return false;
 		},
 		
 		//点击更多按钮
 		clickMore(){
 			this.changeLocationBox(2);
+			this.addShowNum();
 			setTimeout(()=>{
 					this.inputDisable=true;
 			},300);
+			
+		},
+		
+		//新增显示数量
+		addShowNum(){
+			//新增数目步长7
+			const step=7;
+			let showNum=this.showNum;
+			const num=this.placeList.length;
+			console.log(showNum);
+			console.log(num);
+			if(showNum>=num){
+				//如果已显示数已经少于总数就直接返回，不增加
+				return ;
+			}
+			else{
+				showNum+=step;
+				if(showNum>=num){
+					this.showMore=false;
+				}
+			}
+			this.showNum=showNum;
 		},
 		
 		//底栏动画
@@ -119,12 +148,14 @@ export default{
 			})
 			this.$refs.locationBox.run(()=>{
 				//console.log('执行完毕')
+				this.addShowNumFromInput=false;
 			});
 		},
 		
 		//半屏动画
 		runStatus1(){
 			this.showNum=2;
+			this.showMore=true;
 			this.inputDisable=true;
 			this.$refs.locationBox.step({
 				height:'44vh',
@@ -132,6 +163,7 @@ export default{
 			})
 			this.$refs.locationBox.run(()=>{
 				//_this.isFocus=false;
+				this.addShowNumFromInput=false;
 				//console.log('执行完毕')
 			});
 		},
@@ -147,7 +179,6 @@ export default{
 					this.isFocus = true;
 				}, 50);
 				this.inputDisable=false;
-				this.showNum=10;
 				//console.log('执行完毕')
 			});
 		},
@@ -163,6 +194,10 @@ export default{
 			//获取焦点时修改边框颜色，因:style不支持绑定border-color,所以绑定了整个border
 			this.inputBorderColor='1px solid #a35c8f';
 			this.changeLocationBox(2);
+			if(!this.addShowNumFromInput){
+				this.addShowNum();
+				this.addShowNumFromInput=true;
+			}
 		},
 		
 		//显示推荐地点列表
@@ -193,9 +228,17 @@ export default{
 			}
 			else if(status === 2){
 				this.showExhaleBar=true;
-				this.scrollHeight='100%'
+				this.scrollHeight='78vh'
 				this.runStatus2();
 			}
+		},
+		
+		//获取tarbar高度
+		getTarbarHeight(){
+			const info=wx.getSystemInfo();
+			console.log(wx.getSystemInfo());
+			const tabbarHeight =(info.screenHeight-info.windowHeight-info.statusBarHeight)*info.pixelRatio;
+			return tabbarHeight;
 		}
 	},
 	created() {

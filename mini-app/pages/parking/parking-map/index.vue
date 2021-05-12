@@ -11,10 +11,10 @@
 		</view>
 		<!-- 地图组件容器结束 -->
 
-		<view @click="moveToCenter()" class="viewlittle" style="position: absolute;top: 67%;left: 87%;">
+		<view @click="moveToCenter()" class="viewlittle" style="position: absolute;top: 47%;left: 87%;">
 			<view style="background: #f1f1f1;border-radius: 5px;width: 40px;height: 40px;">
 				<image src="../../../static/map-icon/miaozhun.png"
-					style="width: 30px;height: 30px;margin: 0 auto;padding-top: 5px;" />
+					style="width: 30px;height: 30px;margin: 0 auto;padding-top: 5px;padding-left: 5px;" />
 			</view>
 		</view>
 	</view>
@@ -73,9 +73,9 @@
 			},
 			//获取用户位置
 			getLocation() {
-				uni.showLoading({
-					title: '正在获取定位',
-				})
+				// uni.showLoading({
+				// 	title: '正在获取定位',
+				// })
 
 				// 使用Promise包装uni.getLocation, 增加可读性（有回调函数的方法都可以这样做）
 				new Promise((resolve, rejected) => {
@@ -86,7 +86,7 @@
 						fail: err => rejected(res)
 					})
 				}).then(res => {
-					uni.hideLoading()
+					// uni.hideLoading()
 					this.longitude = res.longitude
 					this.latitude = res.latitude
 					this.covers = [{
@@ -108,7 +108,7 @@
 					})
 
 				}).catch(err => {
-					uni.hideLoading()
+					// uni.hideLoading()
 					uni.showModal({
 						title: '提示',
 						content: '位置信息获取失败（请检查定位功能是否打开）',
