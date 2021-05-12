@@ -2,11 +2,12 @@
 const BASE_URL = 'http://api.shawnxixi.icu:8080'
 
 export const request = (options) => {
+	
+	let header = {}
 	try{
-		var token = uni.getStorageSync('User').accesstoken || null;
-		var header = {
-			'Authorization': token
-		}
+		let tokenKey = uni.getStorageSync('tokenKey') || null
+		let tokenValue = uni.getStorageSync('tokenValue') || null
+		header['tokenKey'] = tokenValue
 	}
 	catch(err) {
 		console.log(err)
