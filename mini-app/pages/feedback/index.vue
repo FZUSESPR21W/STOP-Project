@@ -103,12 +103,11 @@
 				//图片文件列表
 				fileList:[],
 				
+				//公告列表
+				noticeList:[],
+				
 				//公告内容
-				notice: [
-					'西三日常拥堵',
-					'东三日常拥堵',
-					'到处都在拥堵'
-				],
+				notice: ['公告',],
 
 				//轮播图内容
 				swiper: [{
@@ -175,7 +174,11 @@
 		},
 		
 		onLoad() {
-		
+			
+			this.$api.Notice.getNoticeList().then(res => {
+				this.noticeList = res.data.data.noticeList;
+				this.notice[0] = this.noticeList[0].content;
+			})
 		},
 		
 		onReady() {
