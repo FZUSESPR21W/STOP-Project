@@ -6,8 +6,8 @@
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
-		<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox" catchtouchmove>
-			<scroll-view scroll-y :style="{height:scrollHeight}">
+		<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox" catchtap="noScrolling" catchtouchmove='true'>
+			
 			<!-- 向上导航条容器开始 -->
 			<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList">
 				<uni-transition mode-class="fade" custom-class="exhale-bar" :show="showExhaleBar" />
@@ -28,6 +28,7 @@
 				/>
 				<u-icon style="position: absolute;top: 6rpx;" slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="32px" name="search()"></u-icon>
 			</view>
+			<scroll-view scroll-y :style="{height:scrollHeight}">
 			<!-- 搜索框容器结束 -->
 			<view class="place-list" v-show="showPlaceList">
 				<view>
@@ -96,7 +97,7 @@ export default{
 		
 		//禁止滚动
 		//该方法解决IOS下点击地点框会层级穿透至map组件内的BUG
-		true(){
+		noScrolling(){
 			console.log('test');
 			return false;
 		},
@@ -298,6 +299,7 @@ export default{
 		height: 40px;
 		margin: 0 auto;
 		margin-top: 10px;
+		margin-bottom: 4px;
 		width: 86%;
 		border-radius: 10px ;
 		position: relative;
