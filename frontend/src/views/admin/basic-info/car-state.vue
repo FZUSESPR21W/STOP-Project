@@ -23,16 +23,13 @@ export default {
           },
           xAxis: {
             type: 'category',
-            data: ['一区', '二区', '三区', '四区', '五区', '研究生公寓',
-              '紫荆', '玫瑰', '丁香', '京元', '西三', '西二', '西一', '中楼',
-              '东一', '东二', '文楼']
+            data: []
           },
           yAxis: {
             type: 'value'
           },
           series: [{
-            data: [500, 420, 490, 380, 356, 343, 332,
-              330, 327, 304, 278, 267, 213, 142, 102, 102, 55, 55],
+            data: [],
             type: 'bar',
             itemStyle: {
               normal: {
@@ -51,18 +48,25 @@ export default {
     }
   },
   beforeMount() {
-    //获取停车情况
-    this.getCarState()
     // 更新面包屑路径
-    this.$store.commit('setPageLocations', ['基础','车辆情况'])
+    this.$store.commit('setPageLocations', ['基础', '车辆情况'])
   },
   mounted() {
-    // 绘制车辆信息图表
-    this.paintCarState()
+    // 获取停车情况并绘制车辆信息图表
+    this.getCarStateAndPaint()
   },
   methods: {
     // 获取停车情况
-    getCarState() {
+    getCarStateAndPaint() {
+      this.$api.Statistics.getStopStatusDaily().then(res => {
+        res.data.data.stopStatusDaily.forEach(item => {
+          this.graph.car.xAxis.data.push(item.name)
+          this.graph.car.series[0].data.push(parseInt(item.value))
+        })
+
+        this.paintCarState()
+
+      })
     },
     // 绘制车辆信息图表
     paintCarState() {

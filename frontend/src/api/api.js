@@ -93,7 +93,7 @@ export class Notice {
  */
 export class Statistics {
     /**
-     * 获取每日停车数据
+     * 获取昨日停车数据峰值
      * @returns {*}
      */
     static getStopStatusDaily() {
@@ -115,6 +115,7 @@ export class Statistics {
     static getStopStatusHourly() {
         return axios.get('/api/stop_status_hourly')
     }
+
 }
 
 /**
