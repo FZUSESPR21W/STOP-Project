@@ -27,13 +27,16 @@
 		data() {
 			return {
 				// 数据请加注释
+				//经纬度
 				latitude: '',
 				longitude: '',
+				//marker标记
 				covers: [],
+				//地图高度
 				mapHeight: '90vh',
+				//绘图用的多边形
 				polygons: '',
-				marker: [],
-				coverViewStyle: '',
+				//用于存放数据的map
 				markerMap:'',
 				stop:''
 			}
@@ -80,7 +83,6 @@
 						}
 					})
 				}).catch(err => {
-					// uni.hideLoading()
 					uni.showModal({
 						title: '提示',
 						content: '位置信息获取失败（请检查定位功能是否打开）',
@@ -101,20 +103,14 @@
 							console.log(r)
 							let stop = r.data.data.stopStatusList
 							for(let j = 0;j<stop.length;j++) {
-								// console.log(stop[j])
 								stopMap.set(parseInt(stop[j].id),stop[j].value)
 							}
 							this.stop = stopMap
-							// console.log(stopMap)
 							let array = res.data.data.deviceList
-							// console.log(res.data.data.deviceList)
 									let index = 0
 									for(let i = 0;i<array.length;i++) {
 										let data = array[i].deviceDO
-										// console.log(data.id)
-										// console.log(array[i].online)
 										if(array[i].online == true) {
-											// console.log(stopMap)
 											let num = stopMap.get(data.id)
 											console.log(num)
 											this.covers[index] = {
