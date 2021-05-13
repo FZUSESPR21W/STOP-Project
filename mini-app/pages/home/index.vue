@@ -57,15 +57,6 @@
 			if (uni.getUserProfile) {
 			  this.canIUseGetUserProfile = true
 			};
-			  // 使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
-			  uni.getUserProfile({
-			    desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-			    success: (res) => {
-			      this.userInfo = res.userInfo,
-				  console.log('success1')
-				  
-			    }
-			  })
 		},
 		methods: {
 			
@@ -100,13 +91,13 @@
 			      this.hasUserInfo = true
 				  //将数据存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个异步接口。
 				  uni.setStorage({
-				  	key:'user-info_key',
-				  					data:this.userInfo,
-				  					success: function () {
-				  					        console.log('success2');
-				  					    }
-				  })
-			},
+					key:'user-info_key',
+				  	data:this.userInfo,
+				  	success: function () {
+						console.log('success2');
+						},
+					})
+				  },
 				})
 			},
 		}
