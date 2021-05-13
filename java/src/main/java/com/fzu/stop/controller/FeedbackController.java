@@ -29,9 +29,11 @@ public class FeedbackController {
     @ResponseBody
     public ResponseDTO getFeedbackList(@Min(value = 1,message = "错误的id") Integer page,@Min(value = 1,message = "错误的id") Integer limit) {
         List<FeedbackDO> feedbackList = feedbackService.getFeedbackList(page, limit);
+        Integer total = feedbackService.getCount();
         if (feedbackList.size() > 0) {
             Map<String, Object> data = new HashMap<>(limit);
             data.put("feedbackList", feedbackList);
+            data.put("total", total);
             return ResponseUtil.getSuccessResponse("获取成功", data);
         }
         return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));

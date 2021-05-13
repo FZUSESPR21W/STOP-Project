@@ -26,6 +26,12 @@ public interface FeedbackDao {
     FeedbackDO getFeedback(int id);
 
     /**
+     * 获取反馈总数
+     * @return
+     */
+    Integer getCount();
+
+    /**
      * 更新反馈状态
      * @param id
      * @param status

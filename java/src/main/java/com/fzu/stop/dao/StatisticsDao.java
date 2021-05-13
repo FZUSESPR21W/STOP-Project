@@ -14,14 +14,15 @@ import java.util.List;
 public interface StatisticsDao {
     /**
      * 获取所有地点最新停车情况
-     * @param time
+     * @param start
+     * @param end
      * @param id
      * @return
      */
     List<ParkingSituationDO> getParkingSituation(String start,String end, Integer id);
 
     /**
-     * 获取所有地点最新停车情况
+     * 近两小时停车情况
      * @param time
      * @param id
      * @return
