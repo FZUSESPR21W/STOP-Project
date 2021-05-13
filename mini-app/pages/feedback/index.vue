@@ -50,9 +50,11 @@
 					<!-- 图片带参上传组件 -->
 					<u-upload
 						@on-list-change="onListChange"
+						@on-Success="onSuccess"
+						@on-Remove="onRemove"
 						ref="uUpload"
 						:custom-btn="true"
-						:auto-upload="false"
+						:auto-upload="true"
 						:action="action"
 						:file-list="fileList"
 						:max-size="5 * 1024 * 1024"
@@ -94,16 +96,19 @@
 		data() {
 			return {
 				//服务器地址
-				action: 'http://api.shawnxixi.icu:8080/api/upload_pic',
+				action: 'https://api.shawnxixi.icu/api/upload_pic',
 				//表格上传所带参数
 				form:{
 					feedback: "",
+					pictureUrl: "",
 				},
+				
 				//图片文件列表
-				fileList:[],
+				fileList: [],
+				imageList :[],
 				
 				//公告列表
-				noticeList:[],
+				noticeList: [],
 				
 				//公告内容
 				notice: ['公告',],
@@ -196,23 +201,42 @@
 				this.photoNum=lists.length;
 			},
 			
+			onSuccess(data, index, lists){
+				//页面上定义的临时存放图片的对象，提示也保存后台返回的图片名称
+				let url = data.data.pictureUrl;
+				//成功上传一个图片就往fileList里面添加一个图片对象
+				this.imageList.push(url);
+				//this.form.pictureUrl为后台图片字段来保存字符串类型的图片集合
+				this.form.pictureUrl = JSON.stringify(this.imageList)
+				//console.log("打印图片List：onSuccess", this.imageList);
+			},
+			
+			onRemove(index, lists){
+				//获得删除指定选择图片后的新文件列表
+				this.imageList = [...this.imageList.slice(0, index) , ...this.imageList.slice(index + 1)]
+				this.form.pictureUrl = JSON.stringify(this.imageList)
+				//console.log("打印图片List：onRemove", this.imageList);
+			},
 			
 			//提交按钮点击事件
 			submit() {
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
 						console.log('验证通过');
-						let content = this.form.feedback;
-						console.log(JSON.stringify(content));
-						this.$api.User.feedback(content).then(res => {
+						let text = this.form.feedback;
+						let picture = this.form.pictureUrl;
+						console.log(JSON.stringify(text,picture));
+						this.$api.User.feedback(text,picture).then(res => {
 							this.$refs.uToast.show({
 									title: '提交成功',
 									type: 'success',
 							})
+							//this.$refs.uUpload.upload();
 							//重置表单
 							this.form=this.$options.data().form;
 							this.charNum=0;
 							this.$refs.uUpload.clear();
+							this.fileList = [];
 						}).catch(err => {
 							// 失败提示信息
 							this.$refs.uToast.show({
@@ -220,7 +244,6 @@
 									type: 'fail',
 							})
 						})
-						this.$refs.uUpload.upload();
 					} else {
 						this.$refs.uToast.show({
 								title: '验证失败',

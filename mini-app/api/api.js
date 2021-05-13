@@ -24,12 +24,13 @@ export class User {
 		})
 	}
 	
-	static feedback(content) {
+	static feedback(content,picture) {
 		return request({
 			url: '/user/complain',
 			method: 'post',
 			data: {
-				content
+				content,
+				picture
 			}
 		})
 	}
