@@ -33,7 +33,8 @@
 				mapHeight: '90vh',
 				polygons: '',
 				marker: [],
-				coverViewStyle: ''
+				coverViewStyle: '',
+				markerMap:''
 			}
 		},
 
@@ -60,11 +61,13 @@
 			},
 			//标记点击事件
 			clickMarker(res) {
-				// console.log(res);
-				// console.log(this.covers)
-				console.log(this.covers[res.target.markerId].latitude)
-				console.log(this.covers[res.target.markerId].longitude)
-				this.navigateTo(this.covers[res.target.markerId].latitude,this.covers[res.target.markerId].longitude)
+				
+				console.log();
+				let data = this.covers[this.markerMap.get(res.target.markerId)]
+				console.log(data.latitude)
+				console.log(data.longitude)
+				console.log(data.name)
+				// this.navigateTo(this.covers[id].latitude,this.covers[id].longitude)
 			},
 			//返回中心点
 			moveToCenter() {
@@ -73,10 +76,6 @@
 			},
 			//获取用户位置
 			getLocation() {
-				// uni.showLoading({
-				// 	title: '正在获取定位',
-				// })
-
 				// 使用Promise包装uni.getLocation, 增加可读性（有回调函数的方法都可以这样做）
 				new Promise((resolve, rejected) => {
 					uni.getLocation({
@@ -86,17 +85,8 @@
 						fail: err => rejected(res)
 					})
 				}).then(res => {
-					// uni.hideLoading()
 					this.longitude = res.longitude
 					this.latitude = res.latitude
-					this.covers = [{
-						id: 0,
-						name: 'test',
-						// iconPath: '../../../static/map-icon/mylocation.png',
-						latitude: 26.060929253238374,
-						longitude: 119.1981588742523,
-						length: 2
-					}];
 					let left
 					let top
 					uni.getSystemInfo({
@@ -105,7 +95,6 @@
 							top = res.windowHeight * 0.2
 						}
 					})
-
 				}).catch(err => {
 					// uni.hideLoading()
 					uni.showModal({
@@ -118,8 +107,33 @@
 			
 		},
 		created() {
+			let deviceMap = new Map()
 			this.getLocation();
-
+			this.$api.Statistics.getAllDevice().then(
+				(res) => {
+					let array = res.data.data.deviceList
+//					console.log(res.data.data.deviceList)			
+					for(let i = 0;i<array.length;i++) {
+						let data = array[i].deviceDO
+						// console.log(data)
+						this.covers[i] = {
+							id: data.id,
+							name: data.name,
+							latitude: data.latitude,
+							longitude: data.longitude,
+							capacity: data.maxCarsNumber
+						}
+						// console.log(i)
+						// console.log(data.id)
+						// console.log('------')
+						deviceMap.set(data.id,i)
+					}
+					
+					console.log(this.covers)
+					this.markerMap = deviceMap
+				}
+				
+			)
 			var polygons = [{
 					strokeWidth: 3,
 					strokeColor: '#266339',
@@ -168,7 +182,10 @@
 			]
 			this.polygons = polygons
 		},
-
+		onShow() {
+			let deviceMap = new Map()
+			
+		}
 	}
 </script>
 

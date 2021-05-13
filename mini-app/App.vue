@@ -8,7 +8,7 @@
 					console.log(res)
 					this.$api.User.login(res.code).then(
 						(res) => {
-							console.log(res)
+							// console.log(res)
 							uni.setStorage({
 								key: 'tokenKey',
 								data: res.data.data.tokenKey
@@ -61,6 +61,7 @@
 					}
 				}
 			})
+			
 		},
 		onShow: function() {
 			console.log('App Show')
