@@ -94,9 +94,6 @@
 				  uni.setStorage({
 					key:'user-info_key',
 				  	data:this.userInfo,
-				  	success: function () {
-						console.log('success2');
-						},
 					})
 				  },
 				})
