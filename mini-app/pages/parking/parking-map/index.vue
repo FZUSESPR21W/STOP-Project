@@ -92,11 +92,10 @@
 					this.covers = [{
 						id: 0,
 						name: 'test',
-						iconPath: '../../../static/map-icon/location.png',
+						// iconPath: '../../../static/map-icon/mylocation.png',
 						latitude: 26.060929253238374,
 						longitude: 119.1981588742523,
-						width: 50,
-						length: 50,
+						length: 2
 					}];
 					let left
 					let top
