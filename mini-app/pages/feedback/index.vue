@@ -10,8 +10,26 @@
 			</view>
 			<!-- 公告组件 -->
 			<view>
-				<u-notice-bar mode="horizontal" :list="notice" :indicator-pos="indicatorPos" :interval="3000"></u-notice-bar>
+				<u-notice-bar mode="vertical" :list="notice" :indicator-pos="indicatorPos" :interval="3000" :disable-touch="false" @click="changeNoticeIndex($event)"></u-notice-bar>
 			</view>
+			<!-- 详细公告 -->
+			<u-popup 
+				v-model="noticeShow"
+				mode="center" 
+				border-radius="10" 
+				length="80%" 
+				:mask="mask"
+				:closeable="closeable"
+				:close-icon-pos="closeIconPos">
+					<!-- 文字与关闭按钮 -->
+					<view style="height: 800rpx">
+						<view class="info-title">公告</view>
+						<view class="info-text">{{ notice[noticeIndex] }}</view>
+						<view class="close-btn">
+							<u-button @click="noticeShow = false;" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" size="medium">关闭</u-button>
+						</view>
+					</view>
+			</u-popup>
 		</view>
 		<!-- 轮播图、公告组件容器结束 -->
 		
@@ -50,9 +68,11 @@
 					<!-- 图片带参上传组件 -->
 					<u-upload
 						@on-list-change="onListChange"
+						@on-Success="onSuccess"
+						@on-Remove="onRemove"
 						ref="uUpload"
 						:custom-btn="true"
-						:auto-upload="false"
+						:auto-upload="true"
 						:action="action"
 						:file-list="fileList"
 						:max-size="5 * 1024 * 1024"
@@ -94,19 +114,22 @@
 		data() {
 			return {
 				//服务器地址
-				action: 'http://api.shawnxixi.icu:8080/api/upload_pic',
+				action: 'https://api.shawnxixi.icu/api/upload_pic',
 				//表格上传所带参数
 				form:{
 					feedback: "",
+					pictureUrl: "",
 				},
+				
 				//图片文件列表
-				fileList:[],
+				fileList: [],
+				imageList :[],
 				
 				//公告列表
-				noticeList:[],
+				noticeList: [],
 				
 				//公告内容
-				notice: ['公告',],
+				notice: ['公告1','公告2','公告3',],
 
 				//轮播图内容
 				swiper: [{
@@ -169,6 +192,14 @@
 				labelPosition: 'top',
 				border: true,				
 				errorType: ['border'],//违法输入以红色边框形式进行提示
+				
+				//弹窗样式
+				mask: true, // 是否显示遮罩
+				closeable: true,
+				closeIconPos: 'top-right',
+				noticeIndex: 0,
+				noticeShow: false,
+				
 			};
 		},
 		
@@ -176,6 +207,8 @@
 			this.$api.Notice.getNoticeList().then(res => {
 				this.noticeList = res.data.data.noticeList;
 				this.notice[0] = this.noticeList[0].content;
+				this.notice[1] = this.noticeList[1].content;
+				this.notice[2] = this.noticeList[2].content;
 			})
 		},
 		
@@ -196,23 +229,42 @@
 				this.photoNum=lists.length;
 			},
 			
+			onSuccess(data, index, lists){
+				//页面上定义的临时存放图片的对象，提示也保存后台返回的图片名称
+				let url = data.data.pictureUrl;
+				//成功上传一个图片就往fileList里面添加一个图片对象
+				this.imageList.push(url);
+				//this.form.pictureUrl为后台图片字段来保存字符串类型的图片集合
+				this.form.pictureUrl = JSON.stringify(this.imageList)
+				console.log("打印图片List：onSuccess", this.imageList);
+			},
+			
+			onRemove(index, lists){
+				//获得删除指定选择图片后的新文件列表
+				this.imageList = [...this.imageList.slice(0, index) , ...this.imageList.slice(index + 1)]
+				this.form.pictureUrl = JSON.stringify(this.imageList)
+				console.log("打印图片List：onRemove", this.imageList);
+			},
 			
 			//提交按钮点击事件
 			submit() {
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
 						console.log('验证通过');
-						let content = this.form.feedback;
-						console.log(JSON.stringify(content));
-						this.$api.User.feedback(content).then(res => {
+						let text = `${this.form.feedback}[imageList]${this.form.pictureUrl}`
+						let picture = ''
+						console.log(JSON.stringify(text,picture));
+						this.$api.User.feedback(text,picture).then(res => {
 							this.$refs.uToast.show({
 									title: '提交成功',
 									type: 'success',
 							})
+							//this.$refs.uUpload.upload();
 							//重置表单
 							this.form=this.$options.data().form;
 							this.charNum=0;
 							this.$refs.uUpload.clear();
+							this.fileList = [];
 						}).catch(err => {
 							// 失败提示信息
 							this.$refs.uToast.show({
@@ -220,7 +272,6 @@
 									type: 'fail',
 							})
 						})
-						this.$refs.uUpload.upload();
 					} else {
 						this.$refs.uToast.show({
 								title: '验证失败',
@@ -229,6 +280,11 @@
 					}
 				});
 			},
+			
+			changeNoticeIndex(index) {
+				this.noticeIndex = index
+				this.noticeShow = true
+			}
 
 		}
 	};
@@ -256,6 +312,24 @@
 		top:886rpx;
 		right:60rpx;
 		color: $uni-text-color-placeholder;
+	}
+	
+	.info-title {
+		padding-top: 70rpx;
+		font: bold 50rpx arial,sans-serif;
+		text-align: center;
+	}
+	
+	.info-text {
+		padding: 40rpx 40rpx;
+		font-size: 35rpx;
+	}
+	
+	.close-btn {
+		position: absolute;
+		top:650rpx;
+		right:180rpx;
+		text-align: center;
 	}
 
 	.upload-btn {
