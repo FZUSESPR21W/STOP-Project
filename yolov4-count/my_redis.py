@@ -39,6 +39,8 @@ class Redis:
                     else:
                         self.__device_table[key] = id
                         self.__device_video[id] = value["url"]
+                else:
+                    self.__device_video[id] = value["url"]
 
     def get_device_video(self):
         return self.__device_video

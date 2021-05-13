@@ -29,7 +29,7 @@ class Database:
             logging.error(e)
 
     def select_device_id(self, device_name):
-        select = "select id from device where name=\"{0}\"".format(device_name)
+        select = "select id from device where device_name=\"{0}\"".format(device_name)
         cursor = self.__db.cursor()
         cursor.execute(select)
         id = cursor.fetchone()
