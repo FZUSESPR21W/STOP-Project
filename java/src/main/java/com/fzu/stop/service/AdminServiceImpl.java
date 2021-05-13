@@ -20,6 +20,9 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AdminDO login(String username, String password) {
         AdminDO admin = adminDao.getAdminByUsername(username);
+        if(admin==null){
+            return null;
+        }
         String newPassword = SaSecureUtil.md5BySalt(password, salt);
         if(newPassword.equals(admin.getPassword())){
             return admin;

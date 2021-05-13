@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fzu.stop.dao.AdminDao">
     <select id="getAdminByUsername" resultType="com.fzu.stop.pojo.AdminDO">
-        select * from admin where username = #{username}
+        select * from admin where BINARY username = #{username}
     </select>
     <select id="getAdminById" resultType="com.fzu.stop.pojo.AdminDO">
         select * from admin where id = #{id}
