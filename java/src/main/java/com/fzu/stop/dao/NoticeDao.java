@@ -43,4 +43,10 @@ public interface NoticeDao {
      */
     void updateNoticeById(NoticeDO notice);
 
+    /**
+     * 删除公告
+     * @param id 公告id
+     */
+    void deleteNoticeById(Integer id);
+
 }
