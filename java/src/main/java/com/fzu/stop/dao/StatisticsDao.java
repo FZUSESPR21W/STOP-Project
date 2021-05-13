@@ -22,14 +22,15 @@ public interface StatisticsDao {
 
     /**
      * 近两小时停车情况
-     * @param time
+     * @param start
+     * @param end
      * @param id
      * @return
      */
-    Integer getHourlyParkingSituation(String time, Integer id);
+    Integer getHourlyParkingSituation(String start,String end, Integer id);
 
     /**
-     * 获取start到end期间每日停车数据
+     * 获取start到end期间停车峰值数据
      * @param start
      * @param end
      * @return

@@ -24,7 +24,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public List<ParkingSituationDO> getParkingSituation(Integer id) {
         Date date = new Date();
-        Date startTime = new Date(date.getTime() - 24 * 60 * 60 * 1000);
+        Date startTime = new Date(date.getTime() - 2 * 60 * 60 * 1000);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         System.out.println(df.format(date));
         return statisticsDao.getParkingSituation(df.format(startTime), df.format(date), id);
@@ -46,7 +46,8 @@ public class StatisticsServiceImpl implements StatisticsService {
             map.put("name", deviceDO.getName());
             Date time = new Date(date.getTime() - 2 * 60 * 60 * 1000);
             for (int i = 0; i < NUM; i++) {
-                Integer value = statisticsDao.getHourlyParkingSituation(df.format(time), id);
+                Date start = new Date(time.getTime() - 2 * 60 * 60 * 1000);
+                Integer value = statisticsDao.getHourlyParkingSituation(df.format(start), df.format(time), id);
                 list.add(value == null ? 0 : value);
                 time = new Date(time.getTime() + 20 * 60 * 1000);
             }

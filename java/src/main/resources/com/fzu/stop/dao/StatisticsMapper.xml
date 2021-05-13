@@ -22,13 +22,13 @@
         where time in
               (select max(time)
                from crowd_situation
-               where `time` &lt;= #{time}
+               where `time` between #{start} and #{end}
                  and device_id = #{id}
               )
     </select>
 
     <select id="getDailyParkingSituation" resultType="com.fzu.stop.pojo.ParkingSituationDO">
-        select DATE_FORMAT(time, "%Y-%m-%d") time, sum(cars_number) value, device.name
+        select DATE_FORMAT(time, "%Y-%m-%d") time, max(cars_number) value, device.name
         from crowd_situation,
              device
         where time between #{start} and #{end}
