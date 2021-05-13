@@ -4,7 +4,6 @@
     <!-- 用户反馈列表开始 -->
     <div class="user-feedback" v-for="(item, index) in feedbackList" :key="index">
       <!-- 发布人信息 -->
-
       <div class="username">
         {{ `用户：${item.username}` }}
         <!-- 处理标记 -->
@@ -25,6 +24,21 @@
     <!-- 用户反馈列表结束 -->
     <!-- 分页器 -->
     <el-pagination background layout="prev, pager, next" :total="(total / 5) * 10" @current-change="changePage($event)"/>
+
+    <!-- 详细反馈对话框开始 -->
+    <el-dialog title="提示" :visible.sync="showFeedBackDialog" width="30%" >
+      <span>{{ feedbackContent }}</span>
+      <div class="imageList" v-if="imageUrlList.length !== 0">
+        <h5>反馈图片：</h5>
+        <a v-for="item in imageUrlList" :href="`https://api.shawnxixi.icu${item}`">{{ item }}</a>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="showFeedBackDialog = false">返回</el-button>
+      </span>
+    </el-dialog>
+    <!-- 详细反馈对话框结束 -->
+
+
   </div>
   <!-- 用户反馈容器结束 -->
 </template>
@@ -36,12 +50,18 @@ export default {
     return {
       // 用户反馈列表
       feedbackList: [],
+      // 图片路径表
+      imageUrlList: [],
       // 反馈列表-当前页
       page: 1,
       // 每页限制
       limit: 5,
       // 总记录
       total: 0,
+      // 显示反馈对话框标志
+      showFeedBackDialog: false,
+      // 反馈内容
+      feedbackContent: '',
       //加载动画
       loading: false
     }
@@ -82,11 +102,25 @@ export default {
     checkDetail(id) {
       // 请求获取反馈内容
       this.$api.Feedback.getDetail(id).then(res => {
+
+        this.imageUrlList = []
+
+        let content = ''
+        try {
+          // 分拆图片数据
+          let temp = res.data.data.feedback.content.split('[imageList]')
+          this.feedbackContent = temp[0]
+          this.imageUrlList = JSON.parse(temp[1])
+        }
+        catch(e) {
+          // 如果没有图片数据
+          this.feedbackContent = res.data.data.feedback.content.split('[imageList]')[0]
+        }
+
         // 显示对话框
-        this.$alert(res.data.data.feedback.content, '反馈内容', {
-          confirmButtonText: '返回',
-        })
+        this.showFeedBackDialog = true
       }).catch(err => {
+        console.log(err)
         this.$message.error('获取反馈内容失败')
       })
     },
@@ -162,5 +196,10 @@ export default {
     }
   }
 
+}
+
+.imageList {
+  display: flex;
+  flex-direction: column;
 }
 </style>
