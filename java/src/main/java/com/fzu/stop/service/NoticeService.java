@@ -40,4 +40,11 @@ public interface NoticeService {
      * @param notice 公告
      */
     void updateNotice(NoticeDO notice);
+
+
+    /**
+     * 删除公告
+     * @param id 公告id
+     */
+    void deleteNotice(Integer id);
 }

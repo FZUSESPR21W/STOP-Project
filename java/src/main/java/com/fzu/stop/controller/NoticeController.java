@@ -68,4 +68,11 @@ public class NoticeController {
         noticeService.updateNotice(notice);
         return ResponseUtil.getSuccessResponse("更新成功",new HashMap<>());
     }
+
+    @ResponseBody
+    @GetMapping("/delete")
+    public ResponseDTO deleteNotice(@NotNull(message = "id不能为空") Integer id){
+        noticeService.deleteNotice(id);
+        return ResponseUtil.getSuccessResponse("删除成功",new HashMap<>());
+    }
 }

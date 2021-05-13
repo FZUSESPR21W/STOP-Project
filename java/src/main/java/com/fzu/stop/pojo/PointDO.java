@@ -5,7 +5,7 @@ package com.fzu.stop.pojo;
  */
 public class PointDO {
     Integer id;
-    Integer blockId;
+    Integer deviceId;
     String latitude;
     String longitude;
 
@@ -17,12 +17,12 @@ public class PointDO {
         this.id = id;
     }
 
-    public Integer getBlockId() {
-        return blockId;
+    public Integer getDeviceId() {
+        return deviceId;
     }
 
-    public void setBlockId(Integer blockId) {
-        this.blockId = blockId;
+    public void setDeviceId(Integer deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getLatitude() {
@@ -45,7 +45,7 @@ public class PointDO {
     public String toString() {
         return "PointDO{" +
                 "id=" + id +
-                ", blockId=" + blockId +
+                ", deviceId=" + deviceId +
                 ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +
                 '}';

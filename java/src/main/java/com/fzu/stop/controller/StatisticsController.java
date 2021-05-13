@@ -1,6 +1,8 @@
 package com.fzu.stop.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fzu.stop.pojo.PointDO;
 import com.fzu.stop.util.ResponseUtil;
 import com.fzu.stop.util.WechatUtil;
 import com.fzu.stop.pojo.ParkingSituationDO;
@@ -36,11 +38,23 @@ public class StatisticsController {
     StatisticsService statisticsService;
     @GetMapping("/stop_status")
     @ResponseBody
-    public ResponseDTO getParkingSituation(){
-        List<ParkingSituationDO> parkingSituationDOList=statisticsService.getParkingSituation();
+    public ResponseDTO getParkingSituation(Integer id){
+        List<ParkingSituationDO> parkingSituationDOList=statisticsService.getParkingSituation(id);
         if (parkingSituationDOList.size() > 0) {
             Map<String, Object> data = new HashMap<>(parkingSituationDOList.size());
             data.put("stopStatusList", parkingSituationDOList);
+            return ResponseUtil.getSuccessResponse("获取成功", data);
+        }
+        return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
+    }
+
+    @GetMapping("/stop_status_hourly")
+    @ResponseBody
+    public ResponseDTO getHourParkingStatistics(){
+        List<Object> hourParkingSituation=statisticsService.getHourParkingSituation();
+        if (hourParkingSituation.size() > 0) {
+            Map<String, Object> data = new HashMap<>(hourParkingSituation.size());
+            data.put("stopStatusHourly", hourParkingSituation);
             return ResponseUtil.getSuccessResponse("获取成功", data);
         }
         return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
@@ -55,7 +69,7 @@ public class StatisticsController {
             data.put("stopStatusDaily", dailyParkingSituation);
             return ResponseUtil.getSuccessResponse("获取成功", data);
         }
-        return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
+        return ResponseUtil.getFailResponse("暂无数据", new HashMap<>(16));
     }
 
     @GetMapping("/get_login_list")
@@ -99,4 +113,21 @@ public class StatisticsController {
         return ResponseUtil.getSuccessResponse("获取成功",data);
 
     }
+    @Operation(description = "根据设备id获取点的集合")
+    @GetMapping("/get_points")
+    @ResponseBody
+    public ResponseDTO getPointsByDeviceId(Integer id){
+        List<PointDO> pointDOS = statisticsService.getPointsByDeviceId(id);
+        JSONArray jsonArray=new JSONArray();
+        for (PointDO pointDO : pointDOS) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("latitude",pointDO.getLatitude());
+            jsonObject.put("longitude",pointDO.getLongitude());
+            jsonArray.add(jsonObject);
+        }
+        Map<String,Object> data=new HashMap<>();
+        data.put("points",jsonArray);
+        return ResponseUtil.getSuccessResponse("获取成功",data);
+    }
+
 }

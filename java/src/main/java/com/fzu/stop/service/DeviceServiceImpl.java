@@ -123,6 +123,7 @@ public class DeviceServiceImpl extends MessageListenerAdapter implements DeviceS
 	@Override
 	public void onMessage(@NotNull Message message, byte[] pattern) {
 		log.debug("redis订阅信息："+message);
+		deviceService.listAllDevice();
 	}
 
 }

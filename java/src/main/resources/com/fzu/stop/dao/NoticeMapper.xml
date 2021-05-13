@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fzu.stop.dao.NoticeDao">
-    <insert id="insertNotice" parameterType="com.fzu.stop.pojo.NoticeDO">
+    <insert id="insertNotice" keyProperty="id" useGeneratedKeys="true" parameterType="com.fzu.stop.pojo.NoticeDO">
         insert into notice(title, content, top, update_time, status)
         values(#{title},#{content},#{top},CURRENT_TIMESTAMP,#{status})
     </insert>
@@ -12,7 +12,7 @@
         select * from notice
         <where>
             <if test="keyword != null and keyword != ''">
-                title like '%${keyword}%' or content like '%${keyword}%'
+                title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%')
             </if>
             <if test="top != null">
                 and top = #{top}
@@ -48,4 +48,7 @@
         </set>
         where id = #{id}
     </update>
+    <delete id="deleteNoticeById" parameterType="com.fzu.stop.pojo.NoticeDO">
+        delete from notice where id = #{id}
+    </delete>
 </mapper>
