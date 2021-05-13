@@ -32,7 +32,7 @@
 				:close-icon-pos="closeIconPos"
 			>
 				<!-- 文字与关闭按钮 -->
-				<view style="height: 800rpx">
+				<view style="height: 1000rpx">
 					<view class="info-title">{{funcTitle}}</view>
 					<view class="info-text">{{funcText}}</view>
 					<view class="close-btn">
@@ -49,7 +49,7 @@
 				:close-icon-pos="closeIconPos"
 			>
 				<!-- 文字与关闭按钮 -->
-				<view style="height: 800rpx">
+				<view style="height: 1000rpx">
 					<view class="info-title">{{privTitle}}</view>
 					<view class="info-text">{{privText}}</view>
 					<view class="close-btn">
@@ -66,7 +66,7 @@
 				:close-icon-pos="closeIconPos"
 			>
 				<!-- 文字与关闭按钮 -->
-				<view style="height: 800rpx">
+				<view style="height: 1000rpx">
 					<view class="info-title">{{protTitle}}</view>
 					<view class="info-text">{{protText}}</view>
 					<view class="close-btn">
@@ -99,9 +99,9 @@
 				funcTitle: "功能介绍",
 				funcText: "本软件能快速准确识别指定区域内电动车数量，让用户了解目的地周边停车区域车位占用状况、拥挤程度，对停车乱象可以进行拍照投诉；同时提供可视化数据，方便电动车管理员进行统筹管理、发布公告、接收意见反馈。最终达到缓解用户找车位难，停车难问题的效果。",
 				privTitle: "隐私政策",
-				privText: "隐私政策隐私政策隐私政策隐私政策隐私政策隐私政策",
+				privText: "本小程序尊重并保护所有使用服务用户的个人隐私权。为了给您提供更准确、更有个性化的服务，本小程序收集的有关您的信息和资料将保存在本小程序及（或）其关联的服务器上，这些信息和资料可能传送至您所在地区被访问、存储和展示。但本小程序将以高度的勤勉、审慎义务对待这些信息。在未征得您事先许可的情况下，本小程序不会将这些信息对外披露或向第三方提供。本小程序会不时更新本隐私权政策。",
 				protTitle: "服务协议",
-				protText: "服务协议服务协议服务协议服务协议服务协议服务协议",
+				protText: "你在使用本产品过程中，需要授予小程序部分权限，请保持这些权限始终开放，以便我们向你提供及时有效的帮助，或更好地为你提供服务。若你关闭这部分权限，则可能无法使用本服务或在使用过程中受到限制。你理解并同意，为了向你提供服务，需要在法律允许的范围内向小程序提供这些权限。",
 				
 				//关闭按钮样式
 				customStyle: {
@@ -151,7 +151,7 @@
 	}
 	.close-btn {
 		position: absolute;
-		top:650rpx;
+		top:850rpx;
 		right:180rpx;
 		text-align: center;
 	}

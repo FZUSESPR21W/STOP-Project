@@ -65,6 +65,7 @@
 				
 				console.log();
 				let data = this.covers[this.markerMap.get(res.target.markerId)]
+				this.$emit('clickCovers', data);
 			},
 			//返回中心点
 			moveToCenter() {
