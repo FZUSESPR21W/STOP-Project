@@ -214,6 +214,7 @@ module.exports = {
 	"line":{
 		"type": "line",
     "color": color,
+	"dataLabel": false,
 		"padding": [15,10,0,15],
 		"xAxis": {
       "disableGrid": true,
