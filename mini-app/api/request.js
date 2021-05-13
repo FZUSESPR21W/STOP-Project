@@ -1,5 +1,5 @@
 // 基于Promise封装的请求
-const BASE_URL = 'http://api.shawnxixi.icu:8080'
+const BASE_URL = 'https://api.shawnxixi.icu'
 
 export const request = (options) => {
 	
@@ -7,7 +7,7 @@ export const request = (options) => {
 	try{
 		let tokenKey = uni.getStorageSync('tokenKey') || null
 		let tokenValue = uni.getStorageSync('tokenValue') || null
-		header['tokenKey'] = tokenValue
+		header[tokenKey] = tokenValue
 	}
 	catch(err) {
 		console.log(err)

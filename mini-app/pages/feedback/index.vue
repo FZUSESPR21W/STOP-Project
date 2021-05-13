@@ -204,9 +204,7 @@
 						console.log('验证通过');
 						let content = this.form.feedback;
 						console.log(JSON.stringify(content));
-						const tokenKey = uni.getStorageSync('tokenKey');
-						const tokenValue = uni.getStorageSync('tokenValue');
-						this.$api.User.feedback(tokenKey,tokenValue,content).then(res => {
+						this.$api.User.feedback(content).then(res => {
 							this.$refs.uToast.show({
 									title: '提交成功',
 									type: 'success',

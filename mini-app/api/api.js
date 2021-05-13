@@ -24,13 +24,11 @@ export class User {
 		})
 	}
 	
-	static feedback(username,openid,content) {
+	static feedback(content) {
 		return request({
 			url: '/user/complain',
 			method: 'post',
 			data: {
-				username,
-				openid,
 				content
 			}
 		})
