@@ -91,6 +91,14 @@ export class Statistics {
     static getStopStatusDaily() {
         return axios.get('/api/stop_status_daily')
     }
+
+    /**
+     * 获取用户登录记录
+     * @returns {*}
+     */
+    static getLoginList() {
+        return axios.get('api/get_login_list')
+    }
 }
 
 /**

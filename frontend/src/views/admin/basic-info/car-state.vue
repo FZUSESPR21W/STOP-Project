@@ -48,6 +48,8 @@ export default {
   beforeMount() {
     //获取停车情况
     this.getCarState()
+    // 更新面包屑路径
+    this.$store.commit('setPageLocations', ['基础','车辆情况'])
   },
   mounted() {
     // 绘制车辆信息图表

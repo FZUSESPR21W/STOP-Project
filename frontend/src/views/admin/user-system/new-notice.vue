@@ -70,6 +70,8 @@ export default {
   beforeMount() {
     // 请求获取公告列表
     this.getNoticeList()
+    // 更新面包屑路径
+    this.$store.commit('setPageLocations', ['用户','发布公告'])
   },
   methods: {
     // 获取公告列表

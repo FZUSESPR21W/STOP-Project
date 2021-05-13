@@ -1,17 +1,22 @@
 <template>
   <div class="admin-page-contianer">
     <nav-side class="nav-side"/>
-    <router-view class="main"/>
+    <div class="main">
+      <bredcrumb />
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
 import navSide from '@/components/nav-side'
+import bredcrumb from '@/components/bredcrumb'
 
 export default {
   name: "index",
   components: {
-    navSide
+    navSide,
+    bredcrumb
   }
 }
 </script>

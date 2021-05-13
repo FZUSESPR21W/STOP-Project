@@ -28,6 +28,8 @@ export default {
     }
   },
   beforeMount() {
+    // 更新面包屑路径
+    this.$store.commit('setPageLocations', ['用户','用户反馈'])
     // 获取反馈信息列表
     this.$api.Feedback.getFeedbackList(this.page, this.limit).then(res => {
       this.feedbackList = res.data.data.feedbackList

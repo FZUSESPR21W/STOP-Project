@@ -4,6 +4,8 @@
     <!-- 用户登录记录开始 -->
     <div class="user-login-log-container">
       <span class="title">用户登录记录</span>
+      <!-- 提示banner -->
+      <el-alert title="项目未上线，无法获得数据" type="warning" show-icon class="banner"/>
       <!-- 用户登录记录表格，数据来源：userLoginData -->
       <el-table :data="userLogin.userLoginData" style="width: 100%" stripe>
         <!-- 日期字段 -->
@@ -34,6 +36,9 @@
 </template>
 
 <script>
+import initParkData from './init-graph-data/park-data'
+import initVisitData from './init-graph-data/visit-data'
+
 export default {
   name: "base-state",
   data() {
@@ -49,94 +54,10 @@ export default {
       },
       // 数据可视化(echarts图表）对象
       graph: {
-        // 福州大学教学楼停车情况数据
-        parkData: {
-          title: {
-            left: 'center',
-            text: '福州大学教学停车情况',
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: ['16:00', '16:20', '16:40', '17:00', '17:20', '17:40', '18:00']
-          },
-          yAxis: {
-            type: 'value',
-            name: '电动车/辆',
-            nameLocation: 'middle',
-            nameTextStyle: {
-              padding: [0 , 0 , 30 , 0]
-            }
-          },
-          series: [
-            {
-              name: '东三',
-              data: [360, 230, 250, 240, 270, 250, 70],
-              type: 'line',
-              areaStyle: {}
-            },
-            {
-              name: '西三',
-              data: [300, 280, 230, 240, 250, 150, 30],
-              type: 'line',
-              areaStyle: {}
-            }
-          ],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross',
-              label: {
-                backgroundColor: '#6a7985'
-              }
-            }
-          }
-        },
-        // STOP小程序端日访问量数据
-        visitData: {
-          title: {
-            text: 'STOP小程序端日访问量',
-            left: 'center'
-          },
-          tooltip: {
-            trigger: 'axis'
-          },
-          legend: {
-            data: ['访问量(PV)', '访问用户(UV)'],
-            left: 'left'
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: ['2021-5-1', '2021-5-2', '2021-5-3', '2021-5-4', '2021-5-5', '2021-5-6', '2021-5-7']
-          },
-          yAxis: {
-            type: 'value'
-          },
-          series: [
-            {
-              name: '访问量(PV)',
-              type: 'line',
-              data: [120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-              name: '访问用户(UV)',
-              type: 'line',
-              data: [220, 182, 191, 234, 290, 330, 310]
-            }
-          ]
-        }
+        // 福州大学教学楼停车情况数据 深拷贝
+        parkData: JSON.parse(JSON.stringify(initParkData)),
+        // STOP小程序端日访问量数据 深拷贝
+        visitData: JSON.parse(JSON.stringify(initVisitData))
       }
     }
   },
@@ -145,6 +66,8 @@ export default {
     this.getUserLoginData()
     this.getStopStatus()
     this.getVisitNumber()
+    // 更新面包屑路径
+    this.$store.commit('setPageLocations', ['基础','基本情况'])
   },
   mounted() {
     // 绘制图表
@@ -154,7 +77,8 @@ export default {
   methods: {
     //获取用户登录数据
     getUserLoginData() {
-      //填充假数据
+      // 项目未上线暂时无法取得数据
+      // 填充假数据
       for (let i = 0; i < 5; i++) {
         this.userLogin.userLoginData.push(
             {
@@ -201,6 +125,10 @@ export default {
   flex: 0 0 50%;
   padding-top: 20px;
   padding-left: 50px;
+
+  .banner {
+    margin-top: 10px;
+  }
 
 
   .title {
