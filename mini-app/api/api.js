@@ -21,6 +21,14 @@ export class Statistics {
 			method: 'get'
 		})
 	}
+	
+	//按两小时获取停车情况
+	static getStopStatusHourly() {
+		return request({
+			url: '/api/stop_status_hourly',
+			method: 'get'
+		})
+	}
 }
 
 export class User {
