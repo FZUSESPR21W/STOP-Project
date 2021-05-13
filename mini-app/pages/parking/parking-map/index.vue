@@ -64,9 +64,7 @@
 				
 				console.log();
 				let data = this.covers[this.markerMap.get(res.target.markerId)]
-				console.log(data.latitude)
-				console.log(data.longitude)
-				console.log(data.name)
+				this.$emit('clickCovers', data);
 				// this.navigateTo(this.covers[id].latitude,this.covers[id].longitude)
 			},
 			//返回中心点

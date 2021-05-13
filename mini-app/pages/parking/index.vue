@@ -2,7 +2,7 @@
 	<view>
 		<!-- map组件开始 -->
 		<view>
-			<!-- <ParkingMap @hideList="hideList" /> -->
+			<ParkingMap @hideList="hideList" @clickCovers="clickCovers"/>
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
@@ -104,8 +104,6 @@
 				inputBorderColor: '1px solid #bfbfbf',
 				//地点列表
 				placeList: [],
-				//圆形进度条点的颜色
-				progressDot:'#000000',
 			}
 		},
 		components: {
@@ -113,9 +111,13 @@
 		},
 
 		methods: {
+			
+			clickCovers(res){
+				console.log(res);
+			},
+			
 			//弹出层关闭
 			closePopup(){
-				console.log('test');
 				this.showCircle=false;
 			},
 
@@ -173,6 +175,21 @@
 				this.$refs.locationBox.run(() => {
 					//console.log('执行完毕')
 					this.addShowNumFromInput = false;
+				});
+			},
+			
+			//根据经纬度导航至目的地
+			navigateTo(nLatitude, nLongitude) {
+				let plugin = requirePlugin('routePlan');
+				let key = 'FIJBZ-GKBCS-UYLO5-66F56-MLB5J-OPFO7'; //使用在腾讯位置服务申请的key
+				let referer = 'STOP'; //调用插件的app的名称
+				let endPoint = JSON.stringify({ //终点
+					'name': '目的地',
+					'latitude': nLatitude,
+					'longitude': nLongitude
+				});
+				uni.navigateTo({
+					url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint
 				});
 			},
 
