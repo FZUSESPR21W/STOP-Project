@@ -34,7 +34,8 @@
 				polygons: '',
 				marker: [],
 				coverViewStyle: '',
-				markerMap:''
+				markerMap:'',
+				stop:''
 			}
 		},
 
@@ -64,10 +65,6 @@
 				
 				console.log();
 				let data = this.covers[this.markerMap.get(res.target.markerId)]
-				console.log(data.latitude)
-				console.log(data.longitude)
-				console.log(data.name)
-				// this.navigateTo(this.covers[id].latitude,this.covers[id].longitude)
 			},
 			//返回中心点
 			moveToCenter() {
@@ -108,32 +105,58 @@
 		},
 		created() {
 			let deviceMap = new Map()
+			let stopMap = new Map()
 			this.getLocation();
 			this.$api.Statistics.getAllDevice().then(
 				(res) => {
-					let array = res.data.data.deviceList
-//					console.log(res.data.data.deviceList)			
-					for(let i = 0;i<array.length;i++) {
-						let data = array[i].deviceDO
-						// console.log(data)
-						this.covers[i] = {
-							id: data.id,
-							name: data.name,
-							latitude: data.latitude,
-							longitude: data.longitude,
-							capacity: data.maxCarsNumber
+					this.$api.Statistics.getAllParkingValue().then(
+						(r) => {
+							console.log(r)
+							let stop = r.data.data.stopStatusList
+							for(let j = 0;j<stop.length;j++) {
+								// console.log(stop[j])
+								stopMap.set(parseInt(stop[j].id),stop[j].value)
+							}
+							this.stop = stopMap
+							// console.log(stopMap)
+							let array = res.data.data.deviceList
+							// console.log(res.data.data.deviceList)
+									let index = 0
+									for(let i = 0;i<array.length;i++) {
+										let data = array[i].deviceDO
+										// console.log(data.id)
+										// console.log(array[i].online)
+										if(array[i].online == true) {
+											// console.log(stopMap)
+											let num = stopMap.get(data.id)
+											console.log(num)
+											this.covers[index] = {
+												id: data.id,
+												name: data.name,
+												latitude: data.latitude,
+												longitude: data.longitude,
+												capacity: num / data.maxCarsNumber
+											}
+											deviceMap.set(data.id,index)
+											index++
+										}
+									}
+									console.log(this.covers)
+									this.markerMap = deviceMap
+									this.$emit('placeList',this.covers)
+									// let polygons = []
+									// this.$api.Statistics.getPoints().then(
+									// 	(res) => {
+									// 		console.log(res)
+									// 	}
+									// )
+								}
+							)
+							
 						}
-						// console.log(i)
-						// console.log(data.id)
-						// console.log('------')
-						deviceMap.set(data.id,i)
-					}
+					)
+					console.log(this.stop)
 					
-					console.log(this.covers)
-					this.markerMap = deviceMap
-				}
-				
-			)
 			var polygons = [{
 					strokeWidth: 3,
 					strokeColor: '#266339',

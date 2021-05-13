@@ -2,7 +2,7 @@
 	<view>
 		<!-- map组件开始 -->
 		<view>
-			<!-- <ParkingMap @hideList="hideList" /> -->
+			<ParkingMap @hideList="hideList" />
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->

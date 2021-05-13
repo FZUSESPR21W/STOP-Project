@@ -3,17 +3,21 @@ import { request } from './request.js'
 
 // 统计功能接口
 export class Statistics {
-	
-	// 获取教学楼停车情况
-	static getStopStatus() {
-		return request({
-			url: '/stop_status',
-			method: 'get'
-		})
-	}
 	static getAllDevice() {
 		return request({
 			url: '/device/get_all_device',
+			method: 'get'
+		})
+	}
+	static getPoints() {
+		return request({
+			url: '/api/get_points',
+			method: 'get'
+		})
+	}
+	static getAllParkingValue() {
+		return request({
+			url: '/api/stop_status',
 			method: 'get'
 		})
 	}
