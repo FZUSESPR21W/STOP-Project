@@ -58,15 +58,17 @@
 		<u-popup v-model="popupShow" mode="bottom" border-radius=10 height="44%" :safe-area-inset-bottom="false"
 			:mask="true" :mask-close-able="true">
 			<view style="height: 44vh;">
-<view class="charts-box" reshow="popupShow">
+<view class="charts-box" >
   <qiun-data-charts
     type="gauge"
     :chartData="chartData"
-    :loadingType="3"
+    :loadingType="1"
     :disableScroll="true"
     background="none"
+	:reshow="popupShow"
+	v-show="popupShow"
   />
-</view>
+</view>	
 			</view>
 		</u-popup>
 		<!-- 地点详细弹窗结束 -->
@@ -76,8 +78,6 @@
 <script>
 	import ParkingMap from './parking-map/index.vue';
 	import uCharts from '@/components/u-charts/u-charts-v2.0.0.js';
-	var _self;
-	var canvaColumn=null;
 	export default {
 		name: 'Parking',
 		data() {
@@ -106,10 +106,7 @@
 				inputBorderColor: '1px solid #bfbfbf',
 				//地点列表
 				placeList: [],
-				chartData:{
-				  categories:[],
-				  series:[],
-				},
+				chartData:{"categories":[{"value":0.2,"color":"#1890ff"},{"value":0.8,"color":"#2fc25b"},{"value":1,"color":"#f04864"}],"series":[{"name":"完成率","data":0.66}]},
 			}
 		},
 		components: {
@@ -389,7 +386,7 @@
 
 	.charts-box {
 		background-color: pink;
-		width: 100vh;
-		height: 24vh;
+		width: 60vh;
+		height: 44vh;
 	}
 </style>
