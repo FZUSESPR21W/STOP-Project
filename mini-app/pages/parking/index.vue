@@ -2,7 +2,7 @@
 	<view>
 		<!-- map组件开始 -->
 		<view>
-			<ParkingMap @hideList="hideList" />
+			<ParkingMap @hideList="hideList" @clickCovers="clickCovers" />
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
@@ -56,16 +56,27 @@
 		<!-- 推荐地址框容器结束 -->
 		<!-- 地点详细弹窗开始 -->
 		<u-popup v-model="popupShow" mode="bottom" border-radius=10 height="44%" :safe-area-inset-bottom="false"
-			@close="closePopup"
-			:mask="true" :mask-close-able="true">
-			<view style="font-size: 50rpx;margin: 0 auto;text-align: center;margin-top: 14rpx;">福州大学-东三</view>
-			<view style="height: 34vh; position: absolute;bottom:10rpx;left: 13vh;">
-			<u-circle-progress active-color="#ac358f" :percent="80" duration="1000" :width="400" :show="showCircle">
+			style="overflow: hidden;" @close="closePopup" :mask="true" :mask-close-able="true">
+			<view style="font-size: 50rpx;margin: 0 auto;text-align: center;margin-top: 14rpx;">{{popupItem.name}}
+			</view>
+			<!-- 			<view style="height: 34vh; position: absolute;bottom:10rpx;left: 13vh;">
+			<u-circle-progress active-color="#ac358f" :percent="80" duration="1000" :width="400" :reshow="popupShow" v-show="popupShow">
 				<view class="u-progress-content">
 					<text class='u-progress-info'>车位空闲</text>
-					<u-button @click="submit" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" size="medium">导航</u-button>
+					<u-button @click="navigateToPlace" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" size="medium">导航</u-button>
 				</view>
 			</u-circle-progress>
+			</view> -->
+			<view class="">
+				<view class="charts-box">
+					<qiun-data-charts type="gauge" :opts="{title:{name: '60Km/H',color: '#2fc25b',fontSize: 25,offsetY:50},subtitle: {name: '实时速度',color: '#666666',fontSize: 15,offsetY:-50}}"
+					:chartData="chartData"
+					background="none" :reshow="popupShow"
+						v-show="popupShow" />
+				</view>
+				<u-button @click="navigateToPlace" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91"
+					size="medium" style="position: absolute;left: 50%; transform: translateX(-50%);bottom: 30rpx;">导航
+				</u-button>
 			</view>
 		</u-popup>
 		<!-- 地点详细弹窗结束 -->
@@ -74,12 +85,15 @@
 
 <script>
 	import ParkingMap from './parking-map/index.vue';
+	import uCharts from '@/components/u-charts/u-charts-v2.0.0.js';
+	var _self;
+	var canvaColumn = null;
 	export default {
 		name: 'Parking',
 		data() {
 			return {
 				//显示圆形进度条
-				showCircle:false,
+				showCircle: false,
 				//显示弹窗
 				popupShow: false,
 				//从点击输入框添加显示数目
@@ -104,8 +118,33 @@
 				inputBorderColor: '1px solid #bfbfbf',
 				//地点列表
 				placeList: [],
-				//圆形进度条点的颜色
-				progressDot:'#000000',
+				//弹窗子项信息
+				popupItem: {
+					name: '未知设备',
+				},
+				//仪表盘数据
+				chartData:{
+    "categories": [
+        {
+            "value": 0.2,
+            "color": "#1890ff"
+        },
+        {
+            "value": 0.8,
+            "color": "#2fc25b"
+        },
+        {
+            "value": 1,
+            "color": "#f04864"
+        }
+    ],
+    "series": [
+        {
+            "name": "完成率",
+            "data": 0.66
+        }
+    ]
+},
 			}
 		},
 		components: {
@@ -115,17 +154,27 @@
 		methods: {
 			//弹出层关闭
 			closePopup(){
-				console.log('test');
 				this.showCircle=false;
 			},
 
+			//导航按钮点击事件
+			navigateToPlace() {
+				this.navigateTo(this.popupItem.latitude, this.popupItem.longitude, this.popupItem.name);
+			},
+
+			//点击covers
+			clickCovers(res) {
+				this.popupItem = res;
+				this.popupShow = true;
+			},
+
+
 			clickItem() {
 				console.log('1');
-				//this.$refs.popup.open('top');
 				this.popupShow = true;
-				setTimeout(()=>{
-					this.showCircle=true;
-				},700);
+				setTimeout(() => {
+					this.showCircle = true;
+				}, 700);
 
 			},
 
@@ -173,6 +222,21 @@
 				this.$refs.locationBox.run(() => {
 					//console.log('执行完毕')
 					this.addShowNumFromInput = false;
+				});
+			},
+
+			//根据经纬度导航至目的地
+			navigateTo(nLatitude, nLongitude, nName) {
+				let plugin = requirePlugin('routePlan');
+				let key = 'FIJBZ-GKBCS-UYLO5-66F56-MLB5J-OPFO7'; //使用在腾讯位置服务申请的key
+				let referer = 'STOP'; //调用插件的app的名称
+				let endPoint = JSON.stringify({ //终点
+					'name': nName,
+					'latitude': nLatitude,
+					'longitude': nLongitude
+				});
+				uni.navigateTo({
+					url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint
 				});
 			},
 
@@ -391,18 +455,26 @@
 		height: 100%;
 	}
 
-.u-progress-content {
+	.u-progress-content {
 		position: absolute;
 		align-items: center;
 		justify-content: center;
 	}
-	
-	
+
+
 	.u-progress-info {
 		margin-bottom: 10rpx;
 		display: block;
 		font-size: 50rpx;
 		padding-left: 16rpx;
 		letter-spacing: 2rpx
+	}
+
+	.charts-box {
+		width: 56vh;
+		height: 34vh;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 </style>

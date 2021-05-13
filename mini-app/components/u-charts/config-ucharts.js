@@ -349,7 +349,7 @@ module.exports = {
 	    "extra": {
 	        "gauge": {
 	            "type": "progress",
-	            "width": 8,
+	            "width": 4,
 	            "labelColor": "#666666",
 	            "labelOffset": 13,
 	            "startAngle": 0.75,
@@ -360,7 +360,7 @@ module.exports = {
 	            "splitLine": {
 	                "fixRadius": 0,
 	                "splitNumber": 10,
-	                "width": 30,
+	                "width": 15,
 	                "color": "#FFFFFF",
 	                "childNumber": 5,
 	                "childWidth": 12
