@@ -1,6 +1,6 @@
 <template>
   <div class="side-bar-contianer">
-    <el-menu background-color="#813C85" text-color="#ffffff" active-text-color="#ffd04b" router>
+    <el-menu :default-active="$route.path" background-color="#813C85" text-color="#ffffff" active-text-color="#ffd04b" router>
       <el-submenu index="/admin/baseState">
         <template slot="title">
           <i class="el-icon-set-up icon" />

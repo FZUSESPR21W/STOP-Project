@@ -6,7 +6,7 @@
       <!-- 标题 -->
       <div class="title">{{ item.title }}</div>
       <!-- 发布人信息 -->
-      <div class="info">{{ `用户：${item.name} ${item.submitTime}` }}</div>
+      <div class="info">{{ `用户：${item.username} ${item.submitTime}` }}</div>
       <!-- 内容 -->
       <div class="content">{{ item.content }}</div>
     </div>
