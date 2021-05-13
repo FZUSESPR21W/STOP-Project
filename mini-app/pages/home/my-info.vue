@@ -33,7 +33,6 @@
 			uni.getStorage({
 			    key: 'user-info_key',
 			    success: (res) => {
-			        console.log(res.data);
 					this.userInfo = res.data;
 			    }
 			});

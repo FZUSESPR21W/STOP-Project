@@ -2,7 +2,7 @@
 	<view>
 		<!-- map组件开始 -->
 		<view>
-			<!-- <ParkingMap @hideList="hideList" /> -->
+			<ParkingMap @hideList="hideList" @clickCovers="clickCovers"/>
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
@@ -56,12 +56,16 @@
 		<!-- 推荐地址框容器结束 -->
 		<!-- 地点详细弹窗开始 -->
 		<u-popup v-model="popupShow" mode="bottom" border-radius=10 height="44%" :safe-area-inset-bottom="false"
+			@close="closePopup"
 			:mask="true" :mask-close-able="true">
-			<view style="height: 44vh;">
-				<view class="charts-box">
-					<qiun-data-charts type="gauge" :chartData="chartData" :canvas2d="true" background="none"
-						:reshow="popupShow" v-show="popupShow" id="8TSntTy0EhXCasBNEsBU6z37sT9NIH1y" />
+			<view style="font-size: 50rpx;margin: 0 auto;text-align: center;margin-top: 14rpx;">福州大学-东三</view>
+			<view style="height: 34vh; position: absolute;bottom:10rpx;left: 13vh;">
+			<u-circle-progress active-color="#ac358f" :percent="80" duration="1000" :width="400" :show="showCircle">
+				<view class="u-progress-content">
+					<text class='u-progress-info'>车位空闲</text>
+					<u-button @click="submit" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" size="medium">导航</u-button>
 				</view>
+			</u-circle-progress>
 			</view>
 		</u-popup>
 		<!-- 地点详细弹窗结束 -->
@@ -70,11 +74,12 @@
 
 <script>
 	import ParkingMap from './parking-map/index.vue';
-	import uCharts from '@/components/u-charts/u-charts-v2.0.0.js';
 	export default {
 		name: 'Parking',
 		data() {
 			return {
+				//显示圆形进度条
+				showCircle:false,
 				//显示弹窗
 				popupShow: false,
 				//从点击输入框添加显示数目
@@ -99,14 +104,6 @@
 				inputBorderColor: '1px solid #bfbfbf',
 				//地点列表
 				placeList: [],
-				chartData: {
-					"categories": [],
-					"series": [{
-						
-						"name": "完成率",
-						"data": 0.66
-					}]
-				},
 			}
 		},
 		components: {
@@ -114,11 +111,23 @@
 		},
 
 		methods: {
+			
+			clickCovers(res){
+				console.log(res);
+			},
+			
+			//弹出层关闭
+			closePopup(){
+				this.showCircle=false;
+			},
 
 			clickItem() {
 				console.log('1');
 				//this.$refs.popup.open('top');
 				this.popupShow = true;
+				setTimeout(()=>{
+					this.showCircle=true;
+				},700);
 
 			},
 
@@ -166,6 +175,21 @@
 				this.$refs.locationBox.run(() => {
 					//console.log('执行完毕')
 					this.addShowNumFromInput = false;
+				});
+			},
+			
+			//根据经纬度导航至目的地
+			navigateTo(nLatitude, nLongitude) {
+				let plugin = requirePlugin('routePlan');
+				let key = 'FIJBZ-GKBCS-UYLO5-66F56-MLB5J-OPFO7'; //使用在腾讯位置服务申请的key
+				let referer = 'STOP'; //调用插件的app的名称
+				let endPoint = JSON.stringify({ //终点
+					'name': '目的地',
+					'latitude': nLatitude,
+					'longitude': nLongitude
+				});
+				uni.navigateTo({
+					url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint
 				});
 			},
 
@@ -384,9 +408,18 @@
 		height: 100%;
 	}
 
-	.charts-box {
-		background-color: pink;
-		width: 40vh;
-		height: 34vh;
+.u-progress-content {
+		position: absolute;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	
+	.u-progress-info {
+		margin-bottom: 10rpx;
+		display: block;
+		font-size: 50rpx;
+		padding-left: 16rpx;
+		letter-spacing: 2rpx
 	}
 </style>

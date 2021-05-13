@@ -11,7 +11,7 @@
 			</view>
 			<view class="u-flex-1">
 				<view class="u-font-18 u-p-b-20">Hi, {{userInfo.nickName}}</view>
-				<view class="u-font-14 u-tips-color">城市：{{userInfo.city}}</view>
+				<view class="u-font-14 u-tips-color">欢迎使用STOP</view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
 				<image style="margin-top: 60rpx; width: 150rpx;height: 150rpx;" src="../../static/stopLogo.png"></image>
@@ -86,16 +86,14 @@
 			  // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
 			  uni.getUserProfile({
 			    desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+				lang: "zh_CN",
 			    success: (res) => {
 			      this.userInfo = res.userInfo,
-			      this.hasUserInfo = true
+			      this.hasUserInfo = true,
 				  //将数据存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个异步接口。
 				  uni.setStorage({
 					key:'user-info_key',
 				  	data:this.userInfo,
-				  	success: function () {
-						console.log('success2');
-						},
 					})
 				  },
 				})

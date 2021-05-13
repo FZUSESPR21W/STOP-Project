@@ -11,6 +11,12 @@ export class Statistics {
 			method: 'get'
 		})
 	}
+	static getAllDevice() {
+		return request({
+			url: '/device/get_all_device',
+			method: 'get'
+		})
+	}
 }
 
 export class User {
