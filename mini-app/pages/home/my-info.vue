@@ -1,11 +1,7 @@
 <template>
 	<!-- 个人信息页面 -->
 	<view class="user-info">
-		<!-- 条件渲染 -->
-		<view style="margin-top: 50rpx;"  v-if="!hasUserInfo">
-		  <u-button v-if="canIUseGetUserProfile" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" @click="getUserProfile"> 获取个人信息 </u-button>
-		</view>
-		<u-cell-group style="width: -webkit-fill-available;" v-else>
+		<u-cell-group style="width: -webkit-fill-available;">
 			<u-cell-item  title="头像" :arrow="false">
 				<view class="u-m-r-10">
 					<u-avatar :src="userInfo.avatarUrl" size="140" ></u-avatar>
@@ -30,33 +26,20 @@
 		data() {
 			return {
 				userInfo: {},
-				hasUserInfo: false,
-				canIUseGetUserProfile: false,
-				//获取个人信息按钮样式
-				customStyle: {
-					color: "#A55F91",
-					width: "240rpx",
-					height: "80rpx",
-					fontStyle: 'bold'
-				},
 			}
 		},
 		onLoad() {
-			if (wx.getUserProfile) {
-			  this.canIUseGetUserProfile=true
-			}
+			// 从本地缓存异步获取指定key对应内容
+			uni.getStorage({
+			    key: 'user-info_key',
+			    success: (res) => {
+			        console.log(res.data);
+					this.userInfo = res.data;
+			    }
+			});
 		},
 		methods: {
-			getUserProfile(e) {
-			  // 使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
-			  wx.getUserProfile({
-			    desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-			    success: (res) => {
-			      this.userInfo = res.userInfo,
-			      this.hasUserInfo = true
-			    }
-			  })
-			},
+			
 		}
 	}
 </script>
