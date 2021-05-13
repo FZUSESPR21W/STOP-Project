@@ -6,9 +6,18 @@ import java.sql.Timestamp;
  * @author 宋家锐
  */
 public class ParkingSituationDO {
+    String id;
     String name;
     String time;
     String value;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -37,6 +46,7 @@ public class ParkingSituationDO {
     @Override
     public String toString(){
         return "ParkingSituationDO{" + "\n" +
+                "\tid = " + id + "\n" +
                 "\tname = " + name + "\n" +
                 "\ttime = " + time + "\n" +
                 "\tvalue = " + value + "\n" +

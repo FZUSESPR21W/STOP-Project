@@ -3,7 +3,7 @@
 <mapper namespace="com.fzu.stop.dao.StatisticsDao">
 
     <select id="getParkingSituation" resultType="com.fzu.stop.pojo.ParkingSituationDO">
-        select device.name, time, cars_number value
+        select device_id as id, device.name, time, cars_number value
         from device,
         crowd_situation
         where crowd_situation.time in

@@ -26,7 +26,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         Date date = new Date();
         Date startTime = new Date(date.getTime() - 2 * 60 * 60 * 1000);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-        System.out.println(df.format(date));
         return statisticsDao.getParkingSituation(df.format(startTime), df.format(date), id);
     }
 
