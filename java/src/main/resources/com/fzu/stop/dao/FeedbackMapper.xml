@@ -7,6 +7,10 @@
         limit #{start},#{lim};
     </select>
 
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*) from feedback;
+    </select>
+
     <select id="getFeedback" resultType="com.fzu.stop.pojo.FeedbackDO">
         select id, title, content, user_nickname username, status_id status, submit_time submitTime
         from feedback
