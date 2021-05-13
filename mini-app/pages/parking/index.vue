@@ -2,7 +2,7 @@
 	<view>
 		<!-- map组件开始 -->
 		<view>
-			<ParkingMap @hideList="hideList" @clickCovers="clickCovers" />
+			<ParkingMap @hideList="hideList" @clickCovers="clickCovers" @placeList="getPlaceList"/>
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
@@ -31,12 +31,12 @@
 								<view class="place-list-title" style="">最近适合停车的地点</view>
 								<view class="place-list-title-bar"></view>
 								<view class="place-list-item" v-for="(placeItem,index) in placeList.slice(0,showNum)"
-									:key="index" @click="clickItem">
+									:key="index" @click="clickItem(index)">
 									<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="90rpx"
 										name="position-icon"></u-icon>
-									<view class="place-list-item-title">{{placeItem.title}}</view>
-									<view class="place-list-item-parking">{{placeItem.parking}}</view>
-									<view class="place-list-item-distance">{{placeItem.distance}}m</view>
+									<view class="place-list-item-title">{{placeItem.name}}</view>
+									<view class="place-list-item-parking">{{placeItem.surplus}}</view>
+									<view class="place-list-item-distance">200m</view>
 									<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="60rpx"
 										name="navigation" style="float: right;margin-right: 4px;"></u-icon>
 								</view>
@@ -59,20 +59,11 @@
 			style="overflow: hidden;" @close="closePopup" :mask="true" :mask-close-able="true">
 			<view style="font-size: 50rpx;margin: 0 auto;text-align: center;margin-top: 14rpx;">{{popupItem.name}}
 			</view>
-			<!-- 			<view style="height: 34vh; position: absolute;bottom:10rpx;left: 13vh;">
-			<u-circle-progress active-color="#ac358f" :percent="80" duration="1000" :width="400" :reshow="popupShow" v-show="popupShow">
-				<view class="u-progress-content">
-					<text class='u-progress-info'>车位空闲</text>
-					<u-button @click="navigateToPlace" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" size="medium">导航</u-button>
-				</view>
-			</u-circle-progress>
-			</view> -->
 			<view class="">
 				<view class="charts-box">
-					<qiun-data-charts type="gauge" :opts="{title:{name: '60Km/H',color: '#2fc25b',fontSize: 25,offsetY:50},subtitle: {name: '实时速度',color: '#666666',fontSize: 15,offsetY:-50}}"
-					:chartData="chartData"
-					background="none" :reshow="popupShow"
-						v-show="popupShow" />
+					<qiun-data-charts type="gauge"
+						:opts="{title:{name: popupItem.surplus,color: popupItem.surplusColor,fontSize: 25,offsetY:50},subtitle: {name: '实时速度',color: '#666666',fontSize: 15,offsetY:-50}}"
+						:chartData="chartData" background="none" :reshow="popupShow" v-show="popupShow" />
 				</view>
 				<u-button @click="navigateToPlace" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91"
 					size="medium" style="position: absolute;left: 50%; transform: translateX(-50%);bottom: 30rpx;">导航
@@ -121,30 +112,29 @@
 				//弹窗子项信息
 				popupItem: {
 					name: '未知设备',
+					surplus:'车位未知',
+					surplusColor:'#000000',
 				},
 				//仪表盘数据
-				chartData:{
-    "categories": [
-        {
-            "value": 0.2,
-            "color": "#1890ff"
-        },
-        {
-            "value": 0.8,
-            "color": "#2fc25b"
-        },
-        {
-            "value": 1,
-            "color": "#f04864"
-        }
-    ],
-    "series": [
-        {
-            "name": "完成率",
-            "data": 0.66
-        }
-    ]
-},
+				chartData: {
+					"categories": [{
+							"value": 0.2,
+							"color": "#1890ff"
+						},
+						{
+							"value": 0.8,
+							"color": "#2fc25b"
+						},
+						{
+							"value": 1,
+							"color": "#f04864"
+						}
+					],
+					"series": [{
+						"name": "完成率",
+						"data": 0.1
+					}],
+				},
 			}
 		},
 		components: {
@@ -153,8 +143,8 @@
 
 		methods: {
 			//弹出层关闭
-			closePopup(){
-				this.showCircle=false;
+			closePopup() {
+				this.showCircle = false;
 			},
 
 			//导航按钮点击事件
@@ -162,19 +152,56 @@
 				this.navigateTo(this.popupItem.latitude, this.popupItem.longitude, this.popupItem.name);
 			},
 
+			//获取地点列表
+			getPlaceList(res){
+				this.placeList=res;
+				this.transformPlaceList();
+			},
+			
+			//转换地点列表
+			transformPlaceList(){
+				for(let i=0;i<this.placeList.length;i++){
+					if(this.placeList[i].capacity<=0.5){
+						this.placeList[i].surplus='车位空闲';
+						this.placeList[i].surplusColor='#2fc25b';
+					}
+					else if(this.placeList[i].capacity>0.5 && this.placeList[i].capacity<0.7){
+						this.placeList[i].surplus='车位紧张';
+						this.placeList[i].surplusColor='#1890ff';
+					}
+					else{
+						this.placeList[i].surplus='车位不足'
+						this.placeList[i].surplusColor='#f04864';
+					}
+				}
+			},
+			
 			//点击covers
 			clickCovers(res) {
+				this.chartData.series[0].data=res.capacity;
 				this.popupItem = res;
+				if(res.capacity<=0.5){
+					this.popupItem.surplus='车位空闲';
+					this.popupItem.surplusColor='#2fc25b';
+				}
+				else if(res.capacity>0.5 && res.capacity<0.7){
+					this.popupItem.surplus='车位紧张';
+					this.popupItem.surplusColor='#1890ff';
+				}
+				else{
+					this.popupItem.surplus='车位不足'
+					this.popupItem.surplusColor='#f04864';
+				}
+				
 				this.popupShow = true;
 			},
 
-
-			clickItem() {
-				console.log('1');
+			clickItem(index) {
+				this.popupItem=this.placeList[index];
 				this.popupShow = true;
 				setTimeout(() => {
 					this.showCircle = true;
-				}, 700);
+				}, 500);
 
 			},
 
@@ -319,31 +346,8 @@
 				}
 			},
 
-			//获取tarbar高度
-			getTarbarHeight() {
-				const info = wx.getSystemInfo();
-				console.log(wx.getSystemInfo());
-				const tabbarHeight = (info.screenHeight - info.windowHeight - info.statusBarHeight) * info.pixelRatio;
-				return tabbarHeight;
-			}
 		},
 		created() {
-			this.placeList = [{
-				title: '福州大学-东三',
-				parking: '车位空余',
-				distance: '200',
-			}];
-			this.placeList[1] = this.placeList[0];
-			this.placeList[2] = this.placeList[0];
-			this.placeList[3] = this.placeList[0];
-			this.placeList[4] = this.placeList[0];
-			this.placeList[5] = this.placeList[0];
-			this.placeList[6] = this.placeList[0];
-			this.placeList[7] = this.placeList[0];
-			this.placeList[8] = this.placeList[0];
-			this.placeList[9] = this.placeList[0];
-			this.placeList[10] = this.placeList[0];
-			this.placeList[11] = this.placeList[0];
 		},
 	}
 </script>
