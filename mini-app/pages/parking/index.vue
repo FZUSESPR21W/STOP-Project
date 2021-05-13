@@ -59,6 +59,21 @@
 		</uni-transition>
 		</view>
 		<!-- 推荐地址框容器结束 -->
+		<!-- 地点详细弹窗开始 -->
+		<u-popup 
+			v-model="popupShow" 
+			mode="bottom" 
+			border-radius="40px" 
+			height="44%"
+			:safe-area-inset-bottom="false"
+			:mask="true"
+			:closeable="true"
+			:mask-close-able="true">
+			<view style="width: 100vh;height: 44vh;background-color: pink;">
+			人生若只如初见，何事秋风悲画扇
+			</view>
+		</u-popup>
+		<!-- 地点详细弹窗结束 -->
 	</view>
 </template>
 
@@ -68,6 +83,7 @@ export default{
 	name:'Parking',
 	data(){
 		return{
+			popupShow:false,
 			//从点击输入框添加显示数目
 			addShowNumFromInput:false,
 			//是否显示更多按钮
@@ -100,6 +116,8 @@ export default{
 		
 		clickItem(){
 			console.log('1');
+			//this.$refs.popup.open('top');
+			this.popupShow=true;
 		},
 		
 		//禁止滚动
@@ -124,8 +142,6 @@ export default{
 			const step=7;
 			let showNum=this.showNum;
 			const num=this.placeList.length;
-			console.log(showNum);
-			console.log(num);
 			if(showNum>=num){
 				//如果已显示数已经少于总数就直接返回，不增加
 				return ;
@@ -318,7 +334,7 @@ export default{
 	
 	// 地点框
 	/deep/.location-box{
-		z-index: 9999;
+		z-index: 2;
 		background-color: white;
 		width: 100%;
 		border-radius: 10px 10px 0 0;
