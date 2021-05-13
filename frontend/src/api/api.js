@@ -122,6 +122,26 @@ export class Feedback {
     static getFeedbackList(page, limit) {
         return axios.get(`/feedback/get_feedback_list?page=${page}&limit=${limit}`)
     }
+
+    /**
+     * 获取反馈列表
+     * @param id
+     * @param status
+     * @returns {*}
+     */
+    static update(id, status) {
+        return axios.get(`/feedback/update?id=${id}&status=${status}`)
+    }
+
+    /**
+     * 获取反馈列表
+     * @param id
+     * @param status
+     * @returns {*}
+     */
+    static getDetail(id) {
+        return axios.get(`/feedback/detail?id=${id}`)
+    }
 }
 
 

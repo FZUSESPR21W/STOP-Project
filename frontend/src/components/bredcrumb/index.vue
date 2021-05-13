@@ -7,7 +7,7 @@
       <!-- 面包屑容器开始 -->
       <el-breadcrumb separator="/">
         <!-- 面包屑 -->
-        <el-breadcrumb-item v-for="item in pageLocations">{{ item }}</el-breadcrumb-item>
+        <el-breadcrumb-item v-for="(item, index) in pageLocations" :key="index">{{ item }}</el-breadcrumb-item>
       </el-breadcrumb>
       <!-- 面包屑容器结束 -->
     </div>
@@ -34,7 +34,8 @@ export default {
       // 请求登出
       this.$api.Admin.logout().then(res => {
         this.$message.success('登出成功！')
-        this.$
+      }).catch(err => {
+        this.$message.error('登出失败！')
       })
     }
   }

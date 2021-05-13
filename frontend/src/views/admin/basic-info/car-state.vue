@@ -16,6 +16,11 @@ export default {
       graph: {
         //车辆信息图表数据
         car: {
+          // 标题
+          title: {
+            text: '昨日福州大学各处电动车停车情况',
+            left: 'center'
+          },
           xAxis: {
             type: 'category',
             data: ['一区', '二区', '三区', '四区', '五区', '研究生公寓',
@@ -75,6 +80,7 @@ export default {
   width: 100%;
 
   .graph {
+    padding-top: 20px;
     width: 100%;
     height: 50%;
   }
