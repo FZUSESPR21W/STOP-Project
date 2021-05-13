@@ -298,44 +298,63 @@ module.exports = {
 		}
 	},
 	"gauge":{
-		"type": "gauge",
-		"color": color,
-		"title": {
-			"name": "66Km/H",
-			"fontSize": 25,
-			"color": "#2fc25b",
-			"offsetY": 50
-		},
-		"subtitle": {
-			"name": "实时速度",
-			"fontSize": 15,
-			"color": "#1890ff",
-			"offsetY": -50
-		},
-		"extra": {
-			"gauge": {
-				"type": "default",
-				"width": 30,
-				"labelColor": "#666666",
-				"startAngle": 0.75,
-				"endAngle": 0.25,
-				"startNumber": 0,
-				"endNumber": 100,
-				"labelFormat": "",
-				"splitLine": {
-					"fixRadius": 0,
-					"splitNumber": 10,
-					"width": 30,
-					"color": "#FFFFFF",
-					"childNumber": 5,
-					"childWidth": 12
-				},
-				"pointer": {
-					"width": 24,
-					"color": "auto"
-				}
-			}
-		}
+	    "type": "gauge",
+	    "canvasId": "",
+	    "canvas2d": false,
+	    "background": "none",
+	    "animation": true,
+	    "timing": "easeOut",
+	    "duration": 1000,
+	    "rotate": false,
+	    "errorReload": true,
+	    "fontSize": 13,
+	    "fontColor": "#666666",
+	    "enableScroll": false,
+	    "touchMoveLimit": 60,
+	    "enableMarkLine": false,
+	    "dataLabel": true,
+	    "dataPointShape": true,
+	    "dataPointShapeType": "hollow",
+	    "title": {
+	        "name": "车位空余",
+	        "fontSize": 25,
+	        "color": "#ac358f",
+	        "offsetX": 0,
+	        "offsetY": 50
+	    },
+	    "subtitle": {
+	        "name": "",
+	        "fontSize": 15,
+	        "color": "#1890ff",
+	        "offsetX": 0,
+	        "offsetY": -50
+	    },
+	    "extra": {
+	        "gauge": {
+	            "type": "progress",
+	            "width": 10,
+	            "labelColor": "#666666",
+	            "labelOffset": 13,
+	            "startAngle": 0.75,
+	            "endAngle": 0.25,
+	            "startNumber": 0,
+	            "endNumber": 100,
+	            "format": "",
+	            "splitLine": {
+	                "fixRadius": 0,
+	                "splitNumber": 10,
+	                "width": 30,
+	                "color": "#FFFFFF",
+	                "childNumber": 5,
+	                "childWidth": 12
+	            },
+	            "pointer": {
+	                "width": 24,
+	                "color": "auto"
+	            },
+	            "labelFormat": ""
+	        }
+	    }
 	},
 	"candle":{
 		"type": "candle",
