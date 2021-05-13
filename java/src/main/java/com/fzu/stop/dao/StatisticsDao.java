@@ -1,6 +1,5 @@
 package com.fzu.stop.dao;
 
-
 import com.fzu.stop.pojo.ParkingSituationDO;
 import com.fzu.stop.pojo.PointDO;
 import org.apache.ibatis.annotations.Mapper;
