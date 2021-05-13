@@ -236,24 +236,24 @@
 				this.imageList.push(url);
 				//this.form.pictureUrl为后台图片字段来保存字符串类型的图片集合
 				this.form.pictureUrl = JSON.stringify(this.imageList)
-				console.log("打印图片List：onSuccess", this.imageList);
+				//console.log("打印图片List：onSuccess", this.imageList);
 			},
 			
 			onRemove(index, lists){
 				//获得删除指定选择图片后的新文件列表
 				this.imageList = [...this.imageList.slice(0, index) , ...this.imageList.slice(index + 1)]
 				this.form.pictureUrl = JSON.stringify(this.imageList)
-				console.log("打印图片List：onRemove", this.imageList);
+				//console.log("打印图片List：onRemove", this.imageList);
 			},
 			
 			//提交按钮点击事件
 			submit() {
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
-						console.log('验证通过');
+						//console.log('验证通过');
 						let text = `${this.form.feedback}[imageList]${this.form.pictureUrl}`
 						let picture = ''
-						console.log(JSON.stringify(text,picture));
+						//console.log(JSON.stringify(text,picture));
 						this.$api.User.feedback(text,picture).then(res => {
 							this.$refs.uToast.show({
 									title: '提交成功',

@@ -2,7 +2,7 @@
 	<view>
 		<!-- map组件开始 -->
 		<view>
-			<ParkingMap @hideList="hideList" @clickCovers="clickCovers" @placeList="getPlaceList"/>
+			<ParkingMap @hideList="hideList" @clickCovers="clickCovers" @placeList="getPlaceList" />
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
@@ -18,9 +18,9 @@
 				<view class="input-box-border" :style="{border:inputBorderColor}" @click="clickInputBox">
 					<input type="text" class="input-box uni-input" placeholder="查询想要停车的地点" maxlength="40"
 						:focus="isFocus" :disabled="inputDisable" :adjust-position="false" confirm-type="search"
-						@blur="inputBlur" />
+						@blur="inputBlur" v-model="searchWord" />
 					<u-icon style="position: absolute;top: 6rpx;" slot="icon" custom-prefix="custom-icon"
-						color="#A35C8F" size="32px" name="search()"></u-icon>
+						color="#A35C8F" size="32px" name="search()" @click="searchList"></u-icon>
 				</view>
 				<view style="height: fit-content;">
 					<scroll-view scroll-y :style="{height:scrollHeight}" @scrolltolower="addShowNum"
@@ -28,8 +28,10 @@
 						<!-- 搜索框容器结束 -->
 						<view class="place-list" v-show="showPlaceList">
 							<view>
-								<view class="place-list-title" style="">最近适合停车的地点</view>
-								<view class="place-list-title-bar"></view>
+								<view v-show="showPlaceListTitle">
+									<view class="place-list-title" style="">最近适合停车的地点</view>
+									<view class="place-list-title-bar"></view>
+								</view>
 								<view class="place-list-item" v-for="(placeItem,index) in placeList.slice(0,showNum)"
 									:key="index" @click="clickItem(index)">
 									<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="90rpx"
@@ -83,6 +85,12 @@
 		name: 'Parking',
 		data() {
 			return {
+				//是否搜索
+				isSearch:false,
+				//是否显示列表标题
+				showPlaceListTitle:true,
+				//搜索关键词
+				searchWord: '',
 				//显示圆形进度条
 				showCircle: false,
 				//显示弹窗
@@ -112,8 +120,8 @@
 				//弹窗子项信息
 				popupItem: {
 					name: '未知设备',
-					surplus:'车位未知',
-					surplusColor:'#000000',
+					surplus: '车位未知',
+					surplusColor: '#000000',
 				},
 				//仪表盘数据
 				chartData: {
@@ -135,6 +143,7 @@
 						"data": 0.1
 					}],
 				},
+				placeListCache:[],
 			}
 		},
 		components: {
@@ -147,61 +156,78 @@
 				this.showCircle = false;
 			},
 
+			//搜索
+			searchList() {
+				let result =this.fuzzyQuery(this.placeList,this.searchWord);
+				this.placeListCache=this.placeList;
+				this.showPlaceListTitle=false;
+				this.placeList=result;
+				this.showMore=false;
+				this.isSearch=true;
+			},
+
+			//模糊搜索
+			fuzzyQuery(list, keyWord) {
+				let arr = [];
+				for (let i = 0; i < list.length; i++) {
+					if (list[i].name.match(keyWord) != null) {
+						arr.push(list[i]);
+					}
+				}
+				return arr;
+			},
+			
 			//导航按钮点击事件
 			navigateToPlace() {
 				this.navigateTo(this.popupItem.latitude, this.popupItem.longitude, this.popupItem.name);
 			},
 
 			//获取地点列表
-			getPlaceList(res){
-				this.placeList=res;
+			getPlaceList(res) {
+				this.placeList = res;
 				this.transformPlaceList();
 			},
-			
+
 			//转换地点列表
-			transformPlaceList(){
-				for(let i=0;i<this.placeList.length;i++){
-					if(this.placeList[i].capacity<=0.5){
-						this.placeList[i].surplus='车位空闲';
-						this.placeList[i].surplusColor='#2fc25b';
-					}
-					else if(this.placeList[i].capacity>0.5 && this.placeList[i].capacity<0.7){
-						this.placeList[i].surplus='车位紧张';
-						this.placeList[i].surplusColor='#1890ff';
-					}
-					else{
-						this.placeList[i].surplus='车位不足'
-						this.placeList[i].surplusColor='#f04864';
+			transformPlaceList() {
+				for (let i = 0; i < this.placeList.length; i++) {
+					if (this.placeList[i].capacity <= 0.5) {
+						this.placeList[i].surplus = '车位空闲';
+						this.placeList[i].surplusColor = '#2fc25b';
+					} else if (this.placeList[i].capacity > 0.5 && this.placeList[i].capacity < 0.7) {
+						this.placeList[i].surplus = '车位紧张';
+						this.placeList[i].surplusColor = '#1890ff';
+					} else {
+						this.placeList[i].surplus = '车位不足'
+						this.placeList[i].surplusColor = '#f04864';
 					}
 				}
 			},
-			
+
 			//点击covers
 			clickCovers(res) {
-				this.chartData.series[0].data=res.capacity;
+				this.chartData.series[0].data = res.capacity;
 				this.popupItem = res;
-				if(res.capacity<=0.5){
-					this.popupItem.surplus='车位空闲';
-					this.popupItem.surplusColor='#2fc25b';
+				if (res.capacity <= 0.5) {
+					this.popupItem.surplus = '车位空闲';
+					this.popupItem.surplusColor = '#2fc25b';
+				} else if (res.capacity > 0.5 && res.capacity < 0.7) {
+					this.popupItem.surplus = '车位紧张';
+					this.popupItem.surplusColor = '#1890ff';
+				} else {
+					this.popupItem.surplus = '车位不足'
+					this.popupItem.surplusColor = '#f04864';
 				}
-				else if(res.capacity>0.5 && res.capacity<0.7){
-					this.popupItem.surplus='车位紧张';
-					this.popupItem.surplusColor='#1890ff';
-				}
-				else{
-					this.popupItem.surplus='车位不足'
-					this.popupItem.surplusColor='#f04864';
-				}
-				
+
 				this.popupShow = true;
 			},
 
 			clickItem(index) {
-				this.popupItem=this.placeList[index];
+				this.popupItem = this.placeList[index];
 				this.popupShow = true;
 				setTimeout(() => {
 					this.showCircle = true;
-				}, 500);
+				}, 100);
 
 			},
 
@@ -228,6 +254,7 @@
 				let showNum = this.showNum;
 				const num = this.placeList.length;
 				if (showNum >= num) {
+					this.showMore=false;
 					//如果已显示数已经少于总数就直接返回，不增加
 					return;
 				} else {
@@ -241,6 +268,11 @@
 
 			//底栏动画
 			runStatus0() {
+				if(this.isSearch){
+					this.placeList=this.placeListCache;
+					this.isSearch=false;
+					this.searchWord='';
+				}
 				this.inputDisable = true;
 				this.$refs.locationBox.step({
 					height: '14vh',
@@ -269,6 +301,11 @@
 
 			//半屏动画
 			runStatus1() {
+				if(this.isSearch){
+					this.placeList=this.placeListCache;
+					this.isSearch=false;
+					this.searchWord='';
+				}
 				this.showNum = 2;
 				this.showMore = true;
 				this.inputDisable = true;
@@ -347,8 +384,7 @@
 			},
 
 		},
-		created() {
-		},
+		created() {},
 	}
 </script>
 

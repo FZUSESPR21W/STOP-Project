@@ -52,7 +52,7 @@
 			//标记点击事件
 			clickMarker(res) {
 				
-				console.log();
+				//console.log();
 				let data = this.covers[this.markerMap.get(res.target.markerId)]
 				this.$emit('clickCovers', data);
 			},
@@ -100,7 +100,7 @@
 				(res) => {
 					this.$api.Statistics.getAllParkingValue().then(
 						(r) => {
-							console.log(r)
+							//console.log(r)
 							let stop = r.data.data.stopStatusList
 							for(let j = 0;j<stop.length;j++) {
 								stopMap.set(parseInt(stop[j].id),stop[j].value)
@@ -112,7 +112,7 @@
 										let data = array[i].deviceDO
 										if(array[i].online == true) {
 											let num = stopMap.get(data.id)
-											console.log(num)
+											//console.log(num)
 											this.covers[index] = {
 												id: data.id,
 												name: data.name,
@@ -124,7 +124,7 @@
 											index++
 										}
 									}
-									console.log(this.covers)
+									//console.log(this.covers)
 									this.markerMap = deviceMap
 									this.$emit('placeList',this.covers)
 									// let polygons = []
@@ -138,7 +138,7 @@
 							
 						}
 					)
-					console.log(this.stop)
+					//console.log(this.stop)
 					
 			var polygons = [{
 					strokeWidth: 3,
