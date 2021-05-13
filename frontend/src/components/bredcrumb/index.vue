@@ -1,13 +1,19 @@
 <template>
   <!-- 面包屑顶部栏开始 -->
   <div class="bredcrumb-container">
-    <i class="el-icon-s-unfold icon" />
-    <!-- 面包屑容器开始 -->
-    <el-breadcrumb separator="/">
-      <!-- 面包屑 -->
-      <el-breadcrumb-item v-for="item in pageLocations">{{ item }}</el-breadcrumb-item>
-    </el-breadcrumb>
-    <!-- 面包屑容器结束 -->
+    <!-- 左部容器开始 -->
+    <div class="left">
+      <i class="el-icon-s-unfold icon" />
+      <!-- 面包屑容器开始 -->
+      <el-breadcrumb separator="/">
+        <!-- 面包屑 -->
+        <el-breadcrumb-item v-for="item in pageLocations">{{ item }}</el-breadcrumb-item>
+      </el-breadcrumb>
+      <!-- 面包屑容器结束 -->
+    </div>
+    <!-- 左部容器结束 -->
+    <!-- 登出按钮 -->
+    <el-button type="primary" @click="logout" class="logout-btn" plain>登出</el-button>
   </div>
   <!-- 面包屑顶部栏结束 -->
 </template>
@@ -21,6 +27,16 @@ export default {
     ...mapGetters([
         'pageLocations'
     ])
+  },
+  methods: {
+    // 登出
+    logout() {
+      // 请求登出
+      this.$api.Admin.logout().then(res => {
+        this.$message.success('登出成功！')
+        this.$
+      })
+    }
   }
 }
 </script>
@@ -33,10 +49,20 @@ export default {
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  .left {
+    display: flex;
+    align-items: center;
+  }
 
   .icon {
     margin: 10px;
     font-size: 20px;
+  }
+
+  .logout-btn {
+    margin-right: 20px;
   }
 
   /deep/ .el-breadcrumb__inner {

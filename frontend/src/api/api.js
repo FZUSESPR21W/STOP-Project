@@ -18,6 +18,14 @@ export class Admin {
         })
     }
 
+    /**
+     * 登出
+     * @returns {*}
+     */
+    static logout() {
+        return axios.post("/admin/logout")
+    }
+
 }
 
 /**
