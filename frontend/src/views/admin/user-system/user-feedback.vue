@@ -24,7 +24,7 @@
     </div>
     <!-- 用户反馈列表结束 -->
     <!-- 分页器 -->
-    <el-pagination background layout="prev, pager, next" :total="1000" />
+    <el-pagination background layout="prev, pager, next" :total="(total / 5) * 10" @current-change="changePage($event)"/>
   </div>
   <!-- 用户反馈容器结束 -->
 </template>
@@ -40,6 +40,8 @@ export default {
       page: 1,
       // 每页限制
       limit: 5,
+      // 总记录
+      total: 0,
       //加载动画
       loading: false
     }
@@ -71,6 +73,7 @@ export default {
       // 请求获取反馈信息列表
       this.$api.Feedback.getFeedbackList(this.page, this.limit).then(res => {
         this.feedbackList = res.data.data.feedbackList
+        this.total = res.data.data.total
       }).catch(err => {
         this.$message.error('获取反馈列表失败')
       })
@@ -86,6 +89,11 @@ export default {
       }).catch(err => {
         this.$message.error('获取反馈内容失败')
       })
+    },
+    // 换页
+    changePage(page) {
+      this.page = page
+      this.getFeedbackList()
     }
   }
 }
