@@ -46,20 +46,6 @@
 				this.mapHeight = '90vh';
 				this.$emit('hideList', true);
 			},
-			//根据经纬度导航至目的地
-			navigateTo(nLatitude, nLongitude) {
-				let plugin = requirePlugin('routePlan');
-				let key = 'FIJBZ-GKBCS-UYLO5-66F56-MLB5J-OPFO7'; //使用在腾讯位置服务申请的key
-				let referer = 'STOP'; //调用插件的app的名称
-				let endPoint = JSON.stringify({ //终点
-					'name': '目的地',
-					'latitude': nLatitude,
-					'longitude': nLongitude
-				});
-				uni.navigateTo({
-					url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint
-				});
-			},
 			//标记点击事件
 			clickMarker(res) {
 				
