@@ -2,7 +2,7 @@
 	<view>
 		<!-- map组件开始 -->
 		<view>
-			<ParkingMap @hideList="hideList" />
+			<!-- <ParkingMap @hideList="hideList" /> -->
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
@@ -58,17 +58,10 @@
 		<u-popup v-model="popupShow" mode="bottom" border-radius=10 height="44%" :safe-area-inset-bottom="false"
 			:mask="true" :mask-close-able="true">
 			<view style="height: 44vh;">
-<view class="charts-box" >
-  <qiun-data-charts
-    type="gauge"
-    :chartData="chartData"
-    :loadingType="1"
-    :disableScroll="true"
-    background="none"
-	:reshow="popupShow"
-	v-show="popupShow"
-  />
-</view>	
+				<view class="charts-box">
+					<qiun-data-charts type="gauge" :chartData="chartData" :canvas2d="true" background="none"
+						:reshow="popupShow" v-show="popupShow" id="8TSntTy0EhXCasBNEsBU6z37sT9NIH1y" />
+				</view>
 			</view>
 		</u-popup>
 		<!-- 地点详细弹窗结束 -->
@@ -106,7 +99,14 @@
 				inputBorderColor: '1px solid #bfbfbf',
 				//地点列表
 				placeList: [],
-				chartData:{"categories":[{"value":0.2,"color":"#1890ff"},{"value":0.8,"color":"#2fc25b"},{"value":1,"color":"#f04864"}],"series":[{"name":"完成率","data":0.66}]},
+				chartData: {
+					"categories": [],
+					"series": [{
+						
+						"name": "完成率",
+						"data": 0.66
+					}]
+				},
 			}
 		},
 		components: {
@@ -386,7 +386,7 @@
 
 	.charts-box {
 		background-color: pink;
-		width: 60vh;
-		height: 44vh;
+		width: 40vh;
+		height: 34vh;
 	}
 </style>

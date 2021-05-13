@@ -299,12 +299,29 @@ module.exports = {
 	},
 	"gauge":{
 	    "type": "gauge",
-	    "canvasId": "",
-	    "canvas2d": false,
+	    "canvasId": "8TSntTy0EhXCasBNEsBU6z37sT9NIH1y",
+	    "canvas2d": true,
 	    "background": "none",
 	    "animation": true,
 	    "timing": "easeOut",
-	    "duration": 1000,
+	    "duration": 800,
+	    "color": [
+	        "#1890FF",
+	        "#91CB74",
+	        "#FAC858",
+	        "#EE6666",
+	        "#73C0DE",
+	        "#3CA272",
+	        "#FC8452",
+	        "#9A60B4",
+	        "#ea7ccc"
+	    ],
+	    "padding": [
+	        0,
+	        0,
+	        0,
+	        0
+	    ],
 	    "rotate": false,
 	    "errorReload": true,
 	    "fontSize": 13,
@@ -314,16 +331,16 @@ module.exports = {
 	    "enableMarkLine": false,
 	    "dataLabel": true,
 	    "dataPointShape": true,
-	    "dataPointShapeType": "hollow",
+	    "dataPointShapeType": "solid",
 	    "title": {
-	        "name": "车位空余",
-	        "fontSize": 25,
-	        "color": "#ac358f",
+	        "name": "这是主标题",
+	        "fontSize": 22,
+	        "color": "#2fc25b",
 	        "offsetX": 0,
 	        "offsetY": 50
 	    },
 	    "subtitle": {
-	        "name": "",
+	        "name": "这是副标题",
 	        "fontSize": 15,
 	        "color": "#1890ff",
 	        "offsetX": 0,
@@ -332,7 +349,7 @@ module.exports = {
 	    "extra": {
 	        "gauge": {
 	            "type": "progress",
-	            "width": 10,
+	            "width": 8,
 	            "labelColor": "#666666",
 	            "labelOffset": 13,
 	            "startAngle": 0.75,
