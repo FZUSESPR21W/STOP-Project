@@ -18,7 +18,7 @@ export default {
         car: {
           // 标题
           title: {
-            text: '昨日福州大学各处电动车停车情况',
+            text: '福州大学各处电动车停车昨日停车峰值',
             left: 'center'
           },
           xAxis: {

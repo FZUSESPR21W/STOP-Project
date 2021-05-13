@@ -105,7 +105,15 @@ export class Statistics {
      * @returns {*}
      */
     static getLoginList() {
-        return axios.get('api/get_login_list')
+        return axios.get('/api/get_login_list')
+    }
+
+    /**
+     * 获取两小时内停车数据
+     * @returns {*}
+     */
+    static getStopStatusHourly() {
+        return axios.get('/api/stop_status_hourly')
     }
 }
 

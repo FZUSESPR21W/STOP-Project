@@ -14,7 +14,7 @@
         <!-- 处理操作按钮 -->
         <span class="update" @click="update(item.id, item.status == 2 ? 3 : 2)">
           <i class="el-icon-s-check"/>
-          {{ `标记为${item.status == 2 ? '已处理' : '未处理'}` }}
+          {{ `标记为${ item.status == 2 ? '已处理' : '未处理'}` }}
         </span>
       </div>
       <!-- 发布时间 -->

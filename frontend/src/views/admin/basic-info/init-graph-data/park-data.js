@@ -1,4 +1,7 @@
 export default {
+    chart: {
+        type: 'areaspline'
+    },
     title: {
         left: 'center',
         text: '福州大学教学停车情况',
@@ -6,30 +9,19 @@ export default {
     xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['16:00', '16:20', '16:40', '17:00', '17:20', '17:40', '18:00']
+        categories: ['16:00', '16:20', '16:40', '17:00', '17:20', '17:40', '18:00']
     },
     yAxis: {
-        type: 'value',
-        name: '电动车/辆',
-        nameLocation: 'middle',
-        nameTextStyle: {
-            padding: [0, 0, 30, 0]
+        title: {
+            text: '电动车/辆'
         }
     },
-    series: [
-        {
-            name: '东三',
-            data: [360, 230, 250, 240, 270, 250, 70],
-            type: 'line',
-            areaStyle: {}
-        },
-        {
-            name: '西三',
-            data: [300, 280, 230, 240, 250, 150, 30],
-            type: 'line',
-            areaStyle: {}
+    plotOptions: {
+        areaspline: {
+            fillOpacity: 0.5
         }
-    ],
+    },
+    series: [],
     tooltip: {
         trigger: 'axis',
         axisPointer: {

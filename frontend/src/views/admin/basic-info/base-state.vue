@@ -64,14 +64,12 @@ export default {
   beforeMount() {
     // 数据初始化
     this.getUserLoginData()
-    this.getStopStatus()
     this.getVisitNumber()
     // 更新面包屑路径
     this.$store.commit('setPageLocations', ['基础','基本情况'])
   },
   mounted() {
-    // 绘制图表
-    this.paintStopStatus()
+    this.getStopStatusAndPaint()
     this.paintVisitNumber()
   },
   methods: {
@@ -89,17 +87,30 @@ export default {
         )
       }
     },
-    // 获取福州大学教学楼停车情况
-    getStopStatus() {
+    // 获取福州大学教学楼停车情况并绘制
+    getStopStatusAndPaint() {
+      this.$api.Statistics.getStopStatusHourly().then(res => {
+        let stopStatusHourly = res.data.data.stopStatusHourly
+        // 往本地图表数据添加服务器获取到的数据
+        stopStatusHourly.forEach(item => {
+          this.graph.parkData.series.push({
+            name: item.name,
+            data: item.values
+          })
+        })
+        // 绘制图表
+        this.paintStopStatus()
+      })
     },
-    // 获取STOP小程序端日访问量
+    // 获取STOP小程序端日访问量并绘制
     getVisitNumber() {
     },
     // 绘制福州大学教学楼停车情况
     paintStopStatus() {
-      let domContainer = document.getElementById('park')
-      let chart = this.$echarts.init(domContainer)
-      chart.setOption(this.graph.parkData)
+      // let domContainer = document.getElementById('park')
+      // let chart = this.$echarts.init(domContainer)
+      // chart.setOption(this.graph.parkData)
+      this.$highcarts.chart('park', this.graph.parkData)
     },
     // 绘制图表STOP小程序端日访问量
     paintVisitNumber() {

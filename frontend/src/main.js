@@ -8,6 +8,10 @@ import * as echarts from 'echarts'
 //原型链挂载echarts
 Vue.prototype.$echarts = echarts
 
+//引入highcharts
+import Highcharts from 'highcharts/highstock'
+//原型链挂载highcharts
+Vue.prototype.$highcarts = Highcharts
 
 //引入element-ui
 import ElementUI from 'element-ui'

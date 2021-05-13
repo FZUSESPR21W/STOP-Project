@@ -171,6 +171,7 @@ export default {
       color: rgb(127, 127, 127);
       margin: 10px;
       text-decoration: underline;
+      cursor: pointer;
     }
   }
 
