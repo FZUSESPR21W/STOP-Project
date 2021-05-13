@@ -1,20 +1,17 @@
 package com.fzu.stop.service;
 
 import com.fzu.stop.pojo.NoticeDO;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class NoticeServiceTest {
 
@@ -23,7 +20,7 @@ public class NoticeServiceTest {
 
     List<NoticeDO> noticeTestList;
 
-    @Before
+    @BeforeEach
     public void publishNotice() {
         noticeTestList = new ArrayList<>(1);
         noticeTestList.add(new NoticeDO("test1","test1",true,0));
@@ -31,7 +28,7 @@ public class NoticeServiceTest {
         noticeService.publishNotice(noticeTestList.get(0));
     }
 
-    @After
+    @AfterEach
     public void deleteNotice() {
         noticeService.deleteNotice(noticeTestList.get(0).getId());
         noticeService.deleteNotice(noticeTestList.get(1).getId());
