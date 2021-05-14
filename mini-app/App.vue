@@ -38,19 +38,19 @@
 								console.log("你拒绝了授权，无法正常使用小程序部分功能")
 							}
 						})
-						uni.authorize({
-							scope: 'scope.userLocationBackground',
-							success() { //1.1 允许授权
-								uni.getLocation({
-									success(res) {
-										console.log(res)
-									}
-								})
-							},
-							fail() { //1.2 拒绝授权
-								console.log("你拒绝了授权，无法正常使用小程序部分功能")
-							}
-						})
+						// uni.authorize({
+						// 	scope: 'scope.userLocationBackground',
+						// 	success() { //1.1 允许授权
+						// 		uni.getLocation({
+						// 			success(res) {
+						// 				console.log(res)
+						// 			}
+						// 		})
+						// 	},
+						// 	fail() { //1.2 拒绝授权
+						// 		console.log("你拒绝了授权，无法正常使用小程序部分功能2")
+						// 	}
+						// })
 					} else {
 						// 已授权 ..(获取位置信息)
 						uni.getLocation({
