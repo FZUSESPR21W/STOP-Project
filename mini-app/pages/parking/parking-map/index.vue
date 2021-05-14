@@ -124,20 +124,17 @@
 						type: 'gcj02',
 						timeout: '2000',
 						success: res => resolve(res),
-						fail: err => rejected(res)
+						fail: err => rejected(err)
 					})
 				}).then(res => {
 					this.longitude = res.longitude
 					this.latitude = res.latitude
-					console.log('获取到了位置');
 					console.log(res.longitude);
 					console.log(res.latitude);
 				}).catch(err => {
-					console.log('未获取到位置');
-					uni.showModal({
-						title: '提示',
-						content: '位置信息获取失败（请检查定位功能是否打开）',
-						showCancel: false
+					uni.showToast({
+						title: '位置信息获取失败（请检查定位功能是否打开）',
+						icon:'none',
 					})
 				})
 			},

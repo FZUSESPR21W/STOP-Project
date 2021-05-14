@@ -382,6 +382,51 @@
 
 		},
 		created() {},
+		onLoad() {
+			console.log('执行了onload')
+			uni.getSetting({
+				success(res) {
+					console.log('获取了')
+					//如果用户没有授权
+					console.log(res.authSetting['scope.userLocation']);
+					if (res.authSetting['scope.userLocation']==false) {
+						uni.authorize({
+							scope: 'scope.userLocation',
+							success() { //1.1 允许授权
+								uni.getLocation({
+									success(res) {
+										//console.log(res)
+									}
+								})
+							},
+							fail() { //1.2 拒绝授权
+								//console.log("你拒绝了授权，无法正常使用小程序部分功能");
+								uni.showModal({
+									title:'提示',
+									content:'您已拒绝授权，是否去设置中的打开？',
+									confirmText:'确定',
+									cancelText:'取消',
+									success(res) {
+										//console.log('同意');
+										if(res.confirm){
+											uni.openSetting({
+												success(res) {
+													res.authSetting['scope.userLocation'] = true
+												}
+											}).then(res => {
+												uni.reLaunch({
+													url:'/pages/parking/index'
+												});
+				})
+										}
+									}
+								})
+							}
+						})
+					}
+				}
+			});
+		}
 	}
 </script>
 
