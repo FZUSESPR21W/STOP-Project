@@ -75,8 +75,9 @@
 						:auto-upload="true"
 						:action="action"
 						:file-list="fileList"
-						:max-size="5 * 1024 * 1024"
+						:max-size="10 * 1024 * 1024"
 						max-count="5"
+						:limitType="limitType"
 						width="160"
 						height="160"
 						upload-text="选取照片"
@@ -114,7 +115,7 @@
 		data() {
 			return {
 				//服务器地址
-				action: 'https://api.shawnxixi.icu/api/upload_pic',
+				action: 'https://api.shawnxixi.icu/api/upload/pic',
 				//表格上传所带参数
 				form:{
 					feedback: "",
@@ -124,6 +125,8 @@
 				//图片文件列表
 				fileList: [],
 				imageList :[],
+				
+				limitType: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'JPG', 'PNG', 'JPEG', 'GIF', 'WEBP'],
 				
 				//公告列表
 				noticeList: [],
@@ -274,7 +277,7 @@
 						})
 					} else {
 						this.$refs.uToast.show({
-								title: '验证失败',
+								title: '填写字数不足',
 								type: 'fail',
 						})
 					}

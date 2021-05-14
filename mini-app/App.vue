@@ -5,7 +5,7 @@
 			uni.login({
 				provider: 'weixin',
 				success: (res) => {
-					console.log(res)
+					//console.log(res)
 					this.$api.User.login(res.code).then(
 						(res) => {
 							// console.log(res)
@@ -30,7 +30,7 @@
 							success() { //1.1 允许授权
 								uni.getLocation({
 									success(res) {
-										console.log(res)
+										//console.log(res)
 									}
 								})
 							},
@@ -43,7 +43,7 @@
 							success() { //1.1 允许授权
 								uni.getLocation({
 									success(res) {
-										console.log(res)
+										//console.log(res)
 									}
 								})
 							},
@@ -55,7 +55,7 @@
 						// 已授权 ..(获取位置信息)
 						uni.getLocation({
 							success(res) {
-								console.log(res)
+								//console.log(res)
 							}
 						})
 					}
@@ -64,10 +64,10 @@
 			
 		},
 		onShow: function() {
-			console.log('App Show')
+			//console.log('App Show')
 		},
 		onHide: function() {
-			console.log('App Hide')
+			//console.log('App Hide')
 		}
 	}
 </script>

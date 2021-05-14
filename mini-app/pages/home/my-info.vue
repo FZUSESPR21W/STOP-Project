@@ -37,8 +37,8 @@
 
 <style>
 	.u-m-r-10{
-		width: 110rpx;
-		height: 110rpx;
+		width: 95rpx;
+		height: 95rpx;
 	    position: absolute;
 	    left: 100%;
 	    transform: translate3d(-130%,-50%,0);
