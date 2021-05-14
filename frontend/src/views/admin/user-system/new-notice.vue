@@ -95,6 +95,15 @@ export default {
     },
     // 发布公告
     publishNotice() {
+      // 判断标题非空
+      if(this.newNoticeData.title == '') {
+        return this.$message.error('标题不能为空！')
+      }
+      // 判断内容非空
+      if(this.newNoticeData.content == '') {
+        return this.$message.error('内容不能为空！')
+      }
+      // 判断
       // 请求发布公告
       this.$api.Notice.publishNotice(this.newNoticeData.title, this.newNoticeData.content,
           false, 1).then(res => {

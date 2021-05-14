@@ -35,6 +35,14 @@ export default {
   methods: {
     // 登录
     login() {
+      // 判断账号非空
+      if(this.username == '') {
+        return this.$message.error('账号不能为空！')
+      }
+      // 判断密码非空
+      if(this.password == '') {
+        return this.$message.error('密码不能为空！')
+      }
       // 登陆请求
       this.$api.Admin.login(this.username, this.password).then(res => {
         if(res.data.message === '登陆成功') {
