@@ -18,6 +18,8 @@
       <div class="title">已发布公告</div>
       <!-- 公告 -->
       <div v-for="(item,index) in noticeList" :key="index" class="list-item" @click="getNoticeDetail(item.id)">{{ item.title }}</div>
+      <!-- 分页器 -->
+      <el-pagination layout="prev, pager, next" :total="(total / 10) * 10" @current-change="changePage($event)"/>
     </div>
     <!-- 更新弹窗开始 -->
     <el-dialog title="修改公告" :visible.sync="updateNoticeData.display" class="update-dialog">
@@ -26,7 +28,7 @@
         <!-- 公告标题 -->
         <el-input v-model="updateNoticeData.title" placeholder="请输入标题"/>
         <!-- 公告内容 -->
-        <el-input v-model="updateNoticeData.content" placeholder="请输入公告内容" type="textarea" :rows="25"/>
+        <el-input v-model="updateNoticeData.content" placeholder="请输入公告内容" type="textarea" :rows="10"/>
         <!-- 修改按钮 -->
         <el-button type="primary" class="submit" @click="updateNotice">修改</el-button>
       </div>
@@ -59,12 +61,16 @@ export default {
         // 公告id
         id: 0,
         // 弹窗显示标志
-        display: false
+        display: false,
       },
       // 公告列表
       noticeList: [],
+      // 第几页
       page: 1,
-      limit: 10
+      // 页数限制
+      limit: 10,
+      // 总页数
+      total: 0
     }
   },
   beforeMount() {
@@ -79,6 +85,7 @@ export default {
       // 请求获取公告列表
       this.$api.Notice.getNoticeList(this.page, this.limit).then(res => {
         this.noticeList = res.data.data.noticeList
+        this.total = res.data.data.totalNum
       })
     },
     // 获取详细公告
@@ -137,6 +144,11 @@ export default {
         // 失败提示信息
         this.$message.error('修改失败')
       })
+    },
+    // 换页
+    changePage(page) {
+      this.page = page
+      this.getNoticeList()
     }
   }
 }
