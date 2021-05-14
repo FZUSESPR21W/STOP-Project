@@ -9,11 +9,10 @@
         select * from notice where id = #{id}
     </select>
     <select id="selectAllNotices" resultType="com.fzu.stop.pojo.NoticeDO">
-        <bind name="likeKeyword" value="'%'+keyword+'%'"/>
         select * from notice
         <where>
             <if test="keyword != null and keyword != ''">
-                ( title like #{likeKeyword} or content like #{likeKeyword} )
+                ( title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%') )
             </if>
             <if test="top != null">
                 and top = #{top}
@@ -32,11 +31,10 @@
         </if>
     </select>
     <select id="countNotice" resultType="int">
-        <bind name="likeKeyword" value="'%'+keyword+'%'"/>
         select count(*) from notice
         <where>
             <if test="keyword != null and keyword != ''">
-                ( title like #{likeKeyword} or content like #{likeKeyword} )
+                ( title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%') )
             </if>
             <if test="top != null">
                 and top = #{top}
