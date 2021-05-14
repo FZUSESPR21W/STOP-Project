@@ -37,13 +37,29 @@
 				//绘图用的多边形
 				polygons: '',
 				//用于存放数据的map
-				markerMap:'',
-				stop:''
+				markerMap: '',
+				stop: ''
 			}
 		},
 
 		methods: {
-
+			//转换地点列表
+			transformPlaceList(placeList) {
+				for (let i = 0; i < placeList.length; i++) {
+					if (placeList[i].capacity <= 0.5) {
+						placeList[i].surplus = '车位空闲';
+						placeList[i].surplusColor = '#2fc25b';
+					} else if (placeList[i].capacity > 0.5 && placeList[i].capacity < 0.7) {
+						placeList[i].surplus = '车位紧张';
+						placeList[i].surplusColor = '#1890ff';
+					} else {
+						placeList[i].surplus = '车位不足'
+						placeList[i].surplusColor = '#f04864';
+					}
+				}
+				return placeList;
+			},
+			
 			//地图点击事件
 			clickMap(res) {
 				this.mapHeight = '90vh';
@@ -51,7 +67,7 @@
 			},
 			//标记点击事件
 			clickMarker(res) {
-				
+
 				//console.log();
 				let data = this.covers[this.markerMap.get(res.target.markerId)]
 				this.$emit('clickCovers', data);
@@ -90,7 +106,7 @@
 					})
 				})
 			},
-			
+
 		},
 		created() {
 			let deviceMap = new Map()
@@ -102,44 +118,46 @@
 						(r) => {
 							//console.log(r)
 							let stop = r.data.data.stopStatusList
-							for(let j = 0;j<stop.length;j++) {
-								stopMap.set(parseInt(stop[j].id),stop[j].value)
+							for (let j = 0; j < stop.length; j++) {
+								stopMap.set(parseInt(stop[j].id), stop[j].value)
 							}
 							this.stop = stopMap
 							let array = res.data.data.deviceList
-									let index = 0
-									for(let i = 0;i<array.length;i++) {
-										let data = array[i].deviceDO
-										if(array[i].online == true) {
-											let num = stopMap.get(data.id)
-											//console.log(num)
-											this.covers[index] = {
-												id: data.id,
-												name: data.name,
-												latitude: data.latitude,
-												longitude: data.longitude,
-												capacity: num / data.maxCarsNumber
-											}
-											deviceMap.set(data.id,index)
-											index++
-										}
+							let index = 0
+							for (let i = 0; i < array.length; i++) {
+								let data = array[i].deviceDO
+								if (array[i].online == true) {
+									let num = stopMap.get(data.id)
+									//console.log(num)
+									this.covers[index] = {
+										id: data.id,
+										name: data.name,
+										latitude: data.latitude,
+										longitude: data.longitude,
+										capacity: num / data.maxCarsNumber
 									}
-									//console.log(this.covers)
-									this.markerMap = deviceMap
-									this.$emit('placeList',this.covers)
-									// let polygons = []
-									// this.$api.Statistics.getPoints().then(
-									// 	(res) => {
-									// 		console.log(res)
-									// 	}
-									// )
+									deviceMap.set(data.id, index)
+									index++
 								}
-							)
-							
+							}
+							//console.log(this.covers)
+							this.markerMap = deviceMap
+							let coversTemp=this.covers
+							this.covers=this.transformPlaceList(coversTemp);
+							this.$emit('placeList', this.covers)
+							// let polygons = []
+							// this.$api.Statistics.getPoints().then(
+							// 	(res) => {
+							// 		console.log(res)
+							// 	}
+							// )
 						}
 					)
-					//console.log(this.stop)
-					
+
+				}
+			)
+			//console.log(this.stop)
+
 			var polygons = [{
 					strokeWidth: 3,
 					strokeColor: '#266339',
@@ -190,8 +208,9 @@
 		},
 		onShow() {
 			let deviceMap = new Map()
-			
-		}
+
+		},
+
 	}
 </script>
 

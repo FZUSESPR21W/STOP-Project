@@ -206,41 +206,14 @@
 			//获取地点列表
 			getPlaceList(res) {
 				this.placeList = res;
-				this.transformPlaceList();
+				console.log(this.placeList);
 				this.showSearchPlaceList=this.placeList;
-			},
-
-			//转换地点列表
-			transformPlaceList() {
-				for (let i = 0; i < this.placeList.length; i++) {
-					if (this.placeList[i].capacity <= 0.5) {
-						this.placeList[i].surplus = '车位空闲';
-						this.placeList[i].surplusColor = '#2fc25b';
-					} else if (this.placeList[i].capacity > 0.5 && this.placeList[i].capacity < 0.7) {
-						this.placeList[i].surplus = '车位紧张';
-						this.placeList[i].surplusColor = '#1890ff';
-					} else {
-						this.placeList[i].surplus = '车位不足'
-						this.placeList[i].surplusColor = '#f04864';
-					}
-				}
 			},
 
 			//点击covers
 			clickCovers(res) {
 				this.chartData.series[0].data = res.capacity;
 				this.popupItem = res;
-				if (res.capacity <= 0.5) {
-					this.popupItem.surplus = '车位空闲';
-					this.popupItem.surplusColor = '#2fc25b';
-				} else if (res.capacity > 0.5 && res.capacity < 0.7) {
-					this.popupItem.surplus = '车位紧张';
-					this.popupItem.surplusColor = '#1890ff';
-				} else {
-					this.popupItem.surplus = '车位不足'
-					this.popupItem.surplusColor = '#f04864';
-				}
-
 				this.popupShow = true;
 			},
 
