@@ -18,7 +18,7 @@
 				<view class="input-box-border" :style="{border:inputBorderColor}" @click="clickInputBox">
 					<input type="text" class="input-box uni-input" placeholder="查询想要停车的地点" maxlength="40"
 						:focus="isFocus" :disabled="inputDisable" :adjust-position="false" confirm-type="search"
-						@blur="inputBlur" v-model="searchWord" />
+						@blur="inputBlur" v-model="searchWord" @input="inputSearch" />
 					<u-icon style="position: absolute;top: 6rpx;" slot="icon" custom-prefix="custom-icon"
 						color="#A35C8F" size="32px" name="search()" @click="searchList"></u-icon>
 				</view>
@@ -32,7 +32,8 @@
 									<view class="place-list-title" style="">最近适合停车的地点</view>
 									<view class="place-list-title-bar"></view>
 								</view>
-								<view class="place-list-item" v-for="(placeItem,index) in placeList.slice(0,showNum)"
+								<u-empty text="没有搜索结果" mode="search" v-show="showEmpty" margin-top="200"></u-empty>
+								<view class="place-list-item" v-for="(placeItem,index) in showSearchPlaceList.slice(0,showNum)"
 									:key="index" @click="clickItem(index)">
 									<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="90rpx"
 										name="position-icon"></u-icon>
@@ -64,7 +65,7 @@
 			<view class="">
 				<view class="charts-box">
 					<qiun-data-charts type="gauge"
-						:opts="{title:{name: popupItem.surplus,color: popupItem.surplusColor,fontSize: 25,offsetY:50},subtitle: {name: '实时速度',color: '#666666',fontSize: 15,offsetY:-50}}"
+						:opts="{title:{name: popupItem.surplus,color: popupItem.surplusColor,fontSize: 25,offsetY:50},subtitle: {name: ' ',color: '#666666',fontSize: 15,offsetY:-50}}"
 						:chartData="chartData" background="none" :reshow="popupShow" v-show="popupShow" />
 				</view>
 				<u-button @click="navigateToPlace" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91"
@@ -85,6 +86,8 @@
 		name: 'Parking',
 		data() {
 			return {
+				//是否显示空页面提示
+				showEmpty:false,
 				//是否搜索
 				isSearch:false,
 				//是否显示列表标题
@@ -117,6 +120,8 @@
 				inputBorderColor: '1px solid #bfbfbf',
 				//地点列表
 				placeList: [],
+				//显示的地点列表
+				showSearchPlaceList:[],
 				//弹窗子项信息
 				popupItem: {
 					name: '未知设备',
@@ -143,7 +148,6 @@
 						"data": 0.1
 					}],
 				},
-				placeListCache:[],
 			}
 		},
 		components: {
@@ -151,19 +155,36 @@
 		},
 
 		methods: {
+			
+			//在用户输入时搜索
+			inputSearch(res){
+				let searchWord=res.detail.value;
+				this.search(searchWord);
+				
+			},
 			//弹出层关闭
 			closePopup() {
 				this.showCircle = false;
 			},
 
 			//搜索
-			searchList() {
+			search(searchWord){
 				let result =this.fuzzyQuery(this.placeList,this.searchWord);
-				this.placeListCache=this.placeList;
 				this.showPlaceListTitle=false;
-				this.placeList=result;
+				this.showSearchPlaceList=result;
 				this.showMore=false;
 				this.isSearch=true;
+				//如果搜索结果为空，显示为空的提示
+				if(result.length===0){
+					this.showEmpty=true;
+				}
+				else{
+					this.showEmpty=false;
+				}
+			},
+			//点击搜索
+			searchList() {
+				this.search(this.searchWord);
 			},
 
 			//模糊搜索
@@ -186,6 +207,7 @@
 			getPlaceList(res) {
 				this.placeList = res;
 				this.transformPlaceList();
+				this.showSearchPlaceList=this.placeList;
 			},
 
 			//转换地点列表
@@ -269,8 +291,9 @@
 			//底栏动画
 			runStatus0() {
 				if(this.isSearch){
-					this.placeList=this.placeListCache;
+					this.showSearchPlaceList=this.placeList;
 					this.isSearch=false;
+					this.showEmpty=false;
 					this.searchWord='';
 				}
 				this.inputDisable = true;
@@ -302,8 +325,9 @@
 			//半屏动画
 			runStatus1() {
 				if(this.isSearch){
-					this.placeList=this.placeListCache;
+					this.showSearchPlaceList=this.placeList;
 					this.isSearch=false;
+					this.showEmpty=false;
 					this.searchWord='';
 				}
 				this.showNum = 2;
