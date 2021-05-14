@@ -1,16 +1,12 @@
 <template>
 	<view>
-		<!-- 条件渲染if -->
-		<view v-if="!hasUserInfo" style="margin-top: 50rpx;">
-		  <u-button v-if="canIUseGetUserProfile" :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" @click="getUserProfile"> 获取个人信息 </u-button>
-		</view>
-		<!-- 条件渲染else -->
-		<view v-else class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30" >
+		<!-- 个人信息卡片展示 -->
+		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30" >
 			<view class="u-m-r-10">
-				<u-avatar :src="userInfo.avatarUrl" mode="circle" size="140"></u-avatar>
+				<open-data type="userAvatarUrl" ></open-data>
 			</view>
 			<view class="u-flex-1">
-				<view class="u-font-18 u-p-b-20">Hi, {{userInfo.nickName}}</view>
+				<view class="u-font-18 u-p-b-20">Hi, <open-data type="userNickName"></open-data></view>
 				<view class="u-font-14 u-tips-color">欢迎使用STOP</view>
 			</view>
 			<view class="u-m-l-10 u-p-10">
@@ -18,7 +14,7 @@
 			</view>
 		</view>
 		
-		
+		<!-- cell单元格展示个人中心 -->
 		<view class="u-m-t-20">
 			<u-cell-group>
 				<u-cell-item  title="个人信息" @click="goMyInfo" arrow-direction="right">
@@ -40,23 +36,9 @@
 	export default {
 		data() {
 			return {
-				userInfo: {},
-				hasUserInfo: false,
-				canIUseGetUserProfile: false,
-				
-				//提交按钮定制样式
-				customStyle: {
-					color: "#A55F91",
-					width: "240rpx",
-					height: "80rpx",
-					fontStyle: 'bold'
-				},
 			}
 		},
 		onLoad(){
-			if (uni.getUserProfile) {
-			  this.canIUseGetUserProfile = true
-			};
 		},
 		methods: {
 			
@@ -78,24 +60,6 @@
 			goAboutUs(){
 				uni.navigateTo({
 					url:'../home/about-us'
-				})
-			},
-			
-			getUserProfile(e) {
-			  // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
-			  // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-			  uni.getUserProfile({
-			    desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-				lang: "zh_CN",
-			    success: (res) => {
-			      this.userInfo = res.userInfo,
-			      this.hasUserInfo = true,
-				  //将数据存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个异步接口。
-				  uni.setStorage({
-					key:'user-info_key',
-				  	data:this.userInfo,
-					})
-				  },
 				})
 			},
 		}
@@ -133,6 +97,10 @@ page{
 	top: 50%;
 	transform: translate3d(-50%,-50%,0);
     top: -1rpx;
+	width: 140rpx;
+	height: 140rpx;
+	overflow: hidden;
+	border-radius: 50%;
 }
 
 </style>
