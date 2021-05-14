@@ -61,8 +61,6 @@ export class Notice {
 			data: {
 				page: 1,
 				limit: 3,
-				orderBy: 0,
-				top: true,
 			}
 		})
 	}
