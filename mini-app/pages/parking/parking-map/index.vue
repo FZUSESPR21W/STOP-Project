@@ -10,11 +10,21 @@
 				:style="{height:mapHeight}" />
 		</view>
 		<!-- 地图组件容器结束 -->
-
-		<view @click="moveToCenter()" class="viewlittle" style="position: absolute;top: 47%;left: 87%;">
-			<view style="background: #f1f1f1;border-radius: 5px;width: 40px;height: 40px;">
-				<image src="../../../static/map-icon/miaozhun.png"
-					style="width: 30px;height: 30px;margin: 0 auto;padding-top: 5px;padding-left: 5px;" />
+		<view style="position: absolute;top: 40%;left: 87%;">
+			<!-- 刷新按钮开始 -->
+			<view @click="refresh()">
+				<view style="background: rgba(255,255,255,0.8);border-radius:5px 5px 0 0;width: 40px;height: 40px;">
+					<image src="../../../static/map-icon/refresh.png"
+						style="width: 30px;height: 30px;margin: 0 auto;padding-top: 5px;padding-left: 5px;" />
+				</view>
+			</view>
+			<!-- 刷新按钮结束 -->
+			<view @click="moveToCenter()">
+				<view
+					style="background: rgba(255,255,255,0.8);border-radius:0 0 5px 5px;border-top: 0.8px solid rgba(0,0,0,0.4);width: 40px;height: 40px;">
+					<image src="../../../static/map-icon/miaozhun.png"
+						style="width: 30px;height: 30px;margin: 0 auto;padding-top: 5px;padding-left: 5px;" />
+				</view>
 			</view>
 		</view>
 	</view>
@@ -28,8 +38,8 @@
 			return {
 				// 数据请加注释
 				//经纬度
-				latitude: '',
-				longitude: '',
+				latitude: '26.05064261000777',
+				longitude: '119.19206586536791',
 				//marker标记
 				covers: [],
 				//地图高度
@@ -43,6 +53,14 @@
 		},
 
 		methods: {
+			
+			//刷新按钮点击事件
+			refresh(){
+				console.log('刷新');
+				uni.reLaunch({
+					url:'/pages/parking/index'
+				});
+			},
 			//计算经纬度距离 返回米
 			getDistance(lat1, lng1, lat2, lng2) {
 				var radLat1 = lat1 * Math.PI / 180.0;
@@ -58,7 +76,8 @@
 			//转换地点列表
 			transformPlaceList(placeList) {
 				for (let i = 0; i < placeList.length; i++) {
-					let tempDistance = this.getDistance(placeList[i].latitude, placeList[i].longitude, this.latitude, this.longitude)
+					let tempDistance = this.getDistance(placeList[i].latitude, placeList[i].longitude, this.latitude, this
+						.longitude)
 					if (tempDistance > 999) {
 						tempDistance = Math.round(tempDistance / 1000)
 						placeList[i].distance = tempDistance + 'km'
@@ -110,15 +129,11 @@
 				}).then(res => {
 					this.longitude = res.longitude
 					this.latitude = res.latitude
-					let left
-					let top
-					uni.getSystemInfo({
-						success(res) {
-							left = res.windowWidth * 0.8
-							top = res.windowHeight * 0.2
-						}
-					})
+					console.log('获取到了位置');
+					console.log(res.longitude);
+					console.log(res.latitude);
 				}).catch(err => {
+					console.log('未获取到位置');
 					uni.showModal({
 						title: '提示',
 						content: '位置信息获取失败（请检查定位功能是否打开）',
@@ -126,12 +141,12 @@
 					})
 				})
 			},
-			
+
 		},
 		created() {
+			this.getLocation();
 			let deviceMap = new Map()
 			let stopMap = new Map()
-			this.getLocation();
 			this.$api.Statistics.getAllDevice().then(
 				(res) => {
 					this.$api.Statistics.getAllParkingValue().then(
@@ -162,9 +177,12 @@
 								}
 							}
 							this.markerMap = deviceMap
-							this.covers = this.transformPlaceList(coversTemp);
-							console.log(this.covers)
-							this.$emit('placeList', this.covers)
+							setTimeout(() => {
+								this.covers = this.transformPlaceList(coversTemp);
+								console.log('处理了数据')
+								this.$emit('placeList', this.covers)
+							}, 500);
+
 							// let polygons = []
 							// this.$api.Statistics.getPoints().then(
 							// 	(res) => {

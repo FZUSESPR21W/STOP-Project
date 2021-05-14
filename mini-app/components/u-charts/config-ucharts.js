@@ -299,7 +299,7 @@ module.exports = {
 	},
 	"gauge":{
 	    "type": "gauge",
-	    "canvasId": "8TSntTy0EhXCasBNEsBU6z37sT9NIH1y",
+	    "canvasId": "hB5sgbkN4V9efHRjubKUqCAgGpFHaSky",
 	    "canvas2d": true,
 	    "background": "none",
 	    "animation": true,
@@ -349,7 +349,7 @@ module.exports = {
 	    "extra": {
 	        "gauge": {
 	            "type": "progress",
-	            "width": 4,
+	            "width": 12,
 	            "labelColor": "#666666",
 	            "labelOffset": 13,
 	            "startAngle": 0.75,
