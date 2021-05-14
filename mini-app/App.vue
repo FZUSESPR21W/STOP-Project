@@ -20,47 +20,6 @@
 						})
 				}
 			})
-			uni.getSetting({
-				success(res) {
-					if (!res.authSetting['scope.userLocation'] || !res.authSetting[
-							'scope.userLocationBackground']) {
-						// 未授权
-						uni.authorize({
-							scope: 'scope.userLocation',
-							success() { //1.1 允许授权
-								uni.getLocation({
-									success(res) {
-										//console.log(res)
-									}
-								})
-							},
-							fail() { //1.2 拒绝授权
-								console.log("你拒绝了授权，无法正常使用小程序部分功能")
-							}
-						})
-						uni.authorize({
-							scope: 'scope.userLocationBackground',
-							success() { //1.1 允许授权
-								uni.getLocation({
-									success(res) {
-										//console.log(res)
-									}
-								})
-							},
-							fail() { //1.2 拒绝授权
-								console.log("你拒绝了授权，无法正常使用小程序部分功能")
-							}
-						})
-					} else {
-						// 已授权 ..(获取位置信息)
-						uni.getLocation({
-							success(res) {
-								//console.log(res)
-							}
-						})
-					}
-				}
-			})
 			
 		},
 		onShow: function() {

@@ -57,7 +57,7 @@
 		"usingComponents": true,
 		"permission": {
 			"scope.userLocation": {
-				"desc": "您的权限将会用于STOP"
+				"desc": "您的位置信息将会用于STOP"
 			}
 		},
 		"plugins": {
