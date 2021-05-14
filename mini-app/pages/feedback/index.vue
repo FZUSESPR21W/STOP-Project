@@ -255,9 +255,8 @@
 					if (valid) {
 						//console.log('验证通过');
 						let text = `${this.form.feedback}[imageList]${this.form.pictureUrl}`
-						let picture = ''
 						//console.log(JSON.stringify(text,picture));
-						this.$api.User.feedback(text,picture).then(res => {
+						this.$api.User.feedback(text).then(res => {
 							this.$refs.uToast.show({
 									title: '提交成功',
 									type: 'success',
@@ -265,20 +264,21 @@
 							//this.$refs.uUpload.upload();
 							//重置表单
 							this.form=this.$options.data().form;
-							this.charNum=0;
+							this.charNum = 0;
 							this.$refs.uUpload.clear();
 							this.fileList = [];
+							this.imageList = [];
 						}).catch(err => {
 							// 失败提示信息
 							this.$refs.uToast.show({
 									title: '提交失败',
-									type: 'fail',
+									type: 'error',
 							})
 						})
 					} else {
 						this.$refs.uToast.show({
 								title: '填写字数不足',
-								type: 'fail',
+								type: 'warning',
 						})
 					}
 				});
