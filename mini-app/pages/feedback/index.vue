@@ -48,6 +48,7 @@
 				>
 					<!-- 文字输入框 -->
 					<u-input type="textarea"
+						@focus="getUsername"
 						@input="sumChar"
 						:auto-height="false"
 						:border="border"
@@ -121,6 +122,9 @@
 					feedback: "",
 					pictureUrl: "",
 				},
+				
+				//用户昵称
+				username: "",
 				
 				//图片文件列表
 				fileList: [],
@@ -249,19 +253,29 @@
 				//console.log("打印图片List：onRemove", this.imageList);
 			},
 			
+			getUsername(){
+				if(!(this.username)){
+					uni.getUserProfile({
+						desc:'获取用户名',
+						success:(res)=>{
+							this.username=res.userInfo.nickName;
+						},
+						fail:(res)=>{
+						}
+					});
+				}
+			},
+			
 			//提交按钮点击事件
 			submit() {
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
-						//console.log('验证通过');
 						let text = `${this.form.feedback}[imageList]${this.form.pictureUrl}`
-						//console.log(JSON.stringify(text,picture));
-						this.$api.User.feedback(text).then(res => {
+						this.$api.User.feedback(this.username,text).then(res => {
 							this.$refs.uToast.show({
 									title: '提交成功',
 									type: 'success',
 							})
-							//this.$refs.uUpload.upload();
 							//重置表单
 							this.form=this.$options.data().form;
 							this.charNum = 0;
