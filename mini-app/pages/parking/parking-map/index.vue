@@ -43,9 +43,28 @@
 		},
 
 		methods: {
+			//计算经纬度距离 返回米
+			getDistance(lat1, lng1, lat2, lng2) {
+				var radLat1 = lat1 * Math.PI / 180.0;
+				var radLat2 = lat2 * Math.PI / 180.0;
+				var a = radLat1 - radLat2;
+				var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+				var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+					Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+				s = s * 6378.137; // EARTH_RADIUS;
+				s = Math.round(Math.round(s * 10000) / 10000 * 1000);
+				return s;
+			},
 			//转换地点列表
 			transformPlaceList(placeList) {
 				for (let i = 0; i < placeList.length; i++) {
+					let tempDistance = this.getDistance(placeList[i].latitude, placeList[i].longitude, this.latitude, this.longitude)
+					if (tempDistance > 999) {
+						tempDistance = Math.round(tempDistance / 1000)
+						placeList[i].distance = tempDistance + 'km'
+					} else {
+						placeList[i].distance = tempDistance + 'm'
+					}
 					if (placeList[i].capacity <= 0.5) {
 						placeList[i].surplus = '车位空闲';
 						placeList[i].surplusColor = '#2fc25b';
@@ -57,9 +76,10 @@
 						placeList[i].surplusColor = '#f04864';
 					}
 				}
-				return placeList;
+				console.log(placeList)
+				return placeList
 			},
-			
+
 			//地图点击事件
 			clickMap(res) {
 				this.mapHeight = '90vh';
@@ -106,7 +126,7 @@
 					})
 				})
 			},
-
+			
 		},
 		created() {
 			let deviceMap = new Map()
@@ -124,12 +144,13 @@
 							this.stop = stopMap
 							let array = res.data.data.deviceList
 							let index = 0
+							let coversTemp = []
 							for (let i = 0; i < array.length; i++) {
 								let data = array[i].deviceDO
 								if (array[i].online == true) {
 									let num = stopMap.get(data.id)
 									//console.log(num)
-									this.covers[index] = {
+									coversTemp[index] = {
 										id: data.id,
 										name: data.name,
 										latitude: data.latitude,
@@ -140,10 +161,9 @@
 									index++
 								}
 							}
-							//console.log(this.covers)
 							this.markerMap = deviceMap
-							let coversTemp=this.covers
-							this.covers=this.transformPlaceList(coversTemp);
+							this.covers = this.transformPlaceList(coversTemp);
+							console.log(this.covers)
 							this.$emit('placeList', this.covers)
 							// let polygons = []
 							// this.$api.Statistics.getPoints().then(
