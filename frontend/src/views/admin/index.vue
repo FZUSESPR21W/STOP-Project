@@ -12,11 +12,25 @@
 import navSide from '@/components/nav-side'
 import bredcrumb from '@/components/bredcrumb'
 
+import { mapGetters } from 'vuex'
+
 export default {
   name: "index",
   components: {
     navSide,
     bredcrumb
+  },
+  computed: {
+    ...mapGetters([
+        'loginStatus'
+    ])
+  },
+  created() {
+    // 登陆判断
+    if(this.loginStatus == false) {
+      this.$message.error('请先登陆')
+      this.$router.replace('/')
+    }
   }
 }
 </script>

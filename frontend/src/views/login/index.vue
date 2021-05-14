@@ -48,6 +48,8 @@ export default {
         if(res.data.message === '登陆成功') {
           // 登陆成功提示信息
           this.$message.success(res.data.message)
+          // 设置登陆状态
+          this.$store.commit('setLoginStatus', true)
           // 路由跳转
           this.$router.push('/admin')
         }

@@ -4,8 +4,6 @@
     <!-- 用户登录记录开始 -->
     <div class="user-login-log-container">
       <span class="title">用户登录记录</span>
-      <!-- 提示banner -->
-      <el-alert title="项目未上线，无法获得数据" type="warning" show-icon class="banner"/>
       <!-- 用户登录记录表格，数据来源：userLoginData -->
       <el-table :data="userLogin.userLoginData" style="width: 100%" stripe>
         <!-- 日期字段 -->
@@ -98,6 +96,22 @@ export default {
             data: item.values
           })
         })
+
+        // 清空图表x轴
+        this.graph.parkData.xAxis.categories = []
+        // 获取当前时间
+        let time = new Date()
+        // 设置一分钟对应的数值
+        let MS_PER_MINUTE = 60000
+        for(let i = 0 ; i < 6 ; i ++){
+          // 每20分钟为一个单位
+          let newtime = new Date(time - 20 * i * MS_PER_MINUTE)
+          this.graph.parkData.xAxis.categories.push(`${newtime.getHours()}:${newtime.getMinutes()}`)
+        }
+
+        // 数组反转
+        this.graph.parkData.xAxis.categories = this.graph.parkData.xAxis.categories.reverse()
+
         // 绘制图表
         this.paintStopStatus()
       })
