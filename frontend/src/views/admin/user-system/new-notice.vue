@@ -8,7 +8,7 @@
       <!-- 公告标题 -->
       <el-input v-model="newNoticeData.title" placeholder="请输入标题"/>
       <!-- 公告内容 -->
-      <el-input v-model="newNoticeData.content" placeholder="请输入公告内容" type="textarea" :rows="25"/>
+      <el-input v-model="newNoticeData.content" placeholder="请输入公告内容" type="textarea" :rows="10"/>
       <!-- 发布按钮 -->
       <el-button type="primary" class="submit" @click="publishNotice()">发布</el-button>
     </div>

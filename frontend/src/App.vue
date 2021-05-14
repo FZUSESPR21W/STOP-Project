@@ -36,4 +36,6 @@ html, body, #app {
   flex: 1;
 }
 
+::-webkit-scrollbar {display:none}
+
 </style>

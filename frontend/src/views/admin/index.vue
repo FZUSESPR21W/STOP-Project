@@ -32,6 +32,8 @@ export default {
 
   .main {
     flex: 1;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
 }

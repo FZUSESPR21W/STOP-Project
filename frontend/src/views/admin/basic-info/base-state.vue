@@ -111,12 +111,24 @@ export default {
       // let chart = this.$echarts.init(domContainer)
       // chart.setOption(this.graph.parkData)
       this.$highcarts.chart('park', this.graph.parkData)
+
+      // 添加重新绘制监听
+      window.addEventListener('resize', () => {
+        // TODO 节流优化
+        this.$highcarts.chart('park', this.graph.parkData)
+      })
     },
     // 绘制图表STOP小程序端日访问量
     paintVisitNumber() {
       let domContainer = document.getElementById('visit')
       let chart = this.$echarts.init(domContainer)
       chart.setOption(this.graph.visitData)
+
+      // 添加重新绘制监听
+      window.addEventListener('resize', () => {
+        // TODO 节流优化
+        chart.resize()
+      })
     }
   }
 }
@@ -158,6 +170,7 @@ export default {
   .graph-container-main {
     display: flex;
     height: 100%;
+    width: 100%;
   }
 }
 
