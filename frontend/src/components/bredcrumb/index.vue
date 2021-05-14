@@ -34,6 +34,7 @@ export default {
       // 请求登出
       this.$api.Admin.logout().then(res => {
         this.$message.success('登出成功！')
+        this.$store.commit('setLoginStatus', false)
         this.$router.push('/')
       }).catch(err => {
         this.$message.error('登出失败！')
