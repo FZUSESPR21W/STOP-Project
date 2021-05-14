@@ -14,7 +14,7 @@
 			</u-cell-item>
 			<u-cell-item  title="城市" :arrow="false">
 				<view class="u-flex-1">
-					<open-data type="userCity"></open-data>
+					<open-data type="userCity" lang="zh_CN"></open-data>
 				</view>
 			</u-cell-item>
 		</u-cell-group>
