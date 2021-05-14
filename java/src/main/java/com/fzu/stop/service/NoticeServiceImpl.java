@@ -41,4 +41,9 @@ public class NoticeServiceImpl implements NoticeService {
     public void deleteNotice(Integer id) {
         noticeDao.deleteNoticeById(id);
     }
+
+    @Override
+    public Integer countNotice(String keyword, Boolean top) {
+        return noticeDao.countNotice(keyword,top);
+    }
 }

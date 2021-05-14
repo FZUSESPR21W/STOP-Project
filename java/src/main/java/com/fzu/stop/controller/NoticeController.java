@@ -54,8 +54,10 @@ public class NoticeController {
             , String keyword, @Range(min = 0,max = 1,message = "非法的排序") Integer orderBy, Boolean top){
         List<NoticeDO> noticeList = noticeService.getNoticeList(page,limit,keyword,orderBy,top);
         if (noticeList.size()>0) {
+            Integer totalNum = noticeService.countNotice(keyword,top);
             Map<String, Object> data = new HashMap<>(1);
             data.put("noticeList", noticeList);
+            data.put("totalNum",totalNum);
             return ResponseUtil.getSuccessResponse("获取成功", data);
         } else {
             return ResponseUtil.getFailResponse("获取失败", new HashMap<>());

@@ -47,4 +47,12 @@ public interface NoticeService {
      * @param id 公告id
      */
     void deleteNotice(Integer id);
+
+    /**
+     * 查询公告数
+     * @param keyword 关键词
+     * @param top 判断是否顶置
+     * @return 公告数
+     */
+    Integer countNotice(String keyword, Boolean top);
 }
