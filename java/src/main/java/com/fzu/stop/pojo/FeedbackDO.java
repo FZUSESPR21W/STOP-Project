@@ -10,6 +10,9 @@ public class FeedbackDO {
     String title;
     String content;
     String username;
+    /**
+     * 待解决2，已解决3
+     */
     String status;
     String submitTime;
 

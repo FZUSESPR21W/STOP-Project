@@ -53,10 +53,16 @@ class FeedbackServiceTest {
 
     @Test
     void addFeedback() {
-        FeedbackDO feedbackDO = new FeedbackDO();
-        feedbackDO.setContent("test");
-        feedbackDO.setUsername("李明");
-        feedbackDO.setOpenId("test123");
+//        String openid = "oi_5x5V2QZEgJdCatc94ucZ04ErI";
+//        try {
+//            System.out.println(WechatUtil.getUserInfo(openid));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        FeedbackDO feedbackDO = new FeedbackDO();
+//        feedbackDO.setContent("test");
+//        feedbackDO.setUsername("李明");
+//        feedbackDO.setOpenId("test123");
 //        Assertions.assertTrue(feedbackService.addFeedback(feedbackDO));
     }
 }

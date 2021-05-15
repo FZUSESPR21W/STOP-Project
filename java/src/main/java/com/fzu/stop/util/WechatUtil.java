@@ -63,6 +63,20 @@ public class WechatUtil {
         return jsonObject;
     }
 
+    public static JSONObject getUserInfo(String openid) throws IOException {
+        String requestUrl ="https://api.weixin.qq.com/cgi-bin/user/info";
+        OkHttpClient okHttpClient=new OkHttpClient();
+        HttpUrl.Builder httpBuilder=HttpUrl.parse(requestUrl).newBuilder();
+        httpBuilder.addQueryParameter("access_token",getAccessToken().getString("access_token"));
+        httpBuilder.addQueryParameter("openid",openid);
+        Request request=new Request.Builder()
+                .url(httpBuilder.build())
+                .build();
+        Response response = okHttpClient.newCall(request).execute();
+        JSONObject jsonObject= (JSONObject) JSON.parse(response.body().string());
+        return jsonObject;
+    }
+
     public static JSONObject getUserPortrait(String begin_date,String end_date) throws IOException {
         String accessToken =  WechatUtil.getAccessToken().getString("access_token");
         String requestUrl="https://api.weixin.qq.com/datacube/getweanalysisappiduserportrait";
