@@ -40,7 +40,9 @@ public class FeedbackServiceImpl implements FeedbackService{
 
     @Override
     public boolean addFeedback(FeedbackDO feedbackDO){
-        feedbackDO.setUsername("匿名用户");
+        if("".equals(feedbackDO.getUsername().trim())) {
+            feedbackDO.setUsername("匿名用户");
+        }
         return feedbackDao.addFeedback(feedbackDO);
     }
 
