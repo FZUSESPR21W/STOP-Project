@@ -7,10 +7,12 @@
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
 		<view @touchmove.stop.prevent="noScrolling">
-			<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox">
-
+			<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox"
+				duration="0"
+				:styles="{top:locationBoxTop*100+'vh !important',height:(1-locationBoxTop)*100+'vh !important'}">
 				<!-- 向上导航条容器开始 -->
-				<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList">
+				<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList" 
+							@touchmove="touchLocationBox" @touchend="locationBoxReset">
 					<uni-transition mode-class="fade" custom-class="exhale-bar" :show="showExhaleBar" />
 				</view>
 				<!-- 向上导航条容器结束 -->
@@ -88,6 +90,12 @@
 		name: 'Parking',
 		data() {
 			return {
+				//地点框距离顶部高度
+				locationBoxTop:0.56,
+				//用户窗口宽度
+				windowWidth:0,
+				//用户窗口高度
+				windowHeight:0,
 				//是否显示空页面提示
 				showEmpty: false,
 				//是否搜索
@@ -113,7 +121,7 @@
 				//是否禁用输入框
 				inputDisable: true,
 				//是否显示向上呼出导航条
-				showExhaleBar: false,
+				showExhaleBar: true,
 				//是否显示推荐地址列表
 				showPlaceList: true,
 				//是否显示地址框
@@ -157,6 +165,22 @@
 		},
 
 		methods: {
+			
+			
+			//拖动结束将地点框复位
+			locationBoxReset(res){
+				let top=this.locationBoxTop;
+				if(top<0.4){
+					this.clickInputBox();
+				}
+				else if(top > 0.7){
+					this.changeLocationBox(0);
+				}
+				else{
+					this.changeLocationBox(1);
+				}
+				//console.log(this.locationBoxTop);
+			},
 
 			//在用户输入时搜索
 			inputSearch(res) {
@@ -167,6 +191,19 @@
 			//弹出层关闭
 			closePopup() {
 				this.showCircle = false;
+			},
+			
+			touchLocationBox(res){
+				let top=res.changedTouches[0].pageY/this.windowHeight;
+				//防止顶部过度拖拽
+				if(top<0.1){
+					top=0.1
+				}
+				//防止底部过度拖拽
+				else if(top>0.85){
+					top=0.85;
+				}
+				this.locationBoxTop=top;
 			},
 
 			//搜索
@@ -273,9 +310,11 @@
 				this.$refs.locationBox.step({
 					height: '14vh',
 					top: '86vh'
+				},{
+						duration: 100,
 				})
 				this.$refs.locationBox.run(() => {
-					//console.log('执行完毕')
+					this.locationBoxTop=0.86;
 					this.addShowNumFromInput = false;
 				});
 			},
@@ -307,12 +346,15 @@
 				this.showMore = true;
 				this.inputDisable = true;
 				this.$refs.locationBox.step({
+					top: '56vh',
 					height: '44vh',
-					top: '56vh'
+				},{
+						duration: 100,
 				})
 				this.$refs.locationBox.run(() => {
-					//_this.isFocus=false;
+					this.locationBoxTop=0.56;
 					this.addShowNumFromInput = false;
+					this.inputDisable = true;
 					//console.log('执行完毕')
 				});
 			},
@@ -322,8 +364,12 @@
 				this.$refs.locationBox.step({
 					height: '90vh',
 					top: '10vh'
+				},{
+						duration: 100,
+						delay:0,
 				})
 				this.$refs.locationBox.run(() => {
+					this.locationBoxTop=0.1;
 					setTimeout(() => {
 						this.isFocus = true;
 					}, 50);
@@ -371,7 +417,7 @@
 					this.isFocus = false;
 					this.runStatus1();
 					this.scrollHeight = '';
-					this.showExhaleBar = false;
+					this.showExhaleBar = true;
 					this.showPlaceList = true;
 				} else if (status === 2) {
 					this.showExhaleBar = true;
@@ -381,14 +427,25 @@
 			},
 
 		},
-		created() {},
+		created() {
+			let _this=this;
+			//获取用户系统尺寸
+			uni.getSystemInfo({
+						    success: function (res) {
+										_this.windowWidth=res.windowWidth;
+										_this.windowHeight=res.windowHeight;
+						        //console.log(res.windowWidth);
+						        //console.log(res.windowHeight);
+						    }
+						});
+		},
 		onLoad() {
-			console.log('执行了onload')
+			//console.log('执行了onload')
 			uni.getSetting({
 				success(res) {
-					console.log('获取了')
+					//console.log('获取了')
 					//如果用户没有授权
-					console.log(res.authSetting['scope.userLocation']);
+					//console.log(res.authSetting['scope.userLocation']);
 					if (res.authSetting['scope.userLocation']==false) {
 						uni.authorize({
 							scope: 'scope.userLocation',
@@ -498,7 +555,7 @@
 		border-top: 1px solid rgba(191, 191, 191, 0.4);
 		position: fixed !important;
 		height: 44vh;
-		top: 56vh
+		top: 56vh;
 	}
 
 	// 呼出条
