@@ -28,7 +28,7 @@
 					<scroll-view scroll-y :style="{height:scrollHeight}" @scrolltolower="addShowNum"
 						enable-back-to-top="true">
 						<!-- 搜索框容器结束 -->
-						<u-empty text="所谓伊人，在水一方" mode="list"></u-empty>
+						<!-- <u-empty text="所谓伊人，在水一方" mode="list"></u-empty> -->
 						<view class="place-list" v-show="showPlaceList">
 							<view>
 								<view v-show="showPlaceListTitle">
@@ -194,6 +194,7 @@
 				this.showCircle = false;
 			},
 			
+			///监听触摸滑动事件
 			touchLocationBox(res){
 				let top=res.changedTouches[0].pageY/this.windowHeight;
 				//防止顶部过度拖拽
@@ -204,6 +205,15 @@
 				else if(top>0.85){
 					top=0.85;
 				}
+				this.$refs.locationBox.step({
+					top: top*100+'vh',
+					height: (1-top)*100+'vh',
+				},{
+						duration: 0,
+				})
+				this.$refs.locationBox.run(() => {
+						//console.log('正在移动');
+				});
 				this.locationBoxTop=top;
 			},
 
@@ -247,7 +257,7 @@
 				//无数据时显示数据为空
 				console.log(res.length);
 				if(res.length==0){
-					this.showPlaceList=false;
+					//this.showPlaceList=false;
 				}
 				
 				this.placeList = res;
@@ -279,12 +289,13 @@
 
 			//点击更多按钮
 			clickMore() {
-				this.changeLocationBox(2);
+				if(this.locationBoxTop!=0.1){
+					this.changeLocationBox(2);
+					setTimeout(() => {
+						this.inputDisable = true;
+					}, 300);
+				}
 				this.addShowNum();
-				setTimeout(() => {
-					this.inputDisable = true;
-				}, 300);
-
 			},
 
 			//新增显示数量
@@ -319,7 +330,7 @@
 					height: '14vh',
 					top: '86vh'
 				},{
-						duration: 100,
+						duration: 300,
 				})
 				this.$refs.locationBox.run(() => {
 					this.locationBoxTop=0.86;
@@ -350,6 +361,7 @@
 					this.showEmpty = false;
 					this.searchWord = '';
 				}
+				this.showPlaceListTitle=true;
 				this.showNum = 2;
 				this.showMore = true;
 				this.inputDisable = true;
@@ -357,7 +369,7 @@
 					top: '56vh',
 					height: '44vh',
 				},{
-						duration: 100,
+						duration: 300,
 				})
 				this.$refs.locationBox.run(() => {
 					this.locationBoxTop=0.56;
@@ -373,16 +385,10 @@
 					height: '90vh',
 					top: '10vh'
 				},{
-						duration: 100,
-						delay:0,
+						duration: 300,
 				})
 				this.$refs.locationBox.run(() => {
 					this.locationBoxTop=0.1;
-					setTimeout(() => {
-						this.isFocus = true;
-					}, 50);
-					this.inputDisable = false;
-					//console.log('执行完毕')
 				});
 			},
 
@@ -397,6 +403,12 @@
 				//获取焦点时修改边框颜色，因:style不支持绑定border-color,所以绑定了整个border
 				this.inputBorderColor = '1px solid #a35c8f';
 				this.changeLocationBox(2);
+				setTimeout(()=>{
+					setTimeout(() => {
+						this.isFocus = true;
+					}, 50);
+					this.inputDisable = false;
+				},300);
 				if (!this.addShowNumFromInput) {
 					this.addShowNum();
 					this.addShowNumFromInput = true;
@@ -417,7 +429,6 @@
 			changeLocationBox(status) {
 				if (status === 0) {
 					this.isFocus = false;
-					this.showExhaleBar = true;
 					this.scrollHeight = '';
 					this.showPlaceList = false;
 					this.runStatus0();
@@ -425,10 +436,8 @@
 					this.isFocus = false;
 					this.runStatus1();
 					this.scrollHeight = '';
-					this.showExhaleBar = true;
 					this.showPlaceList = true;
 				} else if (status === 2) {
-					this.showExhaleBar = true;
 					this.scrollHeight = '78vh'
 					this.runStatus2();
 				}
