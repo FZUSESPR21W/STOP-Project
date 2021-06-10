@@ -45,10 +45,6 @@ public class GlobalExceptionHandler {
             throws Exception {
         // 不同异常返回不同状态码
         String message = "";
-        //if (e instanceof NotLoginException) {
-            // 如果是未登录异常
-//            NotLoginException ee = (NotLoginException) e;
-//            message="登录失败"+ee.getMessage();
         if(e instanceof NotRoleException) {
             // 如果是角色异常
             NotRoleException ee = (NotRoleException) e;

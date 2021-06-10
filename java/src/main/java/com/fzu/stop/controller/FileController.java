@@ -22,7 +22,7 @@ public class FileController {
     @Autowired
     FileService fileService;
 
-    @PostMapping("/upload/pic")
+    @PostMapping("/upload_pic")
     @ResponseBody
     public ResponseDTO uploadPicture(MultipartFile file){
         String url = fileService.uploadPicture(file);

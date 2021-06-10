@@ -1,5 +1,7 @@
 package com.fzu.stop.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.fzu.stop.util.ResponseUtil;
 import com.fzu.stop.pojo.FeedbackDO;
 import com.fzu.stop.pojo.ResponseDTO;
@@ -11,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +24,7 @@ import java.util.Map;
 @Controller
 @Validated
 @RequestMapping("/feedback")
+@SaCheckLogin()
 public class FeedbackController {
     @Autowired
     FeedbackService feedbackService;
@@ -50,10 +54,10 @@ public class FeedbackController {
         }
         return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
     }
-
+    @SaCheckPermission("feedback-update")
     @GetMapping("/update")
     @ResponseBody
-    public ResponseDTO updateFeedback(@Min(value = 1,message = "错误的id") Integer id,@Range(min = 2,max = 3,message = "非法的状态") Integer status) {
+    public ResponseDTO updateFeedback(@NotNull @Min(value = 1,message = "错误的id") Integer id,@NotNull @Range(min = 2,max = 3,message = "非法的状态") Integer status) {
             feedbackService.updateFeedback(id, status);
             return ResponseUtil.getSuccessResponse("修改成功", new HashMap<>(16));
     }

@@ -1,5 +1,8 @@
 package com.fzu.stop.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaCheckRole;
 import com.fzu.stop.util.ResponseUtil;
 import com.fzu.stop.pojo.NoticeDO;
 import com.fzu.stop.pojo.ResponseDTO;
@@ -26,7 +29,7 @@ public class NoticeController {
 
     @Autowired
     NoticeService noticeService;
-
+    @SaCheckPermission("notice-add")
     @ResponseBody
     @PostMapping("/publish")
     public ResponseDTO publishNotice(@RequestBody @Validated({NoticeDO.Insert.class}) NoticeDO notice){
@@ -63,7 +66,7 @@ public class NoticeController {
             return ResponseUtil.getFailResponse("获取失败", new HashMap<>());
         }
     }
-
+    @SaCheckPermission("notice-update")
     @ResponseBody
     @PostMapping("/update")
     public ResponseDTO updateNotice(@RequestBody @Validated({NoticeDO.Update.class}) NoticeDO notice){
@@ -71,6 +74,7 @@ public class NoticeController {
         return ResponseUtil.getSuccessResponse("更新成功",new HashMap<>());
     }
 
+    @SaCheckPermission("notice-delete")
     @ResponseBody
     @GetMapping("/delete")
     public ResponseDTO deleteNotice(@NotNull(message = "id不能为空") Integer id){

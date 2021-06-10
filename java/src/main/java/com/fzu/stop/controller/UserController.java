@@ -1,11 +1,13 @@
 package com.fzu.stop.controller;
 
-import cn.dev33.satoken.stp.StpUtil;
+
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fzu.stop.pojo.FeedbackDO;
 import com.fzu.stop.service.FeedbackService;
 import com.fzu.stop.util.ResponseUtil;
+import com.fzu.stop.util.StpUserUtil;
 import com.fzu.stop.util.WechatUtil;
 import com.fzu.stop.pojo.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +45,9 @@ public class UserController {
         //errcode为0表示请求成功
         if(errorCode==0){
             //将获得的openid 作为loginId
-            StpUtil.setLoginId(code2Session.getString("openid"));
+            StpUserUtil.setLoginId(code2Session.getString("openid"));
             // 获取当前会话的token值,将该token值作为skey传给小程序端作为会话的维护
-            String satoken=StpUtil.getTokenValue();
+            String satoken=StpUserUtil.getTokenValue();
             Map map=new HashMap();
             map.put("tokenKey","satoken");
             map.put("tokenValue",satoken);
@@ -62,12 +64,12 @@ public class UserController {
         }
         return null;
     }
-
+    @SaCheckLogin(key = "user")
     @PostMapping("/complain")
     @ResponseBody
     public ResponseDTO complain(@RequestBody JSONObject req){
         FeedbackDO feedbackDO = JSONObject.parseObject(JSON.toJSONString(req),FeedbackDO.class);
-        feedbackDO.setOpenId((String) StpUtil.getLoginId());
+        feedbackDO.setOpenId((String) StpUserUtil.getLoginId());
         boolean flag = feedbackService.addFeedback(feedbackDO);
         if(flag){
             return ResponseUtil.getSuccessResponse("反馈成功", new HashMap<>(1));

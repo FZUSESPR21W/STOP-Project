@@ -22,6 +22,11 @@ public class StpInterfaceImpl implements StpInterface {
 
     @Override
     public List<String> getPermissionList(Object loginId, String loginKey) {
+        if("user".equals(loginKey)){
+            List<String> list=new ArrayList<>();
+            list.add("user-complain");
+            return list;
+        }
         List<RoleDO> roles = adminDao.listRolesByAdminId(Integer.valueOf((String) loginId));
         Set<String> permissionSet =new HashSet<>();
         for (RoleDO role : roles) {
@@ -37,6 +42,11 @@ public class StpInterfaceImpl implements StpInterface {
 
     @Override
     public List<String> getRoleList(Object loginId, String loginKey) {
+        if("user".equals(loginKey)){
+            List<String> list=new ArrayList<>();
+            list.add("user");
+            return list;
+        }
         List<RoleDO> roles = adminDao.listRolesByAdminId(Integer.valueOf((String) loginId));
         List<String> roleList =new ArrayList<>();
         for (RoleDO role : roles) {

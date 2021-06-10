@@ -1,11 +1,15 @@
 package com.fzu.stop.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckRole;
+import cn.dev33.satoken.stp.StpUtil;
 import com.fzu.stop.util.ResponseUtil;
 import com.fzu.stop.pojo.DeviceDO;
 import com.fzu.stop.pojo.DeviceDTO;
 import com.fzu.stop.pojo.DeviceInfoDTO;
 import com.fzu.stop.pojo.ResponseDTO;
 import com.fzu.stop.service.DeviceService;
+import com.fzu.stop.util.StpUserUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +48,7 @@ public class DeviceController {
 		resp.put("deviceList", deviceInfoDTOList);
 		return ResponseUtil.getSuccessResponse("",resp);
 	}
+	@SaCheckRole(value = {"super-admin"})
 	@Operation(description = "通过设备id删除设备")
 	@GetMapping(value = "/delete_device_by_id")
 	@ResponseBody
@@ -51,6 +56,8 @@ public class DeviceController {
 		Integer row = deviceService.deleteDeviceById(id);
 		return ResponseUtil.getSuccessResponse("执行成功，影响行数："+row,new HashMap<>());
 	}
+
+	@SaCheckRole(value = {"super-admin"})
 	@Operation(description = "通过设备id更新设备信息")
 	@PostMapping(value = "/update_device_by_id")
 	@ResponseBody
