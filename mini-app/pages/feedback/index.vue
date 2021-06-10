@@ -1,6 +1,8 @@
 <template>
 	<!-- feedback页面容器开始 -->
 	<view class="wrap">
+		<!-- 无网络提示组件 -->
+		<u-no-network :tips="tips"></u-no-network>
 		<!-- 轮播图、公告组件容器开始 -->
 		<view>
 			<!-- 轮播图组件 -->
@@ -115,6 +117,9 @@
 	export default {
 		data() {
 			return {
+				//无网络提示文本
+				tips: '无网络连接',
+				
 				//服务器地址
 				action: 'https://api.shawnxixi.icu/api/upload/pic',
 				//表格上传所带参数
