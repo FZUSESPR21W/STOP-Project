@@ -7,7 +7,7 @@
 			<!-- 地图组件-->
 			<map :latitude="latitude" :longitude="longitude" id="parkingMap" :markers="covers" :show-location="true"
 				@markertap="clickMarker" @regionchange="clickMap" :polygons="polygons" style="width: 100%;"
-				:style="{height:mapHeight}" />
+				:style="{height:mapHeight}" :min-scale="minScale" :max-scale="maxScale"/>
 		</view>
 		<!-- 地图组件容器结束 -->
 		<view style="position: absolute;top: 40%;left: 87%;">
@@ -48,7 +48,11 @@
 				polygons: '',
 				//用于存放数据的map
 				markerMap: '',
-				stop: ''
+				stop: '',
+				//用户最小缩放级别
+				minScale:'14',
+				//用户最大缩放级别
+				maxScale:'20',
 			}
 		},
 
