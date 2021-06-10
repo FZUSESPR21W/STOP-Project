@@ -96,7 +96,7 @@ public class StatisticsController {
     @Operation(description = "获取最近delta+1天的每天小程序访问次数")
     @GetMapping("/get_visit_number")
     @ResponseBody
-    public ResponseDTO getVisitNumber(@Min(value = 1,message = "要大于0") Integer delta) throws IOException {
+    public ResponseDTO getVisitNumber(@Min(value = 0,message = "delta非负") Integer delta) throws IOException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         Calendar calendar = Calendar.getInstance();
         //允许设置的最大值为昨日

@@ -105,9 +105,12 @@ public class WechatUtil {
         OkHttpClient okHttpClient=new OkHttpClient();
         HttpUrl.Builder httpBuilder=HttpUrl.parse(requestUrl).newBuilder();
         httpBuilder.addQueryParameter("access_token",accessToken);
-        RequestBody body=new FormBody.Builder()
-                .add("begin_date",begin_date)
-                .add("end_date",end_date).build();
+        JSONObject data=new JSONObject();
+        data.put("begin_date",begin_date);
+        data.put("end_date",end_date);
+        /*需要将数据格式设置为application/json,否则会出现47001----data format error rid: 6084cf6b-7c22f070-136ea237*/
+        MediaType mediaType=MediaType.parse("application/json;charset=utf-8");
+        RequestBody body=RequestBody.create(mediaType,String.valueOf(data));
         Request request=new Request.Builder()
                 .url(httpBuilder.build())
                 .post(body)
