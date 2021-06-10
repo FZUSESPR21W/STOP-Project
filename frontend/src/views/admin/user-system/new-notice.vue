@@ -7,8 +7,8 @@
       <div class="title">发布新公告</div>
       <!-- 公告标题 -->
       <el-input v-model="newNoticeData.title" placeholder="请输入标题"/>
-      <!-- 公告内容 -->
-      <el-input v-model="newNoticeData.content" placeholder="请输入公告内容" type="textarea" :rows="10"/>
+      <!-- 公告内容（富文本） -->
+      <quillEditor class="editor" ref="myTextEditor" v-model="newNoticeData.content" />
       <!-- 发布按钮 -->
       <el-button type="primary" class="submit" @click="publishNotice()">发布</el-button>
     </div>
@@ -39,10 +39,18 @@
 </template>
 
 <script>
-import axios from "@/api/axios";
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
+
 
 export default {
   name: "new-notice",
+  components: {
+    quillEditor
+  },
   data() {
     return {
       // 发布新公告的数据
@@ -170,9 +178,14 @@ export default {
   .input-form {
     flex: 1;
 
+    .editor {
+      height: 300px;
+    }
+
     .submit {
       width: 120px;
       margin-left: calc(100% - 120px);
+      margin-top: 80px !important;
     }
 
     *:nth-child(n+2) {
@@ -206,6 +219,9 @@ export default {
   .input-form {
     padding: 0;
   }
+
 }
+
+
 
 </style>
