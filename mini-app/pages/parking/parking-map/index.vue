@@ -142,59 +142,58 @@
 					})
 				})
 			},
+			//封装获取设备信息方法
+			getAllDevice(){
+				let deviceMap = new Map()
+				let stopMap = new Map()
+				this.$api.Statistics.getAllDevice().then(
+					(res) => {
+						this.$api.Statistics.getAllParkingValue().then(
+							(r) => {
+								let stop = r.data.data.stopStatusList
+								console.log(stop);
+								for (let j = 0; j < stop.length; j++) {
+									stopMap.set(parseInt(stop[j].id), stop[j].value)
+								}
+								this.stop = stopMap
+								let array = res.data.data.deviceList
+								let index = 0
+								let coversTemp = []
+								
+								for (let i = 0; i < array.length; i++) {
+									let data = array[i].deviceDO
+									if (array[i].online == true) {
+										let num = stopMap.get(data.id)
+										//console.log(num)
+										coversTemp[index] = {
+											id: data.id,
+											name: data.name,
+											latitude: data.latitude,
+											longitude: data.longitude,
+											capacity: num / data.maxCarsNumber
+										}
+										deviceMap.set(data.id, index)
+										index++
+									}
+								}
+								this.markerMap = deviceMap
+								setTimeout(() => {
+									this.covers = this.transformPlaceList(coversTemp);
+									console.log('处理了数据')
+									this.$emit('placeList', this.covers)
+								}, 500);
+				
+							}
+						)
+				
+					}
+				)
+			}
 
 		},
 		created() {
 			this.getLocation();
-			let deviceMap = new Map()
-			let stopMap = new Map()
-			this.$api.Statistics.getAllDevice().then(
-				(res) => {
-					this.$api.Statistics.getAllParkingValue().then(
-						(r) => {
-							//console.log(r)
-							let stop = r.data.data.stopStatusList
-							for (let j = 0; j < stop.length; j++) {
-								stopMap.set(parseInt(stop[j].id), stop[j].value)
-							}
-							this.stop = stopMap
-							let array = res.data.data.deviceList
-							let index = 0
-							let coversTemp = []
-							for (let i = 0; i < array.length; i++) {
-								let data = array[i].deviceDO
-								if (array[i].online == true) {
-									let num = stopMap.get(data.id)
-									//console.log(num)
-									coversTemp[index] = {
-										id: data.id,
-										name: data.name,
-										latitude: data.latitude,
-										longitude: data.longitude,
-										capacity: num / data.maxCarsNumber
-									}
-									deviceMap.set(data.id, index)
-									index++
-								}
-							}
-							this.markerMap = deviceMap
-							setTimeout(() => {
-								this.covers = this.transformPlaceList(coversTemp);
-								console.log('处理了数据')
-								this.$emit('placeList', this.covers)
-							}, 500);
-
-							// let polygons = []
-							// this.$api.Statistics.getPoints().then(
-							// 	(res) => {
-							// 		console.log(res)
-							// 	}
-							// )
-						}
-					)
-
-				}
-			)
+			this.getAllDevice();
 			//console.log(this.stop)
 
 			var polygons = [{

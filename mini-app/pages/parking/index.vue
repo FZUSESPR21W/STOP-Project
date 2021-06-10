@@ -28,6 +28,7 @@
 					<scroll-view scroll-y :style="{height:scrollHeight}" @scrolltolower="addShowNum"
 						enable-back-to-top="true">
 						<!-- 搜索框容器结束 -->
+						<u-empty text="所谓伊人，在水一方" mode="list"></u-empty>
 						<view class="place-list" v-show="showPlaceList">
 							<view>
 								<view v-show="showPlaceListTitle">
@@ -243,8 +244,15 @@
 
 			//获取地点列表
 			getPlaceList(res) {
+				//无数据时显示数据为空
+				console.log(res.length);
+				if(res.length==0){
+					this.showPlaceList=false;
+				}
+				
 				this.placeList = res;
 				this.showSearchPlaceList = this.placeList;
+				
 			},
 
 			//点击covers
@@ -428,6 +436,10 @@
 
 		},
 		created() {
+			
+			//空数据测试
+			this.getPlaceList([]);
+			
 			let _this=this;
 			//获取用户系统尺寸
 			uni.getSystemInfo({
