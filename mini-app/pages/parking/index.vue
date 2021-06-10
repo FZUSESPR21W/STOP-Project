@@ -7,12 +7,11 @@
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
 		<view @touchmove.stop.prevent="noScrolling">
-			<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox"
-				duration="0"
+			<uni-transition custom-class="location-box" :show="showLocationBox" ref="locationBox" duration="0"
 				:styles="{top:locationBoxTop*100+'vh !important',height:(1-locationBoxTop)*100+'vh !important'}">
 				<!-- 向上导航条容器开始 -->
-				<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList" 
-							@touchmove="touchLocationBox" @touchend="locationBoxReset">
+				<view style="width: 100%;padding-top:10px; padding-bottom: 4px;" @click="showList"
+					@touchmove="touchLocationBox" @touchend="locationBoxReset">
 					<uni-transition mode-class="fade" custom-class="exhale-bar" :show="showExhaleBar" />
 				</view>
 				<!-- 向上导航条容器结束 -->
@@ -28,9 +27,14 @@
 					<scroll-view scroll-y :style="{height:scrollHeight}" @scrolltolower="addShowNum"
 						enable-back-to-top="true">
 						<!-- 搜索框容器结束 -->
-						<!-- <u-empty text="所谓伊人，在水一方" mode="list"></u-empty> -->
 						<view class="place-list" v-show="showPlaceList">
-							<view>
+							<!-- 数据为空时容器 -->
+							<view style="display:flex; align-items:center;flex-direction:column;margin-top: 40rpx;" v-show="showEmptyFeedback">
+								<u-empty text="数据获取失败,请尝试" font-size="32"></u-empty>
+								<u-button :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" @click="refresh"
+									size="medium"><span style="font-size: 30rpx;">刷新</span></u-button>
+							</view>
+							<view v-show="!showEmptyFeedback">
 								<view v-show="showPlaceListTitle">
 									<view class="place-list-title" style="">最近适合停车的地点</view>
 									<view class="place-list-title-bar"></view>
@@ -91,12 +95,14 @@
 		name: 'Parking',
 		data() {
 			return {
+				//是否显示空数据提示
+				showEmptyFeedback:true,
 				//地点框距离顶部高度
-				locationBoxTop:0.56,
+				locationBoxTop: 0.56,
 				//用户窗口宽度
-				windowWidth:0,
+				windowWidth: 0,
 				//用户窗口高度
-				windowHeight:0,
+				windowHeight: 0,
 				//是否显示空页面提示
 				showEmpty: false,
 				//是否搜索
@@ -166,18 +172,21 @@
 		},
 
 		methods: {
-			
-			
+			//刷新页面
+			refresh(){
+				uni.reLaunch({
+					url:'/pages/parking/index'
+				});
+			},
+
 			//拖动结束将地点框复位
-			locationBoxReset(res){
-				let top=this.locationBoxTop;
-				if(top<0.4){
+			locationBoxReset(res) {
+				let top = this.locationBoxTop;
+				if (top < 0.4) {
 					this.clickInputBox();
-				}
-				else if(top > 0.7){
+				} else if (top > 0.7) {
 					this.changeLocationBox(0);
-				}
-				else{
+				} else {
 					this.changeLocationBox(1);
 				}
 				//console.log(this.locationBoxTop);
@@ -193,28 +202,28 @@
 			closePopup() {
 				this.showCircle = false;
 			},
-			
+
 			///监听触摸滑动事件
-			touchLocationBox(res){
-				let top=res.changedTouches[0].pageY/this.windowHeight;
+			touchLocationBox(res) {
+				let top = res.changedTouches[0].pageY / this.windowHeight;
 				//防止顶部过度拖拽
-				if(top<0.1){
-					top=0.1
+				if (top < 0.1) {
+					top = 0.1
 				}
 				//防止底部过度拖拽
-				else if(top>0.85){
-					top=0.85;
+				else if (top > 0.85) {
+					top = 0.85;
 				}
 				this.$refs.locationBox.step({
-					top: top*100+'vh',
-					height: (1-top)*100+'vh',
-				},{
-						duration: 0,
+					top: top * 100 + 'vh',
+					height: (1 - top) * 100 + 'vh',
+				}, {
+					duration: 0,
 				})
 				this.$refs.locationBox.run(() => {
-						//console.log('正在移动');
+					//console.log('正在移动');
 				});
-				this.locationBoxTop=top;
+				this.locationBoxTop = top;
 			},
 
 			//搜索
@@ -256,13 +265,13 @@
 			getPlaceList(res) {
 				//无数据时显示数据为空
 				console.log(res.length);
-				if(res.length==0){
+				if (res.length == 0) {
 					//this.showPlaceList=false;
 				}
-				
+
 				this.placeList = res;
 				this.showSearchPlaceList = this.placeList;
-				
+
 			},
 
 			//点击covers
@@ -289,7 +298,7 @@
 
 			//点击更多按钮
 			clickMore() {
-				if(this.locationBoxTop!=0.1){
+				if (this.locationBoxTop != 0.1) {
 					this.changeLocationBox(2);
 					setTimeout(() => {
 						this.inputDisable = true;
@@ -329,11 +338,11 @@
 				this.$refs.locationBox.step({
 					height: '14vh',
 					top: '86vh'
-				},{
-						duration: 300,
+				}, {
+					duration: 300,
 				})
 				this.$refs.locationBox.run(() => {
-					this.locationBoxTop=0.86;
+					this.locationBoxTop = 0.86;
 					this.addShowNumFromInput = false;
 				});
 			},
@@ -361,18 +370,18 @@
 					this.showEmpty = false;
 					this.searchWord = '';
 				}
-				this.showPlaceListTitle=true;
+				this.showPlaceListTitle = true;
 				this.showNum = 2;
 				this.showMore = true;
 				this.inputDisable = true;
 				this.$refs.locationBox.step({
 					top: '56vh',
 					height: '44vh',
-				},{
-						duration: 300,
+				}, {
+					duration: 300,
 				})
 				this.$refs.locationBox.run(() => {
-					this.locationBoxTop=0.56;
+					this.locationBoxTop = 0.56;
 					this.addShowNumFromInput = false;
 					this.inputDisable = true;
 					//console.log('执行完毕')
@@ -384,11 +393,11 @@
 				this.$refs.locationBox.step({
 					height: '90vh',
 					top: '10vh'
-				},{
-						duration: 300,
+				}, {
+					duration: 300,
 				})
 				this.$refs.locationBox.run(() => {
-					this.locationBoxTop=0.1;
+					this.locationBoxTop = 0.1;
 				});
 			},
 
@@ -403,12 +412,12 @@
 				//获取焦点时修改边框颜色，因:style不支持绑定border-color,所以绑定了整个border
 				this.inputBorderColor = '1px solid #a35c8f';
 				this.changeLocationBox(2);
-				setTimeout(()=>{
+				setTimeout(() => {
 					setTimeout(() => {
 						this.isFocus = true;
 					}, 50);
 					this.inputDisable = false;
-				},300);
+				}, 300);
 				if (!this.addShowNumFromInput) {
 					this.addShowNum();
 					this.addShowNumFromInput = true;
@@ -445,20 +454,20 @@
 
 		},
 		created() {
-			
+
 			//空数据测试
 			this.getPlaceList([]);
-			
-			let _this=this;
+
+			let _this = this;
 			//获取用户系统尺寸
 			uni.getSystemInfo({
-						    success: function (res) {
-										_this.windowWidth=res.windowWidth;
-										_this.windowHeight=res.windowHeight;
-						        //console.log(res.windowWidth);
-						        //console.log(res.windowHeight);
-						    }
-						});
+				success: function(res) {
+					_this.windowWidth = res.windowWidth;
+					_this.windowHeight = res.windowHeight;
+					//console.log(res.windowWidth);
+					//console.log(res.windowHeight);
+				}
+			});
 		},
 		onLoad() {
 			//console.log('执行了onload')
@@ -467,7 +476,7 @@
 					//console.log('获取了')
 					//如果用户没有授权
 					//console.log(res.authSetting['scope.userLocation']);
-					if (res.authSetting['scope.userLocation']==false) {
+					if (res.authSetting['scope.userLocation'] == false) {
 						uni.authorize({
 							scope: 'scope.userLocation',
 							success() { //1.1 允许授权
@@ -480,22 +489,23 @@
 							fail() { //1.2 拒绝授权
 								//console.log("你拒绝了授权，无法正常使用小程序部分功能");
 								uni.showModal({
-									title:'提示',
-									content:'您已拒绝授权，是否去设置中的打开？',
-									confirmText:'确定',
-									cancelText:'取消',
+									title: '提示',
+									content: '您已拒绝授权，是否去设置中的打开？',
+									confirmText: '确定',
+									cancelText: '取消',
 									success(res) {
 										//console.log('同意');
-										if(res.confirm){
+										if (res.confirm) {
 											uni.openSetting({
 												success(res) {
-													res.authSetting['scope.userLocation'] = true
+													res.authSetting['scope.userLocation'] =
+														true
 												}
 											}).then(res => {
 												uni.reLaunch({
-													url:'/pages/parking/index'
+													url: '/pages/parking/index'
 												});
-				})
+											})
 										}
 									}
 								})
