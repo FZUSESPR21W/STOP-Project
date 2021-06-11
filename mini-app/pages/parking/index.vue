@@ -183,13 +183,12 @@
 			locationBoxReset(res) {
 				let top = this.locationBoxTop;
 				if (top < 0.4) {
-					this.clickInputBox();
+					this.changeLocationBox(2);
 				} else if (top > 0.7) {
 					this.changeLocationBox(0);
 				} else {
 					this.changeLocationBox(1);
 				}
-				//console.log(this.locationBoxTop);
 			},
 
 			//在用户输入时搜索
@@ -374,6 +373,7 @@
 				this.showNum = 2;
 				this.showMore = true;
 				this.inputDisable = true;
+				this.addShowNumFromInput = false;
 				this.$refs.locationBox.step({
 					top: '56vh',
 					height: '44vh',
@@ -382,9 +382,6 @@
 				})
 				this.$refs.locationBox.run(() => {
 					this.locationBoxTop = 0.56;
-					this.addShowNumFromInput = false;
-					this.inputDisable = true;
-					//console.log('执行完毕')
 				});
 			},
 
@@ -408,7 +405,6 @@
 
 			//点击输入框
 			clickInputBox() {
-				this.showPlaceList = true;
 				//获取焦点时修改边框颜色，因:style不支持绑定border-color,所以绑定了整个border
 				this.inputBorderColor = '1px solid #a35c8f';
 				this.changeLocationBox(2);
@@ -447,6 +443,7 @@
 					this.scrollHeight = '';
 					this.showPlaceList = true;
 				} else if (status === 2) {
+					this.showPlaceList = true;
 					this.scrollHeight = '78vh'
 					this.runStatus2();
 				}
