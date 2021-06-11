@@ -117,10 +117,8 @@
 		},
 		methods: {
 			close() {
-				// console.log('close');
 			},
 			open() {
-				// console.log('open');
 			},
 			//打开弹窗事件
 			showFunc() {

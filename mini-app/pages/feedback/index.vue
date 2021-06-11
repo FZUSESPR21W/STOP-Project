@@ -1,18 +1,19 @@
 <template>
 	<!-- feedback页面容器开始 -->
 	<view class="wrap">
+		<u-skeleton :loading="loading" :animation="true"></u-skeleton>
 		<!-- 无网络提示组件 -->
-		<u-no-network :tips="tips"></u-no-network>
+		<u-no-network tips="哎呀,信号走丢了"></u-no-network>
 		<!-- 轮播图、公告组件容器开始 -->
-		<view>
+		<view class="u-skeleton">
 			<!-- 轮播图组件 -->
 			<view>
-				<u-swiper :height="300" :border-radius="10" :list="swiper" :title="title" :indicator-pos="indicatorPos"
+				<u-swiper class="u-skeleton-rect" :height="300" :border-radius="10" :list="swiper" :title="title" :indicator-pos="indicatorPos"
 					:mode="mode" :interval="3000"></u-swiper>
 			</view>
 			<!-- 公告组件 -->
 			<view>
-				<u-notice-bar mode="vertical" :list="notice" :indicator-pos="indicatorPos" :interval="3000" :disable-touch="false" @click="changeNoticeIndex($event)"></u-notice-bar>
+				<u-notice-bar class="u-skeleton-rect" mode="vertical" :list="notice" :indicator-pos="indicatorPos" :interval="3000" :disable-touch="false" @click="changeNoticeIndex($event)"></u-notice-bar>
 			</view>
 			<!-- 详细公告 -->
 			<u-popup 
@@ -117,11 +118,10 @@
 	export default {
 		data() {
 			return {
-				//无网络提示文本
-				tips: '无网络连接',
-				
+				loading: true, // 是否显示骨架屏组件
+
 				//服务器地址
-				action: 'https://api.shawnxixi.icu/api/upload/pic',
+				action: 'https://api.shawnxixi.icu/api/upload_pic',
 				//表格上传所带参数
 				form:{
 					feedback: "",
@@ -216,6 +216,9 @@
 		},
 		
 		onLoad() {
+			setTimeout(() => {
+				this.loading = false;
+			}, 1000)
 			this.$api.Notice.getNoticeList().then(res => {
 				this.noticeList = res.data.data.noticeList;
 				this.notice[0] = this.noticeList[0].content;

@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<!-- 无网络提示组件 -->
+		<u-no-network tips="哎呀,信号走丢了"></u-no-network>
 		<!-- 个人信息卡片展示 -->
 		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30" >
 			<view class="u-m-r-10">
