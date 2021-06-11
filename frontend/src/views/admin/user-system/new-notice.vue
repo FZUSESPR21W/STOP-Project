@@ -8,9 +8,11 @@
       <!-- 公告标题 -->
       <el-input v-model="newNoticeData.title" placeholder="请输入标题"/>
       <!-- 公告内容（富文本） -->
-      <quillEditor class="editor" ref="myTextEditor" v-model="newNoticeData.content" />
+      <quillEditor ref="QuillEditor" class="editor" v-model="newNoticeData.content" :options="editorOption" />
       <!-- 发布按钮 -->
       <el-button type="primary" class="submit" @click="publishNotice()">发布</el-button>
+      <!-- element-ui 上传 -->
+      <el-upload class="avatar-uploader" :action="articleImgUrl" name="img" :on-success="uploadSuccess" :show-file-list="false"  />
     </div>
     <!-- 公布列表 -->
     <div class="notice-list">
@@ -45,6 +47,27 @@ import 'quill/dist/quill.bubble.css'
 
 import { quillEditor } from 'vue-quill-editor'
 
+const toolbarOptions = [
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{'header': 1}, {'header': 2}],               // custom button values
+  [{'list': 'ordered'}, {'list': 'bullet'}],
+  [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+  [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+  [{'direction': 'rtl'}],                         // text direction
+
+  [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+  [{'header': [1, 2, 3, 4, 5, 6, false]}],
+
+  [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+  [{'font': []}],
+  [{'align': []}],
+  ['link', 'image', 'video'],
+  ['clean']                                         // remove formatting button
+]
+
+
 
 export default {
   name: "new-notice",
@@ -70,6 +93,30 @@ export default {
         id: 0,
         // 弹窗显示标志
         display: false,
+      },
+      // 图片上传地址
+      articleImgUrl: 'https://api.shawnxixi.icu/api/upload_pic',
+      // 编辑器设置
+      editorOption: {
+        scrollingContainer: '#editorcontainer',
+        placeholder: '',
+        theme: 'snow',
+        modules: {
+          toolbar: {
+            // 工具栏
+            container: toolbarOptions,
+            handlers: {
+              'image': function (value) {
+                if (value) {
+                  // upload点击上传事件
+                  document.querySelector('.avatar-uploader input').click()
+                } else {
+                  this.quill.format('image', false)
+                }
+              }
+            }
+          }
+        }
       },
       // 公告列表
       noticeList: [],
@@ -157,6 +204,23 @@ export default {
     changePage(page) {
       this.page = page
       this.getNoticeList()
+    },
+    // 上传成功操作
+    uploadSuccess(res) {
+      // 获取富文本组件实例
+      let quill = this.$refs.QuillEditor.quill
+      // 如果上传成功
+      if (res) {
+        // 获取光标所在位置
+        let length = quill.getSelection().index;
+        // 插入图片，res为服务器返回的图片链接地址
+        quill.insertEmbed(length, 'image', res.data.data.pictureUrl)
+        // 调整光标到最后
+        quill.setSelection(length + 1)
+      } else {
+        // 提示信息，需引入Message
+        Message.error('图片插入失败')
+      }
     }
   }
 }
