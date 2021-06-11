@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -116,18 +117,26 @@ public class StatisticsController {
     @Operation(description = "根据设备id获取点的集合")
     @GetMapping("/get_points")
     @ResponseBody
-    public ResponseDTO getPointsByDeviceId(Integer id){
-        List<PointDO> pointDOS = statisticsService.getPointsByDeviceId(id);
-        JSONArray jsonArray=new JSONArray();
-        for (PointDO pointDO : pointDOS) {
-            JSONObject jsonObject=new JSONObject();
-            jsonObject.put("latitude",pointDO.getLatitude());
-            jsonObject.put("longitude",pointDO.getLongitude());
-            jsonArray.add(jsonObject);
+    public ResponseDTO getPointsByDeviceId(@NotNull(message = "id不能为空") Integer id){
+        List<ParkingSituationDO> parkingSituationDOList=statisticsService.getParkingSituation(id);
+        if (parkingSituationDOList.size() > 0) {
+            List<PointDO> pointDOList = statisticsService.getPointsByDeviceId(id);
+            if (pointDOList.size() > 0) {
+                Map<String, Object> data = new HashMap<>(3);
+                data.put("value", parkingSituationDOList.get(0).getValue());
+                data.put("maxValue", parkingSituationDOList.get(0).getVolume());
+                JSONArray jsonArray=new JSONArray();
+                for (PointDO pointDO : pointDOList) {
+                    JSONObject jsonObject=new JSONObject();
+                    jsonObject.put("latitude",pointDO.getLatitude());
+                    jsonObject.put("longitude",pointDO.getLongitude());
+                    jsonArray.add(jsonObject);
+                }
+                data.put("points",jsonArray);
+                return ResponseUtil.getSuccessResponse("获取成功", data);
+            }
         }
-        Map<String,Object> data=new HashMap<>();
-        data.put("points",jsonArray);
-        return ResponseUtil.getSuccessResponse("获取成功",data);
+        return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
     }
 
 }

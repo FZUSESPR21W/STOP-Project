@@ -10,6 +10,7 @@ public class ParkingSituationDO {
     String name;
     String time;
     String value;
+    String volume;
 
     public String getId() {
         return id;
@@ -43,13 +44,22 @@ public class ParkingSituationDO {
         this.value = value;
     }
 
+    public String getVolume() {
+        return volume;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
+    }
+
     @Override
-    public String toString(){
-        return "ParkingSituationDO{" + "\n" +
-                "\tid = " + id + "\n" +
-                "\tname = " + name + "\n" +
-                "\ttime = " + time + "\n" +
-                "\tvalue = " + value + "\n" +
-                "}\n";
+    public String toString() {
+        return "ParkingSituationDO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", time='" + time + '\'' +
+                ", value='" + value + '\'' +
+                ", volume='" + volume + '\'' +
+                '}';
     }
 }
