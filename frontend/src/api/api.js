@@ -86,6 +86,17 @@ export class Notice {
             status
         })
     }
+
+    static upLoadImg(formData) {
+        return axios({
+            method: 'post',
+            url: 'https://api.shawnxixi.icu/api/upload_pic',
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            data: formData
+        })
+    }
 }
 
 /**

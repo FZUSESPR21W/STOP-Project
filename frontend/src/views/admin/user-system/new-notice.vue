@@ -12,7 +12,7 @@
       <!-- 发布按钮 -->
       <el-button type="primary" class="submit" @click="publishNotice()">发布</el-button>
       <!-- element-ui 上传 -->
-      <el-upload class="avatar-uploader" :action="articleImgUrl" name="img" :on-success="uploadSuccess" :show-file-list="false"  />
+      <el-upload class="avatar-uploader" name="img" :show-file-list="false"  :http-request="uploadSectionFile"/>
     </div>
     <!-- 公布列表 -->
     <div class="notice-list">
@@ -63,11 +63,9 @@ const toolbarOptions = [
   [{'color': []}, {'background': []}],          // dropdown with defaults from theme
   [{'font': []}],
   [{'align': []}],
-  ['link', 'image', 'video'],
+  ['image'],
   ['clean']                                         // remove formatting button
 ]
-
-
 
 export default {
   name: "new-notice",
@@ -205,6 +203,17 @@ export default {
       this.page = page
       this.getNoticeList()
     },
+    // 上传操作
+    uploadSectionFile(param) {
+      var fileObj = param.file
+      // FormData 对象
+      var form = new FormData()
+      // 文件对象
+      form.append('file', fileObj)
+      this.$api.Notice.upLoadImg(form).then(res => {
+        this.uploadSuccess(res)
+      })
+    },
     // 上传成功操作
     uploadSuccess(res) {
       // 获取富文本组件实例
@@ -214,12 +223,12 @@ export default {
         // 获取光标所在位置
         let length = quill.getSelection().index;
         // 插入图片，res为服务器返回的图片链接地址
-        quill.insertEmbed(length, 'image', res.data.data.pictureUrl)
+        quill.insertEmbed(length, 'image', `https://api.shawnxixi.icu${res.data.data.pictureUrl}`)
         // 调整光标到最后
         quill.setSelection(length + 1)
       } else {
         // 提示信息，需引入Message
-        Message.error('图片插入失败')
+        this.$message.error('图片插入失败')
       }
     }
   }
