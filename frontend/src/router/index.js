@@ -34,6 +34,16 @@ const routes = [
         path: 'userFeedback',
         name: 'UserFeedback',
         component: () => import('@/views/admin/user-system/user-feedback')
+      },
+      {
+        path: 'cameraManage',
+        name: 'CameraManage',
+        component: () => import('@/views/admin/monitor-system/camera-manage')
+      },
+      {
+        path: 'mapState',
+        name: 'MapState',
+        component: () => import('@/views/admin/monitor-system/map-state')
       }
     ]
   }

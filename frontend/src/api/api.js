@@ -177,6 +177,20 @@ export class Feedback {
     }
 }
 
+/**
+ * 摄像头设备管理api
+ */
+export class Device {
+
+    /**
+     * 获取所有设备信息
+     * @return {*}
+     */
+    static getAllDevice() {
+        return axios.get('/device/get_all_device')
+    }
+}
+
 
 
 

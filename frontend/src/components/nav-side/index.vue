@@ -21,6 +21,16 @@
           <el-menu-item index="/admin/userFeedback">用户反馈</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
+      <el-submenu index="3">
+        <template slot="title">
+          <i class="el-icon-video-camera icon" />
+          <span>监控系统</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/admin/cameraManage">摄像头管理</el-menu-item>
+          <el-menu-item index="/admin/mapState">地图情况</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
     </el-menu>
   </div>
 </template>
