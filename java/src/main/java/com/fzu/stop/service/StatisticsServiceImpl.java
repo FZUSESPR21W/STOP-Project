@@ -1,8 +1,11 @@
 package com.fzu.stop.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fzu.stop.dao.DeviceDao;
 import com.fzu.stop.dao.StatisticsDao;
 import com.fzu.stop.pojo.DeviceDO;
+import com.fzu.stop.pojo.DeviceInfoDTO;
 import com.fzu.stop.pojo.ParkingSituationDO;
 import com.fzu.stop.pojo.PointDO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     StatisticsDao statisticsDao;
     @Autowired
     DeviceDao deviceDao;
+    @Autowired
+    DeviceService deviceService;
+    @Autowired
+    StatisticsService statisticsService;
 
     @Override
     public List<ParkingSituationDO> getParkingSituation(Integer id) {
@@ -68,6 +75,37 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List<PointDO> getPointsByDeviceId(Integer id) {
         List<PointDO> pointDOS = statisticsDao.getPointsByDeviceId(id);
         return pointDOS;
+    }
+
+    @Override
+    public List<Object> getAllPoints() {
+        Map<String, Object> map;
+        List<Object> req = new ArrayList<>();
+        List<DeviceInfoDTO> deviceInfoDTOList = deviceService.listAllDevice();
+        for (DeviceInfoDTO deviceInfoDTO : deviceInfoDTOList) {
+            if (deviceInfoDTO.getOnline()){
+                Integer id = deviceInfoDTO.getDeviceDO().getId();
+                List<ParkingSituationDO> parkingSituationDOList=statisticsService.getParkingSituation(id);
+                if (parkingSituationDOList.size() > 0) {
+                    List<PointDO> pointDOList = statisticsService.getPointsByDeviceId(id);
+                    if (pointDOList.size() > 0) {
+                        map = new HashMap<>(16);
+                        map.put("value", parkingSituationDOList.get(0).getValue());
+                        map.put("maxValue", parkingSituationDOList.get(0).getVolume());
+                        JSONArray jsonArray=new JSONArray();
+                        for (PointDO pointDO : pointDOList) {
+                            JSONObject jsonObject=new JSONObject();
+                            jsonObject.put("latitude",pointDO.getLatitude());
+                            jsonObject.put("longitude",pointDO.getLongitude());
+                            jsonArray.add(jsonObject);
+                        }
+                        map.put("points",jsonArray);
+                        req.add(map);
+                    }
+                }
+            }
+        }
+        return req;
     }
 
 

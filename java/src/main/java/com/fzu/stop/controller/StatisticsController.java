@@ -1,8 +1,7 @@
 package com.fzu.stop.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fzu.stop.pojo.PointDO;
+import com.fzu.stop.service.DeviceService;
 import com.fzu.stop.util.ResponseUtil;
 import com.fzu.stop.util.WechatUtil;
 import com.fzu.stop.pojo.ParkingSituationDO;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,6 +35,9 @@ import java.util.*;
 public class StatisticsController {
     @Autowired
     StatisticsService statisticsService;
+    @Autowired
+    DeviceService deviceService;
+
     @GetMapping("/stop_status")
     @ResponseBody
     public ResponseDTO getParkingSituation(Integer id){
@@ -114,27 +115,15 @@ public class StatisticsController {
         return ResponseUtil.getSuccessResponse("获取成功",data);
 
     }
-    @Operation(description = "根据设备id获取点的集合")
+    @Operation(description = "获取在线设备点的集合")
     @GetMapping("/get_points")
     @ResponseBody
-    public ResponseDTO getPointsByDeviceId(@NotNull(message = "id不能为空") Integer id){
-        List<ParkingSituationDO> parkingSituationDOList=statisticsService.getParkingSituation(id);
-        if (parkingSituationDOList.size() > 0) {
-            List<PointDO> pointDOList = statisticsService.getPointsByDeviceId(id);
-            if (pointDOList.size() > 0) {
-                Map<String, Object> data = new HashMap<>(3);
-                data.put("value", parkingSituationDOList.get(0).getValue());
-                data.put("maxValue", parkingSituationDOList.get(0).getVolume());
-                JSONArray jsonArray=new JSONArray();
-                for (PointDO pointDO : pointDOList) {
-                    JSONObject jsonObject=new JSONObject();
-                    jsonObject.put("latitude",pointDO.getLatitude());
-                    jsonObject.put("longitude",pointDO.getLongitude());
-                    jsonArray.add(jsonObject);
-                }
-                data.put("points",jsonArray);
-                return ResponseUtil.getSuccessResponse("获取成功", data);
-            }
+    public ResponseDTO getAllPoints(){
+        List<Object> points = statisticsService.getAllPoints();
+        if (points.size() > 0) {
+            Map<String,Object> data =new HashMap<>(1);
+            data.put("piontsOfOnlineDevice",points);
+            return ResponseUtil.getSuccessResponse("获取成功", data);
         }
         return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));
     }
