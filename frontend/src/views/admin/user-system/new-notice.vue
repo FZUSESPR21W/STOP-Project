@@ -7,12 +7,10 @@
       <div class="title">发布新公告</div>
       <!-- 公告标题 -->
       <el-input v-model="newNoticeData.title" placeholder="请输入标题"/>
-      <!-- 公告内容（富文本） -->
-      <quillEditor ref="QuillEditor" class="editor" v-model="newNoticeData.content" :options="editorOption" />
+      <!-- 富文本编辑器 -->
+      <richTextEditor :fatherValue="newNoticeData.content" :mode="'new'" @newChange="changeNewNoticeContent($event)"/>
       <!-- 发布按钮 -->
       <el-button type="primary" class="submit" @click="publishNotice()">发布</el-button>
-      <!-- element-ui 上传 -->
-      <el-upload class="avatar-uploader" name="img" :show-file-list="false"  :http-request="uploadSectionFile"/>
     </div>
     <!-- 公布列表 -->
     <div class="notice-list">
@@ -29,10 +27,14 @@
       <div class="input-form">
         <!-- 公告标题 -->
         <el-input v-model="updateNoticeData.title" placeholder="请输入标题"/>
-        <!-- 公告内容 -->
-        <el-input v-model="updateNoticeData.content" placeholder="请输入公告内容" type="textarea" :rows="10"/>
-        <!-- 修改按钮 -->
-        <el-button type="primary" class="submit" @click="updateNotice">修改</el-button>
+        <!-- 富文本编辑器 -->
+        <richTextEditor :fatherValue="updateNoticeData.content" :mode="'update'" @updateChange="changeUpdateNoticeContent($event)"/>
+        <div class="btn-contianer">
+          <!-- 删除按钮 -->
+          <el-button type="danger" class="delete" @click="deleteNotice">删除</el-button>
+          <!-- 修改按钮 -->
+          <el-button type="primary" class="submit" @click="updateNotice">修改</el-button>
+        </div>
       </div>
       <!-- 更新表单结束 -->
     </el-dialog>
@@ -41,36 +43,14 @@
 </template>
 
 <script>
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
 
-import { quillEditor } from 'vue-quill-editor'
+import richTextEditor from "@/views/admin/user-system/components/richTextEditor"
 
-const toolbarOptions = [
-  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-  ['blockquote', 'code-block'],
-
-  [{'header': 1}, {'header': 2}],               // custom button values
-  [{'list': 'ordered'}, {'list': 'bullet'}],
-  [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
-  [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
-  [{'direction': 'rtl'}],                         // text direction
-
-  [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
-  [{'header': [1, 2, 3, 4, 5, 6, false]}],
-
-  [{'color': []}, {'background': []}],          // dropdown with defaults from theme
-  [{'font': []}],
-  [{'align': []}],
-  ['image'],
-  ['clean']                                         // remove formatting button
-]
 
 export default {
   name: "new-notice",
   components: {
-    quillEditor
+    richTextEditor
   },
   data() {
     return {
@@ -94,28 +74,6 @@ export default {
       },
       // 图片上传地址
       articleImgUrl: 'https://api.shawnxixi.icu/api/upload_pic',
-      // 编辑器设置
-      editorOption: {
-        scrollingContainer: '#editorcontainer',
-        placeholder: '',
-        theme: 'snow',
-        modules: {
-          toolbar: {
-            // 工具栏
-            container: toolbarOptions,
-            handlers: {
-              'image': function (value) {
-                if (value) {
-                  // upload点击上传事件
-                  document.querySelector('.avatar-uploader input').click()
-                } else {
-                  this.quill.format('image', false)
-                }
-              }
-            }
-          }
-        }
-      },
       // 公告列表
       noticeList: [],
       // 第几页
@@ -163,7 +121,6 @@ export default {
       if(this.newNoticeData.content == '') {
         return this.$message.error('内容不能为空！')
       }
-      // 判断
       // 请求发布公告
       this.$api.Notice.publishNotice(this.newNoticeData.title, this.newNoticeData.content,
           false, 1).then(res => {
@@ -198,38 +155,37 @@ export default {
         this.$message.error('修改失败')
       })
     },
+    // 删除公告
+    deleteNotice() {
+        // 删除对话框
+        this.$confirm('是否要删除该公告?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 调用删除公告接口
+          this.$api.Notice.deleteNotice(this.updateNoticeData.id).then(res => {
+            this.$message.success('删除成功')
+            // 关闭窗口
+            this.updateNoticeData.display = false
+            // 清空数据
+            this.updateNoticeData.title = ''
+            this.updateNoticeData.content = ''
+            // 刷新列表
+            this.getNoticeList()
+          })
+        })
+    },
     // 换页
     changePage(page) {
       this.page = page
       this.getNoticeList()
     },
-    // 上传操作
-    uploadSectionFile(param) {
-      var fileObj = param.file
-      // FormData 对象
-      var form = new FormData()
-      // 文件对象
-      form.append('file', fileObj)
-      this.$api.Notice.upLoadImg(form).then(res => {
-        this.uploadSuccess(res)
-      })
+    changeNewNoticeContent(val) {
+      this.newNoticeData.content = val
     },
-    // 上传成功操作
-    uploadSuccess(res) {
-      // 获取富文本组件实例
-      let quill = this.$refs.QuillEditor.quill
-      // 如果上传成功
-      if (res) {
-        // 获取光标所在位置
-        let length = quill.getSelection().index;
-        // 插入图片，res为服务器返回的图片链接地址
-        quill.insertEmbed(length, 'image', `https://api.shawnxixi.icu${res.data.data.pictureUrl}`)
-        // 调整光标到最后
-        quill.setSelection(length + 1)
-      } else {
-        // 提示信息，需引入Message
-        this.$message.error('图片插入失败')
-      }
+    changeUpdateNoticeContent(val) {
+      this.updateNoticeData.content = val
     }
   }
 }
@@ -255,10 +211,14 @@ export default {
       height: 300px;
     }
 
-    .submit {
+    .btn-contianer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .submit, .delete {
       width: 120px;
-      margin-left: calc(100% - 120px);
-      margin-top: 80px !important;
+      margin-top: 0 !important;
     }
 
     *:nth-child(n+2) {

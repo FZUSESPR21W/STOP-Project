@@ -87,6 +87,11 @@ export class Notice {
         })
     }
 
+    /**
+     * 上传图片
+     * @param formData
+     * @returns {*}
+     */
     static upLoadImg(formData) {
         return axios({
             method: 'post',
@@ -96,6 +101,15 @@ export class Notice {
             },
             data: formData
         })
+    }
+
+    /**
+     * 删除公告
+     * @param id
+     * @returns {*}
+     */
+    static deleteNotice(id) {
+        return axios.get(`/notice/delete?id=${id}`)
     }
 }
 
@@ -156,12 +170,13 @@ export class Feedback {
     /**
      * 获取反馈列表
      * @param id
-     * @param status
      * @returns {*}
      */
     static getDetail(id) {
         return axios.get(`/feedback/detail?id=${id}`)
     }
 }
+
+
 
 
