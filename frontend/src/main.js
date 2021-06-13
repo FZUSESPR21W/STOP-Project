@@ -24,7 +24,6 @@ Vue.use(ElementUI)
 import api from './api'
 Vue.use(api)
 
-
 Vue.config.productionTip = false
 
 new Vue({
