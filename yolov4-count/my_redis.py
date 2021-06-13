@@ -1,7 +1,10 @@
 import logging
 import redis
 import json
+import threading
 from database import Database
+
+lock = threading.Lock()
 
 
 class Redis:
@@ -16,15 +19,20 @@ class Redis:
 
     def __init__(self):
         self.pool = redis.ConnectionPool(host=self.host, port=self.port, password=self.password, decode_responses=True)
-        self.receiver = redis.Redis(connection_pool=self.pool)
+        self.receiver = redis.StrictRedis(connection_pool=self.pool)
+        self.subscriber = self.receiver.pubsub()
+        self.subscriber.subscribe("deviceChannel")
         self.db = Database()
 
     def has_update(self):
-        if self.receiver.get("deviceChannel") is not None:
-            return True
-        return False
+        for item in self.subscriber.listen():
+            if item["type"] == "message":
+                lock.acquire()
+                self.update_device()
+                lock.release()
 
     def update_device(self):
+        self.__device_video = {}
         info = json.loads(self.receiver.get("rtmp:device"))
         for key, value in info.items():
             if key != "@class":
