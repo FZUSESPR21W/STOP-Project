@@ -1,13 +1,13 @@
 package com.fzu.stop.service;
 
 import com.fzu.stop.pojo.DeviceInfoDTO;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
 
 @SpringBootTest
 public class StatisticsServiceImplTest {
@@ -26,6 +26,6 @@ public class StatisticsServiceImplTest {
                 break;
             }
         }
-        assertEquals(hasOnline,statisticsService.getAllPoints().size() > 0);
+        Assertions.assertEquals(hasOnline,statisticsService.getAllPoints().size() > 0);
     }
 }
