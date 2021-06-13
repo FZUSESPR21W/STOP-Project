@@ -29,17 +29,19 @@
 						<!-- 搜索框容器结束 -->
 						<view class="place-list" v-show="showPlaceList">
 							<!-- 数据为空时容器 -->
-							<view style="display:flex; align-items:center;flex-direction:column;margin-top: 40rpx;" v-show="showEmptyFeedback">
+							<view style="display:flex; align-items:center;flex-direction:column;margin-top: 40rpx;"
+								v-if="placeList.length==0">
 								<u-empty text="数据获取失败,请尝试" font-size="32"></u-empty>
-								<u-button :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91" @click="refresh"
-									size="medium"><span style="font-size: 30rpx;">刷新</span></u-button>
+								<u-button :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91"
+									@click="refresh" size="medium"><span style="font-size: 30rpx;">刷新</span></u-button>
 							</view>
-							<view v-show="!showEmptyFeedback">
+							<view v-if="placeList.length!=0">
 								<view v-show="showPlaceListTitle">
 									<view class="place-list-title" style="">最近适合停车的地点</view>
 									<view class="place-list-title-bar"></view>
 								</view>
-								<u-empty text="没有搜索结果" mode="search" v-show="showEmpty" margin-top="200"></u-empty>
+								<u-empty text="没有搜索结果" mode="search" v-if="showSearchPlaceList.length==0"
+									margin-top="200"></u-empty>
 								<view class="place-list-item"
 									v-for="(placeItem,index) in showSearchPlaceList.slice(0,showNum)" :key="index"
 									@click="clickItem(index)">
@@ -70,7 +72,7 @@
 			style="overflow: hidden;" @close="closePopup" :mask="true" :mask-close-able="true">
 			<view style="font-size: 50rpx;margin: 0 auto;text-align: center;margin-top: 14rpx;">{{popupItem.name}}
 			</view>
-			<view class="">
+			<view>
 				<view class="charts-box">
 					<qiun-data-charts type="gauge"
 						:opts="{title:{name: popupItem.surplus,color: popupItem.surplusColor,fontSize: 25,offsetY:50},subtitle: {name: popupItem.distance,color: '#666666',fontSize: 20,offsetY:-50}}"
@@ -95,16 +97,12 @@
 		name: 'Parking',
 		data() {
 			return {
-				//是否显示空数据提示
-				showEmptyFeedback:true,
 				//地点框距离顶部高度
-				locationBoxTop: 0.56,
+				locationBoxTop: 0.86,
 				//用户窗口宽度
 				windowWidth: 0,
 				//用户窗口高度
 				windowHeight: 0,
-				//是否显示空页面提示
-				showEmpty: false,
 				//是否搜索
 				isSearch: false,
 				//是否显示列表标题
@@ -115,8 +113,6 @@
 				showCircle: false,
 				//显示弹窗
 				popupShow: false,
-				//从点击输入框添加显示数目
-				addShowNumFromInput: false,
 				//是否显示更多按钮
 				showMore: true,
 				//scroll-view高度
@@ -173,9 +169,9 @@
 
 		methods: {
 			//刷新页面
-			refresh(){
+			refresh() {
 				uni.reLaunch({
-					url:'/pages/parking/index'
+					url: '/pages/parking/index'
 				});
 			},
 
@@ -232,12 +228,6 @@
 				this.showSearchPlaceList = result;
 				this.showMore = false;
 				this.isSearch = true;
-				//如果搜索结果为空，显示为空的提示
-				if (result.length === 0) {
-					this.showEmpty = true;
-				} else {
-					this.showEmpty = false;
-				}
 			},
 			//点击搜索
 			searchList() {
@@ -262,15 +252,8 @@
 
 			//获取地点列表
 			getPlaceList(res) {
-				//无数据时显示数据为空
-				console.log(res.length);
-				if (res.length == 0) {
-					//this.showPlaceList=false;
-				}
-
 				this.placeList = res;
 				this.showSearchPlaceList = this.placeList;
-
 			},
 
 			//点击covers
@@ -303,7 +286,6 @@
 						this.inputDisable = true;
 					}, 300);
 				}
-				this.addShowNum();
 			},
 
 			//新增显示数量
@@ -330,7 +312,6 @@
 				if (this.isSearch) {
 					this.showSearchPlaceList = this.placeList;
 					this.isSearch = false;
-					this.showEmpty = false;
 					this.searchWord = '';
 				}
 				this.inputDisable = true;
@@ -342,7 +323,6 @@
 				})
 				this.$refs.locationBox.run(() => {
 					this.locationBoxTop = 0.86;
-					this.addShowNumFromInput = false;
 				});
 			},
 
@@ -366,14 +346,12 @@
 				if (this.isSearch) {
 					this.showSearchPlaceList = this.placeList;
 					this.isSearch = false;
-					this.showEmpty = false;
 					this.searchWord = '';
 				}
 				this.showPlaceListTitle = true;
 				this.showNum = 2;
 				this.showMore = true;
 				this.inputDisable = true;
-				this.addShowNumFromInput = false;
 				this.$refs.locationBox.step({
 					top: '56vh',
 					height: '44vh',
@@ -414,10 +392,6 @@
 					}, 50);
 					this.inputDisable = false;
 				}, 300);
-				if (!this.addShowNumFromInput) {
-					this.addShowNum();
-					this.addShowNumFromInput = true;
-				}
 			},
 
 			//显示推荐地点列表
@@ -444,6 +418,7 @@
 					this.showPlaceList = true;
 				} else if (status === 2) {
 					this.showPlaceList = true;
+					this.addShowNum();
 					this.scrollHeight = '78vh'
 					this.runStatus2();
 				}
@@ -451,26 +426,18 @@
 
 		},
 		created() {
-
-			//空数据测试
-			this.getPlaceList([]);
-
 			let _this = this;
 			//获取用户系统尺寸
 			uni.getSystemInfo({
 				success: function(res) {
 					_this.windowWidth = res.windowWidth;
 					_this.windowHeight = res.windowHeight;
-					//console.log(res.windowWidth);
-					//console.log(res.windowHeight);
 				}
 			});
 		},
 		onLoad() {
-			//console.log('执行了onload')
 			uni.getSetting({
 				success(res) {
-					//console.log('获取了')
 					//如果用户没有授权
 					//console.log(res.authSetting['scope.userLocation']);
 					if (res.authSetting['scope.userLocation'] == false) {
