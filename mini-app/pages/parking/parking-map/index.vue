@@ -91,14 +91,14 @@
 						placeList[i].distance = tempDistance + 'm'
 					}
 					if (placeList[i].capacity <= 0.5) {
-						placeList[i].surplus = '车位空闲';
-						placeList[i].surplusColor = '#2fc25b';
+						placeList[i].surplus = '车位空闲'
+						placeList[i].surplusColor = '#2fc25b'
 					} else if (placeList[i].capacity > 0.5 && placeList[i].capacity < 0.7) {
-						placeList[i].surplus = '车位紧张';
-						placeList[i].surplusColor = '#1890ff';
+						placeList[i].surplus = '车位紧张'
+						placeList[i].surplusColor = '#1890ff'
 					} else {
 						placeList[i].surplus = '车位不足'
-						placeList[i].surplusColor = '#f04864';
+						placeList[i].surplusColor = '#f04864'
 					}
 				}
 				console.log(placeList)
@@ -197,61 +197,90 @@
 				
 					}
 				)
+			},
+			//获取停车场数据
+			getAllParkingArea() {
+				this.$api.Statistics.getPoints().then(
+					(res) => {
+						let tempPy = []
+						let areaList = res.data.data.piontsOfOnlineDevice
+						let strokeColor = ''
+						let fillColor = ''
+						for (let i = 0;i<areaList.length;i++) {
+							let index = parseInt(areaList[i].value) / parseInt(areaList[i].maxValue)
+							if (index <= 0.5) {
+								strokeColor = '#266339'
+								fillColor = '#7FFFAA'
+							} else if (index > 0.5 && index <0.7) {
+								strokeColor = '#194063'
+								fillColor = '#70aeff'
+							} else {
+								strokeColor = '#ff5c10'
+								fillColor = '#ff5f54'
+							}
+							tempPy[i] = {
+								points: areaList[i].points,
+								strokeColor: strokeColor,
+								fillColor: fillColor,
+								strokeWidth: 3
+							}
+						}
+						this.polygons = tempPy
+				})
 			}
-
 		},
 		created() {
-			this.getLocation();
-			this.getAllDevice();
+			this.getLocation()
+			this.getAllDevice()
 			//console.log(this.stop)
+			this.getAllParkingArea()
+			// var polygons = [{
+			// 		strokeWidth: 3,
+			// 		strokeColor: '#266339',
+			// 		fillColor: '#7FFFAA30',
+			// 		points: [{
+			// 				latitude: "26.060929253238374",
+			// 				longitude: "119.1981588742523"
+			// 			},
+			// 			{
+			// 				latitude: "26.060890701203803",
+			// 				longitude: "119.19825543377684"
+			// 			},
+			// 			{
+			// 				latitude: "26.060442532871022",
+			// 				longitude: "119.19805695030973"
+			// 			},
+			// 			{
+			// 				latitude: "26.06045698994078",
+			// 				longitude: "119.19802476380156"
+			// 			},
+			// 		]
+			// 	}, {
+			// 		strokeWidth: 3,
+			// 		strokeColor: '#266339',
+			// 		fillColor: '#7FFFAA30',
+			// 		points: [{
+			// 				latitude: "26.060500361139948",
+			// 				longitude: "119.19812668774412"
+			// 			},
+			// 			{
+			// 				latitude: "26.060423256776",
+			// 				longitude: "119.19808377239988"
+			// 			},
+			// 			{
+			// 				latitude: "26.06031723819272",
+			// 				longitude: "119.19838417980955"
+			// 			},
+			// 			{
+			// 				latitude: "26.060384704575174",
+			// 				longitude: "119.19842173073576"
+			// 			},
+			// 		]
+			// 	}
 
-			var polygons = [{
-					strokeWidth: 3,
-					strokeColor: '#266339',
-					fillColor: '#7FFFAA30',
-					points: [{
-							latitude: "26.060929253238374",
-							longitude: "119.1981588742523"
-						},
-						{
-							latitude: "26.060890701203803",
-							longitude: "119.19825543377684"
-						},
-						{
-							latitude: "26.060442532871022",
-							longitude: "119.19805695030973"
-						},
-						{
-							latitude: "26.06045698994078",
-							longitude: "119.19802476380156"
-						},
-					]
-				}, {
-					strokeWidth: 3,
-					strokeColor: '#266339',
-					fillColor: '#7FFFAA30',
-					points: [{
-							latitude: "26.060500361139948",
-							longitude: "119.19812668774412"
-						},
-						{
-							latitude: "26.060423256776",
-							longitude: "119.19808377239988"
-						},
-						{
-							latitude: "26.06031723819272",
-							longitude: "119.19838417980955"
-						},
-						{
-							latitude: "26.060384704575174",
-							longitude: "119.19842173073576"
-						},
-					]
-				}
 
-
-			]
-			this.polygons = polygons
+			// ]
+			// this.polygons = polygons
 		},
 		onShow() {
 			let deviceMap = new Map()
