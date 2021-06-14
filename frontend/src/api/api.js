@@ -189,6 +189,14 @@ export class Device {
     static getAllDevice() {
         return axios.get('/device/get_all_device')
     }
+
+    /**
+     * 更新设备信息
+     * @return {*}
+     */
+    static updateDeviceById(params) {
+        return axios.post('device/update_device_by_id', params)
+    }
 }
 
 
