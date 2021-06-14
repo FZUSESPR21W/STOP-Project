@@ -3,11 +3,23 @@
   <div class="camera-manage-container">
     <!-- 设备列表 -->
     <el-table :data="deviceList" style="width: 100%">
+      <!-- 设备昵称 -->
       <el-table-column prop="name" label="设备昵称" />
+      <!-- 经度 -->
       <el-table-column prop="longitude" label="经度" />
+      <!-- 纬度 -->
       <el-table-column prop="latitude" label="纬度" />
+      <!-- 可容纳车辆数 -->
       <el-table-column prop="maxCarsNumber" label="可容纳车辆数" />
+      <!-- 唯一设备名 -->
       <el-table-column prop="deviceName" label="唯一设备名" />
+      <!-- 在线情况 -->
+      <el-table-column fixed="right" label="情况" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.online" type="success">在线</el-tag>
+          <el-tag v-else type="danger">离线</el-tag>
+        </template>
+      </el-table-column>
       <!-- 操作栏 -->
       <el-table-column fixed="right" label="操作" width="250">
         <template slot-scope="scope">
