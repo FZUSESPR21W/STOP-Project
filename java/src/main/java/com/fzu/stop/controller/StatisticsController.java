@@ -115,14 +115,14 @@ public class StatisticsController {
         return ResponseUtil.getSuccessResponse("获取成功",data);
 
     }
-    @Operation(description = "获取在线设备点的集合")
+    @Operation(description = "获取设备相关信息")
     @GetMapping("/get_points")
     @ResponseBody
     public ResponseDTO getAllPoints(){
         List<Object> points = statisticsService.getAllPoints();
         if (points.size() > 0) {
             Map<String,Object> data =new HashMap<>(1);
-            data.put("piontsOfOnlineDevice",points);
+            data.put("DeviceAndPointsInfo",points);
             return ResponseUtil.getSuccessResponse("获取成功", data);
         }
         return ResponseUtil.getFailResponse("获取失败", new HashMap<>(16));

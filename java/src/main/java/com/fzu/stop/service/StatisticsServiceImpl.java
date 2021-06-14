@@ -83,30 +83,26 @@ public class StatisticsServiceImpl implements StatisticsService {
         List<Object> req = new ArrayList<>();
         List<DeviceInfoDTO> deviceInfoDTOList = deviceService.listAllDevice();
         for (DeviceInfoDTO deviceInfoDTO : deviceInfoDTOList) {
-            if (deviceInfoDTO.getOnline()){
-                Integer id = deviceInfoDTO.getDeviceDO().getId();
-                List<ParkingSituationDO> parkingSituationDOList=statisticsService.getParkingSituation(id);
-                if (parkingSituationDOList.size() > 0) {
-                    List<PointDO> pointDOList = statisticsService.getPointsByDeviceId(id);
-                    if (pointDOList.size() > 0) {
-                        map = new HashMap<>(16);
-                        map.put("value", parkingSituationDOList.get(0).getValue());
-                        map.put("maxValue", parkingSituationDOList.get(0).getVolume());
-                        JSONArray jsonArray=new JSONArray();
-                        for (PointDO pointDO : pointDOList) {
-                            JSONObject jsonObject=new JSONObject();
-                            jsonObject.put("latitude",pointDO.getLatitude());
-                            jsonObject.put("longitude",pointDO.getLongitude());
-                            jsonArray.add(jsonObject);
-                        }
-                        map.put("points",jsonArray);
-                        req.add(map);
-                    }
+            map = new HashMap<>(4);
+            map.put("online", deviceInfoDTO.getOnline());
+            Integer id = deviceInfoDTO.getDeviceDO().getId();
+            List<ParkingSituationDO> parkingSituationDOList=statisticsService.getParkingSituation(id);
+            map.put("value", parkingSituationDOList.size() > 0 ? parkingSituationDOList.get(0).getValue() : -1);
+            map.put("maxValue", deviceInfoDTO.getDeviceDO().getMaxCarsNumber());
+            List<PointDO> pointDOList = statisticsService.getPointsByDeviceId(id);
+            JSONArray jsonArray = null;
+            if (pointDOList.size() > 0) {
+                jsonArray=new JSONArray();
+                for (PointDO pointDO : pointDOList) {
+                    JSONObject jsonObject=new JSONObject();
+                    jsonObject.put("latitude",pointDO.getLatitude());
+                    jsonObject.put("longitude",pointDO.getLongitude());
+                    jsonArray.add(jsonObject);
                 }
             }
+            map.put("points",jsonArray);
+            req.add(map);
         }
         return req;
     }
-
-
 }

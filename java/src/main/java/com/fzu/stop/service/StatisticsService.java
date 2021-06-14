@@ -36,7 +36,7 @@ public interface StatisticsService {
     List<PointDO> getPointsByDeviceId(Integer id);
 
     /**
-     * @return 在线设备信息点信息
+     * @return 设备相关信息
      */
     List<Object> getAllPoints();
 
