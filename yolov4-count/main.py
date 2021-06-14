@@ -18,13 +18,12 @@ if __name__ == "__main__":
     while True:
         # 获取m3u8的url表
         lock.acquire()
-        video_url = redis.get_device_video()
-        lock.release()
 
+        video_url = redis.get_device_video()
         # 截取视频帧，并将检测结果插入数据库
         for id, url in video_url.items():
-            cuter.download_m3u8_video(id, url)
+            cuter.download_full_video(id, url)
             cuter.cut_picture(id)
             counter.predicate(id)
 
-        sleep(30)
+        lock.release()
