@@ -1,12 +1,14 @@
 package com.fzu.stop.dao;
 
 import com.fzu.stop.pojo.DeviceDO;
+import com.fzu.stop.pojo.PointDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * @author 林浩然
+ * @author 宋家锐
  */
 @Mapper
 public interface DeviceDao {
@@ -57,4 +59,11 @@ public interface DeviceDao {
 	 * @param device 要更新的设备信息
 	 */
 	Integer updateDeviceById(DeviceDO device);
+
+	/**
+	 * 通过设备id获取所有点
+	 * @param deviceID 设备id
+	 * @return 该设备所有点
+	 */
+	List<PointDO> getPoint(Integer deviceID);
 }

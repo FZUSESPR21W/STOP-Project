@@ -3,6 +3,7 @@ package com.fzu.stop.service;
 import com.fzu.stop.pojo.DeviceDO;
 import com.fzu.stop.pojo.DeviceDTO;
 import com.fzu.stop.pojo.DeviceInfoDTO;
+import com.fzu.stop.pojo.PointDO;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
@@ -13,6 +14,7 @@ import java.util.List;
 
 /**
  * @author 林浩然
+ * @author 宋家锐
  */
 public interface DeviceService extends MessageListener {
 	/**
@@ -85,4 +87,9 @@ public interface DeviceService extends MessageListener {
 	 */
 	@Override
 	void onMessage(@NotNull Message message, byte[] bytes);
+
+	/**
+	 * 更新最大停车数
+	 */
+	void updateMaxCars();
 }
