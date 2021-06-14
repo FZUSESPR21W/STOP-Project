@@ -1,3 +1,4 @@
+import time
 import threading
 import os
 from count_cars import Yolov4Count
@@ -29,3 +30,5 @@ if __name__ == "__main__":
                 counter.predicate(id)
 
         lock.release()
+
+        time.sleep(10)
