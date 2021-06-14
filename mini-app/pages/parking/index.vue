@@ -30,12 +30,12 @@
 						<view class="place-list" v-show="showPlaceList">
 							<!-- 数据为空时容器 -->
 							<view style="display:flex; align-items:center;flex-direction:column;margin-top: 40rpx;"
-								v-if="placeList.length==0">
+								v-if="placeList.length ==undefined || placeList.length==0">
 								<u-empty text="数据获取失败,请尝试" font-size="32"></u-empty>
 								<u-button :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91"
 									@click="refresh" size="medium"><span style="font-size: 30rpx;">刷新</span></u-button>
 							</view>
-							<view v-if="placeList.length!=0">
+							<view v-if="placeList.length !=undefined && placeList.length!=0">
 								<view v-show="showPlaceListTitle">
 									<view class="place-list-title" style="">最近适合停车的地点</view>
 									<view class="place-list-title-bar"></view>
@@ -70,7 +70,7 @@
 		<!-- 地点详细弹窗开始 -->
 		<u-popup v-model="popupShow" mode="bottom" border-radius=10 height="44%" :safe-area-inset-bottom="false"
 			style="overflow: hidden;" @close="closePopup" :mask="true" :mask-close-able="true">
-			<view style="font-size: 50rpx;margin: 0 auto;text-align: center;margin-top: 14rpx;">{{popupItem.name}}
+			<view style="font-size: 50rpx;margin: 0 auto;text-align: center;">{{popupItem.name}}
 			</view>
 			<view>
 				<view class="charts-box">
@@ -126,7 +126,7 @@
 				//是否显示向上呼出导航条
 				showExhaleBar: true,
 				//是否显示推荐地址列表
-				showPlaceList: true,
+				showPlaceList: false,
 				//是否显示地址框
 				showLocationBox: true,
 				//绑定输入框外框颜色
