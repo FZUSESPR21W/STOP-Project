@@ -1,8 +1,9 @@
-from time import sleep
 import threading
+import os
 from count_cars import Yolov4Count
 from get_m3u8_picture import CutPicture
 from my_redis import Redis, lock
+
 
 if __name__ == "__main__":
     counter = Yolov4Count()
@@ -24,6 +25,7 @@ if __name__ == "__main__":
         for id, url in video_url.items():
             cuter.download_full_video(id, url)
             cuter.cut_picture(id)
-            counter.predicate(id)
+            if os.path.exists("cut_picture/"+str(id)+".jpg"):
+                counter.predicate(id)
 
         lock.release()
