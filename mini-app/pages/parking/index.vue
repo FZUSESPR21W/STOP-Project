@@ -30,12 +30,12 @@
 						<view class="place-list" v-show="showPlaceList">
 							<!-- 数据为空时容器 -->
 							<view style="display:flex; align-items:center;flex-direction:column;margin-top: 40rpx;"
-								v-if="placeList.length ==undefined || placeList.length==0">
+								v-if="placeList.length==0">
 								<u-empty text="数据获取失败,请尝试" font-size="32"></u-empty>
 								<u-button :custom-style="customStyle" :ripple="true" ripple-bg-color="#A55F91"
 									@click="refresh" size="medium"><span style="font-size: 30rpx;">刷新</span></u-button>
 							</view>
-							<view v-if="placeList.length !=undefined && placeList.length!=0">
+							<view v-if="placeList.length!=0">
 								<view v-show="showPlaceListTitle">
 									<view class="place-list-title" style="">最近适合停车的地点</view>
 									<view class="place-list-title-bar"></view>
@@ -70,7 +70,7 @@
 		<!-- 地点详细弹窗开始 -->
 		<u-popup v-model="popupShow" mode="bottom" border-radius=10 height="44%" :safe-area-inset-bottom="false"
 			style="overflow: hidden;" @close="closePopup" :mask="true" :mask-close-able="true">
-			<view style="font-size: 50rpx;margin: 0 auto;text-align: center;">{{popupItem.name}}
+			<view style="font-size: 50rpx;margin: 0 auto;text-align: center;margin-top: 14rpx;">{{popupItem.name}}
 			</view>
 			<view>
 				<view class="charts-box">
@@ -85,6 +85,33 @@
 			</view>
 		</u-popup>
 		<!-- 地点详细弹窗结束 -->
+		<!-- 用户引导容器开始 -->
+		<u-mask :show="isTiptrue" @click="closeThis">
+			<view class='page-cont'>
+				<view class='top'>
+					<view class='p_one'>如何快速上手“我要停车”功能？</view>
+				</view>
+				<view class='cont'>
+					<view class='cont-p'>
+						<view class='text'><text>1</text></view>
+						<view>拖出底部菜单或点击查询</view>
+					</view>
+					<view class='cont-p'>
+						<view class='text'><text>2</text></view>
+						<view>搜索或点击选中一个停车点，</view>
+					</view>
+					<view class='cont-p-lib'>
+						<view class='text' style='opacity:0;'><text>3</text></view>
+						<view>查看指定区域车位情况</view>
+					</view>
+					<view class='cont-p'>
+						<view class='text'><text>3</text></view>
+						<view>点击“导航”按钮，我们出发！</view>
+					</view>
+				</view>
+			</view>
+		</u-mask>
+		<!-- 用户引导容器结束 -->
 	</view>
 </template>
 
@@ -126,7 +153,7 @@
 				//是否显示向上呼出导航条
 				showExhaleBar: true,
 				//是否显示推荐地址列表
-				showPlaceList: false,
+				showPlaceList: true,
 				//是否显示地址框
 				showLocationBox: true,
 				//绑定输入框外框颜色
@@ -161,6 +188,8 @@
 						"data": 0.1
 					}],
 				},
+				//是否显示用户引导
+				isTiptrue: true,
 			}
 		},
 		components: {
@@ -432,6 +461,16 @@
 					this.runStatus2();
 				}
 			},
+			
+			//关闭用户引导页，设置缓存，下一次打开不再显示
+			closeThis() {
+				wx.setStorage({
+					key: 'loadOpen',
+					data: 'OpenTwice'
+				})
+				this.isTiptrue = false;
+			},
+			
 
 		},
 		created() {
@@ -445,6 +484,14 @@
 			});
 		},
 		onLoad() {
+			let firstOpen = wx.getStorageSync("loadOpen")
+			console.log("是否首次打开本页面==", firstOpen)
+			if (firstOpen == undefined || firstOpen == '') { //根据缓存周期决定是否显示新手引导
+				this.isTiptrue = true;
+			} else {
+				this.isTiptrue = false;
+			}
+			
 			uni.getSetting({
 				success(res) {
 					//如果用户没有授权
@@ -619,5 +666,113 @@
 		position: absolute;
 		left: 50%;
 		transform: translateX(-50%);
+	}
+	
+	.page-cont{
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 99999;
+		background-color: rgba(22, 23, 24, 0.5);
+	}
+	
+	.page-cont .top {
+		margin-top: 160rpx;
+		width: 93%;
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.page-cont .top image {
+		width: 32px;
+		height: 41px;
+		margin: 4% 0 4% 77%;
+	}
+	
+	.page-cont .top .p_one {
+		float: right;
+		width: 80%;
+		font-size: 28rpx;
+		line-height: 72rpx;
+		color: #fff;
+		background: #27C084;
+		text-align: center;
+		border-radius: 34rpx;
+		margin: 0 0 0 15%;
+	}
+	
+	.page-cont .cont {
+		width: 100%;
+		margin-top: 30rpx;
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.page-cont .cont .cont-p {
+		width: 80%;
+		margin-left: 15%;
+		margin-top: 30rpx;
+		display: flex;
+		color: #fff;
+		font-size: 30rpx;
+		line-height: 72rpx;
+	}
+	
+	.page-cont .cont .cont-p .text {
+		color: #fff;
+		font-size: 30rpx;
+		line-height: 40rpx;
+		width: 40rpx;
+		height: 40rpx;
+		text-align: center;
+		border-radius: 50%;
+		background: #27C084;
+		margin-right: 20rpx;
+		margin-top: 16rpx;
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.page-cont .cont .cont-p image {
+		width: 41px;
+		height: 28px;
+		margin: 8rpx 0 0 20rpx;
+		border: 1px dashed #fff;
+	}
+	
+	.page-cont .cont .cont-p-lib {
+		width: 90%;
+		margin-left: 15%;
+		display: flex;
+		color: #fff;
+		font-size: 30rpx;
+	}
+	
+	.page-cont .cont .cont-p-lib .text {
+		color: #fff;
+		font-size: 30rpx;
+		line-height: 40rpx;
+		width: 40rpx;
+		height: 40rpx;
+		text-align: center;
+		border-radius: 50%;
+		background: #27C084;
+		margin-right: 20rpx;
+		margin-top: 16rpx;
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.page-cont .bottom {
+		width: 60%;
+		font-size: 30rpx;
+		line-height: 72rpx;
+		text-align: center;
+		border-radius: 44rpx;
+		border: 1px solid #fff;
+		margin: 10% auto 0 auto;	
 	}
 </style>
