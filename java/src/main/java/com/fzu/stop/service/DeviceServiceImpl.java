@@ -147,9 +147,11 @@ public class DeviceServiceImpl extends MessageListenerAdapter implements DeviceS
                     BigDecimal temp = temp1.subtract(temp2);
                     area = area.add(temp);
                 }
-                area = area.divide(new BigDecimal(2), 14, RoundingMode.HALF_UP).abs();
+                area = area.divide(new BigDecimal(2),RoundingMode.HALF_UP).abs();
                 area = area.multiply(new BigDecimal("9101160000.085981"));
-                System.out.println(area);
+                Integer num = area.multiply(new BigDecimal("0.96")).setScale(0,RoundingMode.DOWN).intValue();
+                device.setMaxCarsNumber(num);
+                updateDeviceById(device);
             }
         }
     }
