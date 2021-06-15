@@ -90,12 +90,15 @@
 					} else {
 						placeList[i].distance = tempDistance + 'm'
 					}
-					if (placeList[i].capacity <= 0.5) {
+					if (placeList[i].capacity >=0 && placeList[i].capacity <= 0.5) {
 						placeList[i].surplus = '车位空闲'
 						placeList[i].surplusColor = '#2fc25b'
 					} else if (placeList[i].capacity > 0.5 && placeList[i].capacity < 0.7) {
 						placeList[i].surplus = '车位紧张'
 						placeList[i].surplusColor = '#1890ff'
+					} else if (placeList[i].capacity < 0){
+						placeList[i].surplus = '设备故障'
+						placeList[i].surplusColor = '#b3b2ab'
 					} else {
 						placeList[i].surplus = '车位不足'
 						placeList[i].surplusColor = '#f04864'
@@ -155,7 +158,7 @@
 								if(null == res.data.data.deviceList || null == r.data.data.stopStatusList) {
 									this.markerMap = []
 									setTimeout(() => {
-										console.log('传递空数组')
+										console.log('获取设备为空')
 										this.$emit('placeList', [])
 									}, 500);
 								} else {
@@ -202,30 +205,37 @@
 			getAllParkingArea() {
 				this.$api.Statistics.getPoints().then(
 					(res) => {
-						let tempPy = []
 						let areaList = res.data.data.piontsOfOnlineDevice
-						let strokeColor = ''
-						let fillColor = ''
-						for (let i = 0;i<areaList.length;i++) {
-							let index = parseInt(areaList[i].value) / parseInt(areaList[i].maxValue)
-							if (index <= 0.5) {
-								strokeColor = '#266339'
-								fillColor = '#7FFFAA'
-							} else if (index > 0.5 && index <0.7) {
-								strokeColor = '#194063'
-								fillColor = '#70aeff'
-							} else {
-								strokeColor = '#ff5c10'
-								fillColor = '#ff5f54'
+						if (null == areaList) {
+							console.log('停车场数据获取失败')
+						} else {
+							let tempPy = []
+							let strokeColor = ''
+							let fillColor = ''
+							for (let i = 0;i<areaList.length;i++) {
+								let index = parseInt(areaList[i].value) / parseInt(areaList[i].maxValue)
+								if (index <= 0.5 && index >=0 && areaList[i].online == true) {
+									strokeColor = '#266339'
+									fillColor = '#7FFFAA'
+								} else if (index > 0.5 && index <0.7  && areaList[i].online == true) {
+									strokeColor = '#194063'
+									fillColor = '#70aeff'
+								} else if (index < 0 || areaList[i].online == false){
+									strokeColor = '#adadad',
+									fillColor = '#d1d1d1'
+								} else {
+									strokeColor = '#ff5c10'
+									fillColor = '#ff5f54'
+								}
+								tempPy[i] = {
+									points: areaList[i].points,
+									strokeColor: strokeColor,
+									fillColor: fillColor,
+									strokeWidth: 3
+								}
 							}
-							tempPy[i] = {
-								points: areaList[i].points,
-								strokeColor: strokeColor,
-								fillColor: fillColor,
-								strokeWidth: 3
-							}
+							this.polygons = tempPy
 						}
-						this.polygons = tempPy
 				})
 			}
 		},
