@@ -13,7 +13,7 @@
 			</view>
 			<!-- 公告组件 -->
 			<view>
-				<u-notice-bar class="u-skeleton-rect" mode="vertical" :list="notice" :indicator-pos="indicatorPos"
+				<u-notice-bar class="u-skeleton-rect" mode="vertical" :list="ntitle" :indicator-pos="indicatorPos"
 					:interval="3000" :disable-touch="false" @click="changeNoticeIndex($event)"></u-notice-bar>
 			</view>
 			<!-- 详细公告 -->
@@ -22,7 +22,7 @@
 				<!-- 文字与关闭按钮 -->
 				<view style="height: 800rpx">
 					<view class="info-title">公告</view>
-					<view class="info-text">{{ notice[noticeIndex] }}</view>
+					<view class="info-text"><u-parse :html="notice[noticeIndex]" :selectable="true"></u-parse></view>
 					<view class="close-btn">
 						<u-button @click="noticeShow = false;" :custom-style="customStyle" :ripple="true"
 							ripple-bg-color="#A55F91" size="medium">关闭</u-button>
@@ -142,6 +142,9 @@
 				//公告列表
 				noticeList: [],
 
+				//公告标题
+				ntitle: ['公告1', '公告2', '公告3', ],
+				
 				//公告内容
 				notice: ['公告1', '公告2', '公告3', ],
 
@@ -230,6 +233,9 @@
 			
 			this.$api.Notice.getNoticeList().then(res => {
 				this.noticeList = res.data.data.noticeList;
+				this.ntitle[0] = this.noticeList[0].title;
+				this.ntitle[1] = this.noticeList[1].title;
+				this.ntitle[2] = this.noticeList[2].title;
 				this.notice[0] = this.noticeList[0].content;
 				this.notice[1] = this.noticeList[1].content;
 				this.notice[2] = this.noticeList[2].content;
