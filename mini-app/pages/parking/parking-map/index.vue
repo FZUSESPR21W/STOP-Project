@@ -215,9 +215,13 @@
 				this.$api.Statistics.getPoints().then(
 					(res) => {
 						let areaList = res.data.data.DeviceAndPointsInfo
+						console.log(areaList)
 						if (null == areaList) {
 							console.log('停车场数据获取失败')
+							this.polygons = []
 						} else {
+							let array_index = 0
+							console.log('停车场数据获取成功')
 							let tempPy = []
 							let strokeColor = ''
 							let fillColor = ''
@@ -230,20 +234,27 @@
 									strokeColor = '#194063'
 									fillColor = '#70aeff'
 								} else if (index < 0 || areaList[i].online == false){
-									strokeColor = '#adadad',
+									strokeColor = '#adadad'
 									fillColor = '#d1d1d1'
 								} else {
 									strokeColor = '#ff5c10'
 									fillColor = '#ff5f54'
 								}
-								tempPy[i] = {
-									points: areaList[i].points,
-									strokeColor: strokeColor,
-									fillColor: fillColor,
-									strokeWidth: 3
+								// let points = (null == areaList[i].points)?[]:areaList[i].points
+								if (null != areaList[i].points) {
+									tempPy[array_index++] = {
+										points: areaList[i].points,
+										strokeColor: strokeColor,
+										fillColor: fillColor,
+										strokeWidth: 3
+									}
+									// array_index
 								}
+								
 							}
+							console.log(tempPy)
 							this.polygons = tempPy
+							
 						}
 				})
 			}
