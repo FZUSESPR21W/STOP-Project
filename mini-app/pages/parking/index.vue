@@ -48,7 +48,7 @@
 									<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="90rpx"
 										name="position-icon"></u-icon>
 									<view class="place-list-item-title">{{placeItem.name}}</view>
-									<view class="place-list-item-parking">{{placeItem.surplus}}</view>
+									<view class="place-list-item-parking" :style="{color:placeItem.surplusColor}">{{placeItem.surplus}}</view>
 									<view class="place-list-item-distance">{{placeItem.distance}}</view>
 									<u-icon slot="icon" custom-prefix="custom-icon" color="#A35C8F" size="60rpx"
 										name="navigation" style="float: right;margin-right: 4px;"></u-icon>
@@ -294,6 +294,15 @@
 
 			clickItem(index) {
 				this.popupItem = this.placeList[index];
+				this.chartData.series[0].data = this.popupItem.capacity;
+				//出故障不弹出
+				if(this.popupItem.fault===true){
+					uni.showToast({
+						title: '设备故障，请稍后再尝试',
+						icon:'none',
+					})
+					return ; 
+				}
 				this.popupShow = true;
 				setTimeout(() => {
 					this.showCircle = true;

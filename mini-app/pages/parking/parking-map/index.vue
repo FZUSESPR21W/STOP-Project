@@ -69,6 +69,11 @@
 			},
 			//计算经纬度距离 返回米
 			getDistance(lat1, lng1, lat2, lng2) {
+				if((!lat1 && typeof(lat1)!="undefined" && lat1!=0) || 
+					(!lng1 && typeof(lng1)!="undefined" && lng1!=0)){
+					//当目的经纬度为null时说明错误，返回-1
+					return -1;
+				}
 				var radLat1 = lat1 * Math.PI / 180.0;
 				var radLat2 = lat2 * Math.PI / 180.0;
 				var a = radLat1 - radLat2;
@@ -96,15 +101,16 @@
 					} else if (placeList[i].capacity > 0.5 && placeList[i].capacity < 0.7) {
 						placeList[i].surplus = '车位紧张'
 						placeList[i].surplusColor = '#1890ff'
-					} else if (placeList[i].capacity < 0){
+					} else if (isNaN(placeList[i].capacity)|| placeList[i].capacity > 1 || 
+						placeList[i].capacity < 0 || tempDistance===-1){
 						placeList[i].surplus = '设备故障'
 						placeList[i].surplusColor = '#b3b2ab'
+						placeList[i].fault=true;
 					} else {
 						placeList[i].surplus = '车位不足'
 						placeList[i].surplusColor = '#f04864'
 					}
 				}
-				console.log(placeList)
 				return placeList
 			},
 
@@ -163,7 +169,6 @@
 									}, 500);
 								} else {
 									let stop = r.data.data.stopStatusList
-									console.log(stop);
 									for (let j = 0; j < stop.length; j++) {
 										stopMap.set(parseInt(stop[j].id), stop[j].value)
 									}
@@ -182,7 +187,11 @@
 												name: data.name,
 												latitude: data.latitude,
 												longitude: data.longitude,
-												capacity: num / data.maxCarsNumber
+												capacity: num / data.maxCarsNumber,
+												num:num,
+												maxCarsNumber:data.maxCarsNumber,
+												//是否故障
+												fault:false
 											}
 											deviceMap.set(data.id, index)
 											index++
@@ -205,7 +214,7 @@
 			getAllParkingArea() {
 				this.$api.Statistics.getPoints().then(
 					(res) => {
-						let areaList = res.data.data.piontsOfOnlineDevice
+						let areaList = res.data.data.DeviceAndPointsInfo
 						if (null == areaList) {
 							console.log('停车场数据获取失败')
 						} else {
