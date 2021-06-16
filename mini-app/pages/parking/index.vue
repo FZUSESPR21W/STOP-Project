@@ -454,6 +454,9 @@
 
 			//收到map组件传回来的值，显示呼出条、隐藏地点列表
 			hideList(res) {
+				if(this.popupShow){
+					return ;
+				}
 				this.changeLocationBox(0)
 			},
 
