@@ -116,10 +116,10 @@
 </template>
 
 <script>
-	import ParkingMap from './parking-map/index.vue';
-	import uCharts from '@/components/u-charts/u-charts-v2.0.0.js';
-	var _self;
-	var canvaColumn = null;
+	import ParkingMap from './parking-map/index.vue'
+	import uCharts from '@/components/u-charts/u-charts-v2.0.0.js'
+	var _self
+	var canvaColumn = null
 	export default {
 		name: 'Parking',
 		data() {
@@ -153,7 +153,7 @@
 				//是否显示向上呼出导航条
 				showExhaleBar: true,
 				//是否显示推荐地址列表
-				showPlaceList: true,
+				showPlaceList: false,
 				//是否显示地址框
 				showLocationBox: true,
 				//绑定输入框外框颜色
@@ -189,7 +189,7 @@
 					}],
 				},
 				//是否显示用户引导
-				isTiptrue: true,
+				isTiptrue: false,
 			}
 		},
 		components: {
@@ -201,42 +201,42 @@
 			refresh() {
 				uni.reLaunch({
 					url: '/pages/parking/index'
-				});
+				})
 			},
 
 			//拖动结束将地点框复位
 			locationBoxReset(res) {
-				let top = this.locationBoxTop;
+				let top = this.locationBoxTop
 				if (top < 0.4) {
-					this.changeLocationBox(2);
+					this.changeLocationBox(2)
 				} else if (top > 0.7) {
-					this.changeLocationBox(0);
+					this.changeLocationBox(0)
 				} else {
-					this.changeLocationBox(1);
+					this.changeLocationBox(1)
 				}
 			},
 
 			//在用户输入时搜索
 			inputSearch(res) {
-				let searchWord = res.detail.value;
-				this.search(searchWord);
+				let searchWord = res.detail.value
+				this.search(searchWord)
 
 			},
 			//弹出层关闭
 			closePopup() {
-				this.showCircle = false;
+				this.showCircle = false
 			},
 
 			///监听触摸滑动事件
 			touchLocationBox(res) {
-				let top = res.changedTouches[0].pageY / this.windowHeight;
+				let top = res.changedTouches[0].pageY / this.windowHeight
 				//防止顶部过度拖拽
 				if (top < 0.1) {
 					top = 0.1
 				}
 				//防止底部过度拖拽
 				else if (top > 0.85) {
-					top = 0.85;
+					top = 0.85
 				}
 				this.$refs.locationBox.step({
 					top: top * 100 + 'vh',
@@ -245,56 +245,55 @@
 					duration: 0,
 				})
 				this.$refs.locationBox.run(() => {
-					//console.log('正在移动');
-				});
-				this.locationBoxTop = top;
+				})
+				this.locationBoxTop = top
 			},
 
 			//搜索
 			search(searchWord) {
-				let result = this.fuzzyQuery(this.placeList, this.searchWord);
-				this.showPlaceListTitle = false;
-				this.showSearchPlaceList = result;
-				this.showMore = false;
-				this.isSearch = true;
+				let result = this.fuzzyQuery(this.placeList, this.searchWord)
+				this.showPlaceListTitle = false
+				this.showSearchPlaceList = result
+				this.showMore = false
+				this.isSearch = true
 			},
 			//点击搜索
 			searchList() {
-				this.search(this.searchWord);
+				this.search(this.searchWord)
 			},
 
 			//模糊搜索
 			fuzzyQuery(list, keyWord) {
-				let arr = [];
+				let arr = []
 				for (let i = 0; i < list.length; i++) {
 					if (list[i].name.match(keyWord) != null) {
-						arr.push(list[i]);
+						arr.push(list[i])
 					}
 				}
-				return arr;
+				return arr
 			},
 
 			//导航按钮点击事件
 			navigateToPlace() {
-				this.navigateTo(this.popupItem.latitude, this.popupItem.longitude, this.popupItem.name);
+				this.navigateTo(this.popupItem.latitude, this.popupItem.longitude, this.popupItem.name)
 			},
 
 			//获取地点列表
 			getPlaceList(res) {
-				this.placeList = res;
-				this.showSearchPlaceList = this.placeList;
+				this.placeList = res
+				this.showSearchPlaceList = this.placeList
 			},
 
 			//点击covers
 			clickCovers(res) {
-				this.chartData.series[0].data = res.capacity;
-				this.popupItem = res;
-				this.popupShow = true;
+				this.chartData.series[0].data = res.capacity
+				this.popupItem = res
+				this.popupShow = true
 			},
 
 			clickItem(index) {
-				this.popupItem = this.placeList[index];
-				this.chartData.series[0].data = this.popupItem.capacity;
+				this.popupItem = this.placeList[index]
+				this.chartData.series[0].data = this.popupItem.capacity
 				//出故障不弹出
 				if(this.popupItem.fault===true){
 					uni.showToast({
@@ -303,56 +302,56 @@
 					})
 					return ; 
 				}
-				this.popupShow = true;
+				this.popupShow = true
 				setTimeout(() => {
-					this.showCircle = true;
-				}, 100);
+					this.showCircle = true
+				}, 100)
 
 			},
 
 			//禁止滚动
 			//该方法解决IOS下点击地点框会层级穿透至map组件内的BUG
 			noScrolling() {
-				return false;
+				return false
 			},
 
 			//点击更多按钮
 			clickMore() {
 				if (this.locationBoxTop != 0.1) {
-					this.changeLocationBox(2);
+					this.changeLocationBox(2)
 					setTimeout(() => {
-						this.inputDisable = true;
-					}, 300);
+						this.inputDisable = true
+					}, 300)
 				}
 			},
 
 			//新增显示数量
 			addShowNum() {
 				//新增数目步长7
-				const step = 7;
-				let showNum = this.showNum;
-				const num = this.placeList.length;
+				const step = 7
+				let showNum = this.showNum
+				const num = this.placeList.length
 				if (showNum >= num) {
-					this.showMore = false;
+					this.showMore = false
 					//如果已显示数已经少于总数就直接返回，不增加
 					return;
 				} else {
-					showNum += step;
+					showNum += step
 					if (showNum >= num) {
-						this.showMore = false;
+						this.showMore = false
 					}
 				}
-				this.showNum = showNum;
+				this.showNum = showNum
 			},
 
 			//底栏动画
 			runStatus0() {
 				if (this.isSearch) {
-					this.showSearchPlaceList = this.placeList;
-					this.isSearch = false;
-					this.searchWord = '';
+					this.showSearchPlaceList = this.placeList
+					this.isSearch = false
+					this.searchWord = ''
 				}
-				this.inputDisable = true;
+				this.inputDisable = true
 				this.$refs.locationBox.step({
 					height: '14vh',
 					top: '86vh'
@@ -360,36 +359,38 @@
 					duration: 300,
 				})
 				this.$refs.locationBox.run(() => {
-					this.locationBoxTop = 0.86;
-				});
+					this.locationBoxTop = 0.86
+				})
 			},
 
 			//根据经纬度导航至目的地
 			navigateTo(nLatitude, nLongitude, nName) {
-				let plugin = requirePlugin('routePlan');
-				let key = 'FIJBZ-GKBCS-UYLO5-66F56-MLB5J-OPFO7'; //使用在腾讯位置服务申请的key
-				let referer = 'STOP'; //调用插件的app的名称
+				let plugin = requirePlugin('routePlan')
+				//使用在腾讯位置服务申请的key
+				let key = 'FIJBZ-GKBCS-UYLO5-66F56-MLB5J-OPFO7' 
+				//调用插件的app的名称
+				let referer = 'STOP' 
 				let endPoint = JSON.stringify({ //终点
 					'name': nName,
 					'latitude': nLatitude,
 					'longitude': nLongitude
-				});
+				})
 				uni.navigateTo({
 					url: 'plugin://routePlan/index?key=' + key + '&referer=' + referer + '&endPoint=' + endPoint
-				});
+				})
 			},
 
 			//半屏动画
 			runStatus1() {
 				if (this.isSearch) {
-					this.showSearchPlaceList = this.placeList;
-					this.isSearch = false;
-					this.searchWord = '';
+					this.showSearchPlaceList = this.placeList
+					this.isSearch = false
+					this.searchWord = ''
 				}
-				this.showPlaceListTitle = true;
-				this.showNum = 2;
-				this.showMore = true;
-				this.inputDisable = true;
+				this.showPlaceListTitle = true
+				this.showNum = 2
+				this.showMore = true
+				this.inputDisable = true
 				this.$refs.locationBox.step({
 					top: '56vh',
 					height: '44vh',
@@ -397,8 +398,8 @@
 					duration: 300,
 				})
 				this.$refs.locationBox.run(() => {
-					this.locationBoxTop = 0.56;
-				});
+					this.locationBoxTop = 0.56
+				})
 			},
 
 			//全屏动画
@@ -410,55 +411,55 @@
 					duration: 300,
 				})
 				this.$refs.locationBox.run(() => {
-					this.locationBoxTop = 0.1;
-				});
+					this.locationBoxTop = 0.1
+				})
 			},
 
 			//输入框失去焦点
 			inputBlur(res) {
-				this.inputBorderColor = '1px solid #bfbfbf';
+				this.inputBorderColor = '1px solid #bfbfbf'
 			},
 
 			//点击输入框
 			clickInputBox() {
 				//获取焦点时修改边框颜色，因:style不支持绑定border-color,所以绑定了整个border
-				this.inputBorderColor = '1px solid #a35c8f';
-				this.changeLocationBox(2);
+				this.inputBorderColor = '1px solid #a35c8f'
+				this.changeLocationBox(2)
 				setTimeout(() => {
 					setTimeout(() => {
-						this.isFocus = true;
-					}, 50);
-					this.inputDisable = false;
-				}, 300);
+						this.isFocus = true
+					}, 50)
+					this.inputDisable = false
+				}, 300)
 			},
 
 			//显示推荐地点列表
 			showList() {
-				this.changeLocationBox(1);
+				this.changeLocationBox(1)
 			},
 
 			//收到map组件传回来的值，显示呼出条、隐藏地点列表
 			hideList(res) {
-				this.changeLocationBox(0);
+				this.changeLocationBox(0)
 			},
 
 			//更改地点框状态，0：底栏(默认)；1：半屏；2：全屏；
 			changeLocationBox(status) {
 				if (status === 0) {
-					this.isFocus = false;
-					this.scrollHeight = '';
-					this.showPlaceList = false;
-					this.runStatus0();
+					this.isFocus = false
+					this.scrollHeight = ''
+					this.showPlaceList = false
+					this.runStatus0()
 				} else if (status === 1) {
-					this.isFocus = false;
-					this.runStatus1();
-					this.scrollHeight = '';
-					this.showPlaceList = true;
+					this.isFocus = false
+					this.runStatus1()
+					this.scrollHeight = ''
+					this.showPlaceList = true
 				} else if (status === 2) {
-					this.showPlaceList = true;
-					this.addShowNum();
+					this.showPlaceList = true
+					this.addShowNum()
 					this.scrollHeight = '78vh'
-					this.runStatus2();
+					this.runStatus2()
 				}
 			},
 			
@@ -468,28 +469,28 @@
 					key: 'loadOpen',
 					data: 'OpenTwice'
 				})
-				this.isTiptrue = false;
+				this.isTiptrue = false
 			},
 			
 
 		},
 		created() {
-			let _this = this;
+			let _this = this
 			//获取用户系统尺寸
 			uni.getSystemInfo({
 				success: function(res) {
-					_this.windowWidth = res.windowWidth;
-					_this.windowHeight = res.windowHeight;
+					_this.windowWidth = res.windowWidth
+					_this.windowHeight = res.windowHeight
 				}
-			});
+			})
 		},
 		onLoad() {
 			let firstOpen = wx.getStorageSync("loadOpen")
-			console.log("是否首次打开本页面==", firstOpen)
-			if (firstOpen == undefined || firstOpen == '') { //根据缓存周期决定是否显示新手引导
-				this.isTiptrue = true;
+			//console.log("是否首次打开本页面==", firstOpen)
+			if (typeof(firstOpen) == undefined || firstOpen == '') { //根据缓存周期决定是否显示新手引导
+				this.isTiptrue = true
 			} else {
-				this.isTiptrue = false;
+				this.isTiptrue = false
 			}
 			
 			uni.getSetting({
@@ -524,7 +525,7 @@
 											}).then(res => {
 												uni.reLaunch({
 													url: '/pages/parking/index'
-												});
+												})
 											})
 										}
 									}
@@ -533,7 +534,7 @@
 						})
 					}
 				}
-			});
+			})
 		}
 	}
 </script>

@@ -62,33 +62,33 @@
 			
 			//刷新按钮点击事件
 			refresh(){
-				console.log('刷新');
 				uni.reLaunch({
 					url:'/pages/parking/index'
-				});
+				})
 			},
 			//计算经纬度距离 返回米
 			getDistance(lat1, lng1, lat2, lng2) {
 				if((!lat1 && typeof(lat1)!="undefined" && lat1!=0) || 
 					(!lng1 && typeof(lng1)!="undefined" && lng1!=0)){
 					//当目的经纬度为null时说明错误，返回-1
-					return -1;
+					return -1
 				}
-				var radLat1 = lat1 * Math.PI / 180.0;
-				var radLat2 = lat2 * Math.PI / 180.0;
-				var a = radLat1 - radLat2;
-				var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+				var radLat1 = lat1 * Math.PI / 180.0
+				var radLat2 = lat2 * Math.PI / 180.0
+				var a = radLat1 - radLat2
+				var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0
 				var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
-					Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
-				s = s * 6378.137; // EARTH_RADIUS;
-				s = Math.round(Math.round(s * 10000) / 10000 * 1000);
-				return s;
+					Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)))
+				s = s * 6378.137 // EARTH_RADIUS;
+				s = Math.round(Math.round(s * 10000) / 10000 * 1000)
+				return s
 			},
 			//转换地点列表
 			transformPlaceList(placeList) {
 				for (let i = 0; i < placeList.length; i++) {
 					let tempDistance = this.getDistance(placeList[i].latitude, placeList[i].longitude, this.latitude, this
 						.longitude)
+					placeList[i].distanceMeters=tempDistance
 					if (tempDistance > 999) {
 						tempDistance = Math.round(tempDistance / 1000)
 						placeList[i].distance = tempDistance + 'km'
@@ -105,26 +105,85 @@
 						placeList[i].capacity < 0 || tempDistance===-1){
 						placeList[i].surplus = '设备故障'
 						placeList[i].surplusColor = '#b3b2ab'
-						placeList[i].fault=true;
+						placeList[i].fault=true
 					} else {
 						placeList[i].surplus = '车位不足'
 						placeList[i].surplusColor = '#f04864'
 					}
 				}
+				return this.sortPlaceList(placeList)
+			},
+			
+			//地点排序
+			//排序算法：
+			//1、若设备故障，一定在最后
+			//2、车位空闲优先，其次是距离
+			//3、若车位都不空闲，则根据空闲度优先，其次是距离
+			sortPlaceList(placeList){
+				placeList.sort(function(a,b){
+					//当a、b摄像头都在线
+					if(!a.fault && !b.fault){
+						//a、b都是空闲的
+						if(a.capacity<=0.5 && b.capacity<=0.5){
+							return a.distanceMeters-b.distanceMeters
+						}
+						//若a是空闲
+						else if(a.capacity<=0.5){
+							return -1
+						}
+						//若b是空闲
+						else if(b.capacity<=0.5){
+							return 1
+						}
+						//若a、b都不空闲
+						else{
+							return a.capacity-b.capacity
+						}
+					}
+					//a在线b不在线
+					else if(!a.fault){
+						return -1
+					}
+					//b在线a不在线
+					else if(!b.fault){
+						return 1
+					}
+					//a、b都不在线
+					else{
+						return 0
+					}
+				})
 				return placeList
 			},
+			
+			//排序函数测试
+			//测试1e7随机数 7s左右
+			// sortTest(){
+			// 	let testArr=[]
+			// 	for (var i = 0; i < 10000000; i++) {
+			// 		testArr[i]={
+			// 			fault:Math.random()<0.5?true:false,
+			// 			capacity:Math.random(),
+			// 			distanceMeters:Math.random()*1000
+			// 		}
+			// 	}
+			// 	let timeStart=Date.now();
+			// 	//console.log(testArr)
+			// 	console.log('----------------------------------------------------')
+			// 	//console.log(this.sortPlaceList(testArr))
+			// 	this.sortPlaceList(testArr)
+			// 	console.log(Date.now()-timeStart);
+			// },
 
 			//地图点击事件
 			clickMap(res) {
-				this.mapHeight = '90vh';
-				this.$emit('hideList', true);
+				this.mapHeight = '90vh'
+				this.$emit('hideList', true)
 			},
 			//标记点击事件
 			clickMarker(res) {
-
-				//console.log();
 				let data = this.covers[this.markerMap.get(res.target.markerId)]
-				this.$emit('clickCovers', data);
+				this.$emit('clickCovers', data)
 			},
 			//返回中心点
 			moveToCenter() {
@@ -144,8 +203,6 @@
 				}).then(res => {
 					this.longitude = res.longitude
 					this.latitude = res.latitude
-					console.log(res.longitude);
-					console.log(res.latitude);
 				}).catch(err => {
 					uni.showToast({
 						title: '位置信息获取失败（请检查定位功能是否打开）',
@@ -166,7 +223,7 @@
 									setTimeout(() => {
 										console.log('获取设备为空')
 										this.$emit('placeList', [])
-									}, 500);
+									}, 500)
 								} else {
 									let stop = r.data.data.stopStatusList
 									for (let j = 0; j < stop.length; j++) {
@@ -187,8 +244,11 @@
 												name: data.name,
 												latitude: data.latitude,
 												longitude: data.longitude,
+												//停车占比
 												capacity: num / data.maxCarsNumber,
+												//停车数量
 												num:num,
+												//最大停车数
 												maxCarsNumber:data.maxCarsNumber,
 												//是否故障
 												fault:false
@@ -199,7 +259,7 @@
 									}
 									this.markerMap = deviceMap
 									setTimeout(() => {
-										this.covers = this.transformPlaceList(coversTemp);
+										this.covers = this.transformPlaceList(coversTemp)
 										console.log('处理了数据')
 										this.$emit('placeList', this.covers)
 									}, 500)
@@ -215,7 +275,6 @@
 				this.$api.Statistics.getPoints().then(
 					(res) => {
 						let areaList = res.data.data.DeviceAndPointsInfo
-						console.log(areaList)
 						if (null == areaList) {
 							console.log('停车场数据获取失败')
 							this.polygons = []
@@ -248,11 +307,9 @@
 										fillColor: fillColor,
 										strokeWidth: 3
 									}
-									// array_index
 								}
 								
 							}
-							console.log(tempPy)
 							this.polygons = tempPy
 							
 						}
