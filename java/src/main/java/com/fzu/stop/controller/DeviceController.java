@@ -34,7 +34,6 @@ public class DeviceController {
 	@ResponseBody
 	public ResponseDTO getOnlineDeviceList(){
 		List<DeviceDTO> deviceDTOList = deviceService.listOnlineDevice();
-		deviceService.updateMaxCars();
 		HashMap<String, Object> resp = new HashMap<>();
 		resp.put("deviceList", deviceDTOList);
 		return ResponseUtil.getSuccessResponse("",resp);
