@@ -25,7 +25,7 @@
 				    "categories": [
 				        "0~20",
 				        "20~40",
-						"40~60",
+								"40~60",
 				        "60~80",
 				        "80~100",
 				        "100~120",
@@ -34,29 +34,21 @@
 				        {
 				            "name": "生活一区",
 				            "data": []
-				        },
-				        {
-				            "name": "生活三区",
-				            "data": []
-				        },
-						{
-						    "name": "研究生公寓",
-						    "data": []
-						},
-				    ]
+				        },]
 					},
 				}
 			},
 			onLoad() {
 				this.$api.Statistics.getStopStatusHourly().then(res => {
-					this.chartData.series[0].data = res.data.data.stopStatusHourly[0].values;
-					this.chartData.series[1].data = res.data.data.stopStatusHourly[1].values;
-					this.chartData.series[2].data = res.data.data.stopStatusHourly[2].values;
+					let arr=res.data.data.stopStatusHourly
+					for (var i = 0; i < arr.length; i++) {
+						arr[i].data=arr[i].values
+					}
+					this.chartData.series=arr
 				})
 				},
 				
 			methods: {
-			   
 			}
 		}
 	</script>
