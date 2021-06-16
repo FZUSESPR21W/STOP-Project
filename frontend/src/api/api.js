@@ -220,6 +220,14 @@ export class Map {
     static getPoints() {
         return axios.get('api/get_points')
     }
+
+    /**
+     * 获取实时停车数据
+     * @return {*}
+     */
+    static getParkingValue() {
+        return axios.get('api/stop_status')
+    }
 }
 
 
