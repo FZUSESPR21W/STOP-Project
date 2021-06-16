@@ -2,7 +2,7 @@
 	<view>
 		<!-- map组件开始 -->
 		<view>
-			<ParkingMap @hideList="hideList" @clickCovers="clickCovers" @placeList="getPlaceList" />
+			<ParkingMap @hideList="hideList" @clickCovers="clickCovers" @placeList="getPlaceList" :moveItem="itemId"/>
 		</view>
 		<!-- map组件结束 -->
 		<!-- 推荐地址框容器开始 -->
@@ -190,6 +190,8 @@
 				},
 				//是否显示用户引导
 				isTiptrue: false,
+				//点击子项时
+				itemId:0,
 			}
 		},
 		components: {
@@ -297,6 +299,7 @@
 			//点击列表项
 			clickItem(index) {
 				this.popupItem = this.placeList[index]
+				this.itemId=this.popupItem.id
 				this.chartData.series[0].data = this.popupItem.capacity
 				if(!this.deviceFault()){
 					return ;

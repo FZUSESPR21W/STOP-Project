@@ -36,6 +36,7 @@
 <script>
 	export default {
 		name: 'ParkingMap',
+		props: ['moveItem'],
 		data() {
 			return {
 				// 数据请加注释
@@ -313,6 +314,18 @@
 							this.polygons = tempPy
 							
 						}
+				})
+			}
+		},
+		watch:{
+			//监听moveItem值，a是新值，b是旧值
+			moveItem:function(a,b){
+				let data=this.covers.find(item => item.id==a)
+				let mapCtx = uni.createMapContext('parkingMap', this)
+				//点击子项将地图中心移至坐标点
+				mapCtx.moveToLocation({
+					longitude:data.longitude,
+					latitude:data.latitude,
 				})
 			}
 		},
