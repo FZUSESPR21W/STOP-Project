@@ -503,7 +503,6 @@
 		},
 		onLoad() {
 			let firstOpen = wx.getStorageSync("loadOpen")
-			//console.log("是否首次打开本页面==", firstOpen)
 			if (typeof(firstOpen) == undefined || firstOpen == '') { //根据缓存周期决定是否显示新手引导
 				this.isTiptrue = true
 			} else {

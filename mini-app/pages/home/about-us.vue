@@ -30,6 +30,7 @@
 				length="80%" :mask="mask"
 				:closeable="closeable"
 				:close-icon-pos="closeIconPos"
+				:mask-close-able="false"
 			>
 				<!-- 文字与关闭按钮 -->
 				<view style="height: 1000rpx">
@@ -47,6 +48,7 @@
 				length="80%" :mask="mask"
 				:closeable="closeable"
 				:close-icon-pos="closeIconPos"
+				:mask-close-able="false"
 			>
 				<!-- 文字与关闭按钮 -->
 				<view style="height: 1000rpx">
@@ -64,6 +66,7 @@
 				length="80%" :mask="mask"
 				:closeable="closeable"
 				:close-icon-pos="closeIconPos"
+				:mask-close-able="false"
 			>
 				<!-- 文字与关闭按钮 -->
 				<view style="height: 1000rpx">

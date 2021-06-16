@@ -18,7 +18,7 @@
 			</view>
 			<!-- 详细公告 -->
 			<u-popup v-model="noticeShow" mode="center" border-radius="10" length="80%" :mask="mask"
-				:closeable="closeable" :close-icon-pos="closeIconPos">
+				:closeable="closeable" :close-icon-pos="closeIconPos" :mask-close-able="false">
 				<!-- 文字与关闭按钮 -->
 				<view style="height: 800rpx">
 					<view class="info-title">公告</view>
@@ -122,8 +122,9 @@
 				//是否显示骨架屏组件
 				loading: true, 
 
-				//服务器地址
-				action: 'https://api.shawnxixi.icu/api/upload_pic',
+				//图片上传服务器地址
+				action: 'https://api.shawnxixi.icu/api/upload/pic',
+				
 				//表格上传所带参数
 				form: {
 					feedback: "",
@@ -220,7 +221,6 @@
 
 		onLoad() {
 			let firstOpen = wx.getStorageSync("loadOpen")
-			console.log("是否首次打开本页面==", firstOpen)
 			if (firstOpen == undefined || firstOpen == '') { //根据缓存周期决定是否显示新手引导
 				this.isTiptrue = true;
 			} else {
@@ -229,8 +229,9 @@
 
 			setTimeout(() => {
 				this.loading = false;
-			}, 500)
+			}, 100)
 			
+			//从服务器读取公告
 			this.$api.Notice.getNoticeList().then(res => {
 				this.noticeList = res.data.data.noticeList;
 				this.ntitle[0] = this.noticeList[0].title;
