@@ -24,6 +24,11 @@ Vue.use(ElementUI)
 import api from './api'
 Vue.use(api)
 
+//引入高德地图
+import AmapVue from '@amap/amap-vue'
+AmapVue.config.key = 'c39dd5801e3e92132bea271c0d7abdc0'
+Vue.use(AmapVue)
+
 Vue.config.productionTip = false
 
 new Vue({

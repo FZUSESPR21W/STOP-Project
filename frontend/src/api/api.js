@@ -95,7 +95,7 @@ export class Notice {
     static upLoadImg(formData) {
         return axios({
             method: 'post',
-            url: 'https://api.shawnxixi.icu/api/upload_pic',
+            url: 'https://api.shawnxixi.icu/api/upload/pic',
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
@@ -199,6 +199,28 @@ export class Device {
     }
 }
 
+/**
+ * 地图管理用api
+ */
+export class Map {
+
+    /**
+     * 获取地图点数据
+     * @return {*}
+     */
+    static getAllDevice() {
+        return axios.get('/device/get_all_device')
+    }
+
+
+    /**
+     * 获取区域点集合
+     * @return {*}
+     */
+    static getPoints() {
+        return axios.get('api/get_points')
+    }
+}
 
 
 

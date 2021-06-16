@@ -100,6 +100,8 @@ export default {
   created() {
     // 初始化设备列表
     this.getDeviceList()
+    // 更新面包屑路径
+    this.$store.commit('setPageLocations', ['监控','摄像头管理'])
   },
   methods: {
     // 打开监控
