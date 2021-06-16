@@ -1,22 +1,25 @@
 <template>
   <!-- 登录页面容器开始 -->
   <div class="login-container">
-    <!-- 登录页面标题 -->
-    <span class="login-title">欢迎登录STOP后台管理系统</span>
-    <!-- 登录框开始 -->
-    <div class="login-box">
-      <!-- 用户名标题 -->
-      <div class="input-item-title">用户名</div>
-      <!-- 用户名输入框 -->
-      <el-input class="input-item" placeholder="请输入用户名" v-model="username" />
-      <!-- 密码标题 -->
-      <div class="input-item-title">密码</div>
-      <!-- 密码输入框 -->
-      <el-input class="input-item"  placeholder="请输入密码" v-model="password" show-password />
-      <!-- 登陆按钮 -->
-      <el-button class="login-btn" @click="login">登录</el-button>
+    <div class="login-container-box">
+      <div class="left">
+        <img src="@/assets/logo.png" class="login-photo"/>
+        <span class="login-title">欢迎登录STOP后台管理系统</span>
+      </div>
+      <div class="right">
+        <!-- 登录框开始 -->
+        <div class="login-box">
+          <!-- 用户名输入框 -->
+          <el-input class="input-item" placeholder="请输入用户名" v-model="username" />
+          <!-- 密码输入框 -->
+          <el-input class="input-item"  placeholder="请输入密码" v-model="password" show-password />
+          <!-- 登陆按钮 -->
+          <el-button class="login-btn" @click="login">登录</el-button>
+        </div>
+        <!-- 登录框结束 -->
+      </div>
     </div>
-    <!-- 登录框结束 -->
+
   </div>
   <!-- 登录页面容器结束 -->
 </template>
@@ -80,24 +83,53 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
   width: 100%;
+  border: 0.5px solid grey;
+  border-radius: 5px;
+
+  .left {
+    width: 450px;
+    height: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .right {
+    width: 300px;
+  }
+
+  .login-photo {
+    width: 250px;
+  }
+
+  .login-container-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 5px;
+    box-shadow: 0 8px 40px grey;
+    height: 430px;
+  }
 
   .login-title {
     font-family: '微软雅黑 Bold', '微软雅黑', sans-serif;
     font-weight: 700;
     font-style: normal;
-    font-size: 35px;
+    font-size: 30px;
+    margin-top: 30px;
     color: #BC84A8;
     padding-bottom: 30px;
   }
 
   .login-box {
     height: 320px;
-    width: 500px;
-    border: 0.5px solid grey;
-    border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -111,11 +143,11 @@ export default {
     }
 
     .login-btn {
-      width: 135px;
       font-size: 18px;
       background-color: #BC84A8;
       color: white;
       border: 0;
+      width: 100%;
     }
 
     .login-btn:hover {

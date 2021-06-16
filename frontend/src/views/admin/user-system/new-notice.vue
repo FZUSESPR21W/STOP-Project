@@ -197,11 +197,11 @@ export default {
 
   .title {
     font-family: "Microsoft YaHei UI Bold", "Microsoft YaHei UI Regular", "Microsoft YaHei UI", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-    font-size: 20px;
-    text-decoration: underline;
     color: rgb(48, 49, 51);
+    font-size: 18px;
+    padding-left: 6px;
+    margin-bottom: 5px;
+    border-left: 10px solid #813C85;
   }
 
   .input-form {

@@ -4,7 +4,7 @@
       <img src="@/assets/logo.png" class="logo"/>
       <span>后台管理系统</span>
     </div>
-    <span>©CopyRight 2021 发际线和我作队</span>
+    <span>© CopyRight 2021 发际线和我作队</span>
   </div>
 </template>
 
