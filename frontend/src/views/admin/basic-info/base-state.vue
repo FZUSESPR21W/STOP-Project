@@ -2,8 +2,8 @@
   <!-- 基本情况页面容器开始 -->
   <div class="base-state-container">
     <!-- 用户登录记录开始 -->
-    <div class="user-login-log-container">
-      <span class="title">过去一个月用户画像</span>
+    <div class="graph-container">
+      <span class="title">过去一个月用户画像相关数据</span>
       <div class="graph-container-main">
         <!-- 用户年龄 -->
         <div id="ages" class="graph"/>
@@ -13,7 +13,7 @@
     </div>
     <!-- 用户登录记录结束 -->
     <!-- 数据可视化(echarts图表）开始 -->
-    <div class="graph-container">
+    <div class="graph-container-two" >
       <span class="title">数据可视化</span>
       <!-- 图表主体开始 -->
       <div class="graph-container-main">
@@ -52,21 +52,26 @@ export default {
     }
   },
   beforeMount() {
-    // 数据初始化
-    this.getUserLoginData()
     // 更新面包屑路径
     this.$store.commit('setPageLocations', ['基础','基本情况'])
   },
   mounted() {
     this.getStopStatusAndPaint()
     this.getVisitNumberAndPaint()
+    this.getUserLoginDataAndPaint()
   },
   methods: {
     //获取用户登录数据
-    getUserLoginData() {
+    getUserLoginDataAndPaint() {
       // 调用用户登录数据接口
       this.$api.Statistics.getLoginList().then(res => {
-        this.userLogin.userData = res.data.data.visit_uv
+        this.graph.agesData.series[0].data = res.data.data.data.visit_uv.ages
+        this.graph.agesData.title.text = '年龄'
+        this.graph.platformsData.series[0].data = res.data.data.data.visit_uv.platforms
+        this.graph.platformsData.title.text = '平台'
+        //绘制图表
+        this.paintAges()
+        this.paintPlatforms()
       })
 
     },
@@ -128,7 +133,6 @@ export default {
 
       // 添加重新绘制监听
       window.addEventListener('resize', () => {
-        // TODO 节流优化
         this.$highcarts.chart('park', this.graph.parkData)
       })
     },
@@ -140,7 +144,28 @@ export default {
 
       // 添加重新绘制监听
       window.addEventListener('resize', () => {
-        // TODO 节流优化
+        chart.resize()
+      })
+    },
+    // 绘制年龄图表
+    paintAges() {
+      let domContainer = document.getElementById('ages')
+      let chart = this.$echarts.init(domContainer)
+      chart.setOption(this.graph.agesData)
+
+      // 添加重新绘制监听
+      window.addEventListener('resize', () => {
+        chart.resize()
+      })
+    },
+    // 绘制平台图表
+    paintPlatforms() {
+      let domContainer = document.getElementById('platforms')
+      let chart = this.$echarts.init(domContainer)
+      chart.setOption(this.graph.platformsData)
+
+      // 添加重新绘制监听
+      window.addEventListener('resize', () => {
         chart.resize()
       })
     }
@@ -158,7 +183,7 @@ export default {
 
 }
 
-.user-login-log-container, .graph-container {
+.graph-container, .graph-container-two {
   flex: 0 0 50%;
   padding-top: 20px;
   padding-left: 50px;
@@ -177,7 +202,7 @@ export default {
 
 }
 
-.graph-container {
+.graph-container, .graph-container-two {
   display: flex;
   flex-direction: column;
 
@@ -188,10 +213,15 @@ export default {
   }
 }
 
+.graph-container-two {
+  margin-top: -120px;
+}
+
+
 .graph {
   flex: 0 0 50%;
   width: 50%;
-  height: 80%;
+  height: 90%;
 }
 
 

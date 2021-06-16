@@ -1,7 +1,6 @@
 export default {
     title: {
         text: '某站点用户访问来源',
-        subtext: '纯属虚构',
         left: 'center'
     },
     tooltip: {
