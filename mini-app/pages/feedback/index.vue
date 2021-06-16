@@ -117,7 +117,7 @@
 		data() {
 			return {
 				//是否显示用户引导
-				isTiptrue: true,
+				isTiptrue: false,
 				
 				//是否显示骨架屏组件
 				loading: true, 
