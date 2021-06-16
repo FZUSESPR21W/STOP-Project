@@ -30,7 +30,7 @@
       <span>{{ feedbackContent }}</span>
       <div class="imageList" v-if="imageUrlList.length !== 0">
         <h5>反馈图片：</h5>
-        <a v-for="item in imageUrlList" :href="`https://api.shawnxixi.icu${item}`">{{ item }}</a>
+        <a v-for="item in imageUrlList" :href="`https://api.shawnxixi.icu${item}`" target="_blank">{{ item }}</a>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="showFeedBackDialog = false">返回</el-button>

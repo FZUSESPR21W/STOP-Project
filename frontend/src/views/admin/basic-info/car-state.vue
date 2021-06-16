@@ -86,11 +86,11 @@ export default {
     },
     beforeMount() {
         // 更新面包屑路径
-        this.$store.commit("setPageLocations", ["基础", "车辆情况"]);
+        this.$store.commit("setPageLocations", ["基础", "车辆情况"])
     },
     mounted() {
         // 获取停车情况并绘制车辆信息图表
-        this.getCarStateAndPaint();
+        this.getCarStateAndPaint()
     },
     methods: {
         // 获取停车情况
@@ -101,21 +101,14 @@ export default {
                     this.graph.car.series[0].data.push(parseInt(item.value));
                 });
 
-                this.paintCarState();
+                this.paintCarState()
             });
         },
         // 绘制车辆信息图表
         paintCarState() {
             let domContainer = document.getElementById("car");
             let chart = this.$echarts.init(domContainer);
-            chart.setOption(this.graph.car);
-            for (var i = 0; i < data.length; ++i) {
-                if (Math.random() > 0.9) {
-                    data[i] += Math.round(Math.random() * 2000);
-                } else {
-                    data[i] += Math.round(Math.random() * 200);
-                }
-            }
+            chart.setOption(this.graph.car)
         },
     },
 };
