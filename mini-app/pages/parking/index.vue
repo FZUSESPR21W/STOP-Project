@@ -288,27 +288,38 @@
 			clickCovers(res) {
 				this.chartData.series[0].data = res.capacity
 				this.popupItem = res
+				if(!this.deviceFault()){
+					return ;
+				}
 				this.popupShow = true
 			},
 
+			//点击列表项
 			clickItem(index) {
 				this.popupItem = this.placeList[index]
 				this.chartData.series[0].data = this.popupItem.capacity
-				//出故障不弹出
-				if(this.popupItem.fault===true){
-					uni.showToast({
-						title: '设备故障，请稍后再尝试',
-						icon:'none',
-					})
-					return ; 
+				if(!this.deviceFault()){
+					return ;
 				}
 				this.popupShow = true
 				setTimeout(() => {
 					this.showCircle = true
 				}, 100)
-
 			},
 
+			//设备故障时不弹窗
+			deviceFault(){
+				//出故障不弹出
+				if(this.popupItem.fault){
+					uni.showToast({
+						title: '设备故障，请稍后再尝试',
+						icon:'none',
+					})
+					return false
+				}
+				return true
+			},
+			
 			//禁止滚动
 			//该方法解决IOS下点击地点框会层级穿透至map组件内的BUG
 			noScrolling() {

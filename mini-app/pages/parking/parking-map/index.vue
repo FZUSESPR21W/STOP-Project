@@ -182,7 +182,7 @@
 			},
 			//标记点击事件
 			clickMarker(res) {
-				let data = this.covers[this.markerMap.get(res.target.markerId)]
+				let data=this.covers.find(item => item.id==res.target.markerId)
 				this.$emit('clickCovers', data)
 			},
 			//返回中心点
