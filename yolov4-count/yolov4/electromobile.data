@@ -1,0 +1,5 @@
+classes= 1
+train = /content/drive/MyDrive/electromobile/train.txt
+valid = /content/drive/MyDrive/electromobile/test.txt
+names = /content/drive/MyDrive/electromobile/electromobile.names
+backup = /content/drive/MyDrive/electromobile/weights/
