@@ -130,7 +130,7 @@ export class Statistics {
      * @returns {*}
      */
     static getLoginList() {
-        return axios.get('/api/get_login_list')
+        return axios.get('/api/get_login_list?delta=29')
     }
 
     /**
@@ -139,6 +139,14 @@ export class Statistics {
      */
     static getStopStatusHourly() {
         return axios.get('/api/stop_status_hourly')
+    }
+
+    /**
+     * 获取用户访问数量
+     * @returns {*}
+     */
+    static getVisitNumber() {
+        return axios.get('api/get_visit_number?delta=6')
     }
 
 }
@@ -175,6 +183,8 @@ export class Feedback {
     static getDetail(id) {
         return axios.get(`/feedback/detail?id=${id}`)
     }
+
+
 }
 
 /**

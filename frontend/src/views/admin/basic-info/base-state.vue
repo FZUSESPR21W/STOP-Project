@@ -3,17 +3,13 @@
   <div class="base-state-container">
     <!-- 用户登录记录开始 -->
     <div class="user-login-log-container">
-      <span class="title">用户登录记录</span>
-      <!-- 用户登录记录表格，数据来源：userLoginData -->
-      <el-table :data="userLogin.userLoginData" style="width: 100%" stripe>
-        <!-- 日期字段 -->
-        <el-table-column prop="date" label="日期" width="180"/>
-        <!-- 姓名字段 -->
-        <el-table-column prop="name" label="姓名" width="180"/>
-        <!-- 登录地字段 -->
-        <el-table-column prop="space" label="地址"/>
-      </el-table>
-      <!-- 用户登录记录表格结束 -->
+      <span class="title">过去一个月用户画像</span>
+      <div class="graph-container-main">
+        <!-- 用户年龄 -->
+        <div id="ages" class="graph"/>
+        <!-- 平台 -->
+        <div id="platforms" class="graph"/>
+      </div>
     </div>
     <!-- 用户登录记录结束 -->
     <!-- 数据可视化(echarts图表）开始 -->
@@ -36,54 +32,43 @@
 <script>
 import initParkData from './init-graph-data/park-data'
 import initVisitData from './init-graph-data/visit-data'
+import initPeiChartData from './init-graph-data/pie-chart'
 
 export default {
   name: "base-state",
   data() {
     return {
-      // 用户登录记录对象
-      userLogin: {
-        //用户登录数据
-        userLoginData: [],
-        //页面下标
-        page: 0,
-        //每页限制条数
-        limit: 5
-      },
       // 数据可视化(echarts图表）对象
       graph: {
         // 福州大学教学楼停车情况数据 深拷贝
         parkData: JSON.parse(JSON.stringify(initParkData)),
         // STOP小程序端日访问量数据 深拷贝
-        visitData: JSON.parse(JSON.stringify(initVisitData))
+        visitData: JSON.parse(JSON.stringify(initVisitData)),
+        // 用户年龄图表
+        agesData: JSON.parse(JSON.stringify(initPeiChartData)),
+        // 平台图表
+        platformsData: JSON.parse(JSON.stringify(initPeiChartData)),
       }
     }
   },
   beforeMount() {
     // 数据初始化
     this.getUserLoginData()
-    this.getVisitNumber()
     // 更新面包屑路径
     this.$store.commit('setPageLocations', ['基础','基本情况'])
   },
   mounted() {
     this.getStopStatusAndPaint()
-    this.paintVisitNumber()
+    this.getVisitNumberAndPaint()
   },
   methods: {
     //获取用户登录数据
     getUserLoginData() {
-      // 项目未上线暂时无法取得数据
-      // 填充假数据
-      for (let i = 0; i < 5; i++) {
-        this.userLogin.userLoginData.push(
-            {
-              name: '王小虎',
-              date: '2016-05-01',
-              space: '上海市普陀区金沙江路 1518 弄'
-            }
-        )
-      }
+      // 调用用户登录数据接口
+      this.$api.Statistics.getLoginList().then(res => {
+        this.userLogin.userData = res.data.data.visit_uv
+      })
+
     },
     // 获取福州大学教学楼停车情况并绘制
     getStopStatusAndPaint() {
@@ -117,7 +102,22 @@ export default {
       })
     },
     // 获取STOP小程序端日访问量并绘制
-    getVisitNumber() {
+    getVisitNumberAndPaint() {
+      this.$api.Statistics.getVisitNumber().then(res => {
+        this.graph.visitData.xAxis.data = []
+        // pv
+        this.graph.visitData.series[0].data = []
+        // uv
+        this.graph.visitData.series[1].data = []
+        res.data.data.visitNumber.forEach(item => {
+          this.graph.visitData.xAxis.data.unshift(item.list[0].ref_date)
+          this.graph.visitData.series[0].data.unshift(item.list[0].visit_pv)
+          this.graph.visitData.series[1].data.unshift(item.list[0].visit_uv)
+        })
+
+        // 绘制图表
+        this.paintVisitNumber()
+      })
     },
     // 绘制福州大学教学楼停车情况
     paintStopStatus() {
