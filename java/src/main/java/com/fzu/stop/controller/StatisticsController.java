@@ -102,10 +102,9 @@ public class StatisticsController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         Calendar calendar = Calendar.getInstance();
         //允许设置的最大值为昨日
-        calendar.add(Calendar.DAY_OF_YEAR,-1);
         List<JSONObject> jsonObjectList = new ArrayList<>();
         for (int i = 0; i < delta + 1 ;i++) {
-            calendar.add(Calendar.DAY_OF_YEAR, -i);
+            calendar.add(Calendar.DAY_OF_YEAR, -1);
             Date date = calendar.getTime();
             String beginDate = simpleDateFormat.format(date);
             jsonObjectList.add(WechatUtil.getDailyVisitTrend(beginDate, beginDate));
@@ -113,7 +112,6 @@ public class StatisticsController {
         Map<String,Object> data =new HashMap<>(1);
         data.put("visitNumber",jsonObjectList);
         return ResponseUtil.getSuccessResponse("获取成功",data);
-
     }
     @Operation(description = "获取设备相关信息")
     @GetMapping("/get_points")
