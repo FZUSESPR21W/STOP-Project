@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 公告内容（富文本） -->
-    <quillEditor ref="QuillEditor" class="editor" v-model="text" :options="editorOption" @input="$emit(mode + 'Change', text)"/>
+    <quillEditor :ref="'QuillEditor' + mode" class="editor" v-model="text" :options="editorOption" @input="$emit(mode + 'Change', text)"/>
     <!-- element-ui 上传 -->
-    <el-upload action="#" class="avatar-uploader" name="img" :show-file-list="false" :http-request="uploadSectionFile"/>
+    <el-upload action="#" class="avatar-uploader" :id="mode" name="img" :show-file-list="false" :http-request="uploadSectionFile"/>
   </div>
 </template>
 
@@ -36,24 +36,24 @@ export default {
           toolbar: {
             // 工具栏
             container: toolbarOptions,
-            handlers: {
-              'image': function (value) {
-                if (value) {
-                  // upload点击上传事件
-                  document.querySelector('.avatar-uploader input').click()
-                } else {
-                  this.quill.format('image', false)
-                }
-              }
-            }
+            handlers: {}
           }
         }
       },
       text: ''
     }
   },
-  mounted() {
-
+  created() {
+    this.editorOption.modules.toolbar.handlers = {
+      'image': (value) => {
+        if (value) {
+          // upload点击上传事件
+          document.getElementById(this.mode).children[0].children[0].click()
+        } else {
+          this.quill.format('image', false)
+        }
+      }
+    }
   },
   methods: {
     // 上传操作
@@ -64,17 +64,17 @@ export default {
       // 文件对象
       form.append('file', fileObj)
       this.$api.Notice.upLoadImg(form).then(res => {
-        this.uploadSuccess(res)
+        this.uploadSuccess(res, 'QuillEditor' + this.mode)
       })
     },
     // 上传成功操作
-    uploadSuccess(res) {
+    uploadSuccess(res, editor) {
       // 获取富文本组件实例
-      let quill = this.$refs.QuillEditor.quill
+      let quill = this.$refs[editor].quill
       // 如果上传成功
       if (res) {
         // 获取光标所在位置
-        let length = quill.getSelection().index;
+        let length = quill.selection.savedRange.index
         // 插入图片，res为服务器返回的图片链接地址
         quill.insertEmbed(length, 'image', `https://api.shawnxixi.icu${res.data.data.pictureUrl}`)
         // 调整光标到最后
