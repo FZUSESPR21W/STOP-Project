@@ -18,15 +18,11 @@
 			</view>
 			<!-- 详细公告 -->
 			<u-popup v-model="noticeShow" mode="center" border-radius="10" length="80%" :mask="mask"
-				:closeable="closeable" :close-icon-pos="closeIconPos" :mask-close-able="false">
+				:closeable="closeable" :close-icon-pos="closeIconPos" :mask-close-able="true">
 				<!-- 文字与关闭按钮 -->
 				<view style="height: 800rpx">
 					<view class="info-title">公告</view>
 					<view class="info-text"><u-parse :html="notice[noticeIndex]" :selectable="true"></u-parse></view>
-					<view class="close-btn">
-						<u-button @click="noticeShow = false;" :custom-style="customStyle" :ripple="true"
-							ripple-bg-color="#A55F91" size="medium">关闭</u-button>
-					</view>
 				</view>
 			</u-popup>
 		</view>
