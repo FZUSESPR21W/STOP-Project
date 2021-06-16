@@ -296,7 +296,7 @@
 									strokeColor = '#adadad'
 									fillColor = '#d1d1d1'
 								} else {
-									strokeColor = '#ff5c10'
+									strokeColor = '#732907'
 									fillColor = '#ff5f54'
 								}
 								// let points = (null == areaList[i].points)?[]:areaList[i].points
@@ -305,7 +305,7 @@
 										points: areaList[i].points,
 										strokeColor: strokeColor,
 										fillColor: fillColor,
-										strokeWidth: 3
+										strokeWidth: 2
 									}
 								}
 								
