@@ -6,8 +6,8 @@
 
 # 百度云盘下载数据集和已训练模型权重
 ## 模型权重
-链接：https://pan.baidu.com/s/17eRB-W5z5L7JZNrzVjUPbg 
-提取码：l2uy 
+链接：https://pan.baidu.com/s/1J5XCQueLaJd05AXi2CN_dA 
+提取码：fufn 
 
 ## 数据集
 链接：https://pan.baidu.com/s/1IeVw3UtsFklgyY5DDV1LTg 
